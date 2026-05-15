@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Portfolio of Mariano Rodriguez, Principal UX Designer." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="<!-- PAGE_TITLE -->" />
+  <meta property="og:description" content="Portfolio of Mariano Rodriguez, Principal UX Designer." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://marianorodriguez.com<!-- PAGE_PATH -->" />
+  <meta property="og:image" content="<!-- ASSET_PREFIX -->picture.png" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="<!-- PAGE_TITLE -->" />
+  <meta name="twitter:description" content="Portfolio of Mariano Rodriguez, Principal UX Designer." />
+  <meta name="twitter:image" content="<!-- ASSET_PREFIX -->picture.png" />
+
+  <title><!-- PAGE_TITLE --></title>
+  <link rel="icon" type="image/svg+xml" href="<!-- ASSET_PREFIX -->logo.svg" />
+  <link rel="stylesheet" href="<!-- ASSET_PREFIX -->styles.css" />
+</head>
+<body>
+  <!-- NAV -->
+  <header class="navbar">
+    <div class="navbar__inner">
+      <a href="<!-- ROOT_PREFIX -->" class="navbar__logo" aria-label="Mariano Rodriguez home">
+        <img src="<!-- ASSET_PREFIX -->logo.svg" alt="Mariano Rodriguez" width="58" height="44" />
+      </a>
+      <button
+        type="button"
+        class="navbar__toggle"
+        aria-label="Toggle navigation menu"
+        aria-expanded="false"
+        aria-controls="navbar-menu"
+        hidden
+      >
+        <span class="navbar__toggle-bar" aria-hidden="true"></span>
+        <span class="navbar__toggle-bar" aria-hidden="true"></span>
+        <span class="navbar__toggle-bar" aria-hidden="true"></span>
+      </button>
+      <nav class="navbar__nav" id="navbar-menu" aria-label="Primary">
+        <ul class="navbar__list">
+          <li class="navbar__item"><a href="<!-- ROOT_PREFIX -->work/">Work</a></li>
+          <li class="navbar__item"><a href="<!-- ROOT_PREFIX -->tools/">Tools</a></li>
+          <li class="navbar__item"><a href="<!-- ROOT_PREFIX -->contact/">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <main>
+    <section class="page">
+      <div class="page__content">
+        <h1 class="page__header"><!-- PAGE_HEADING --></h1>
+        <p class="page__subhead"><!-- PAGE_SUBHEAD --></p>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <a href="<!-- ROOT_PREFIX -->" class="footer__logo" aria-label="Mariano Rodriguez home">
+        <img src="<!-- ASSET_PREFIX -->logo.svg" alt="Mariano Rodriguez" width="58" height="44" />
+      </a>
+      <div class="footer__line" aria-hidden="true">
+        <img src="<!-- ASSET_PREFIX -->line.svg" alt="" class="footer__line-img" />
+      </div>
+    </div>
+  </footer>
+
+  <script src="<!-- ASSET_PREFIX -->scripts.js"></script>
+</body>
+</html>
