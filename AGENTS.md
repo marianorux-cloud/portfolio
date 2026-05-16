@@ -1,0 +1,1 @@
+/Users/mariano/.config/vscode/AGENTS.md

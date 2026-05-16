@@ -1,0 +1,25 @@
+{
+  "worktrees": {
+    "wt-1778609173806-1": {
+      "branch": "emerald-lock",
+      "path": "/Users/mariano/Documents/code explorations/auto-lola v2/.kilo/worktrees/emerald-lock",
+      "parentBranch": "6ca2035",
+      "createdAt": "2026-05-12T18:06:13.806Z"
+    }
+  },
+  "sessions": {
+    "ses_1e2a1ca5cffexvy5FMxRpWB1s9": {
+      "worktreeId": "wt-1778609173806-1",
+      "createdAt": "2026-05-12T18:06:13.926Z"
+    }
+  },
+  "tabOrder": {
+    "local": [
+      "pending:1"
+    ]
+  },
+  "worktreeOrder": [
+    "wt-1778609173806-1"
+  ],
+  "sessionsCollapsed": true
+}
