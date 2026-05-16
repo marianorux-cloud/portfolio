@@ -428,6 +428,138 @@ a {
 }
 
 /* ============================================
+   Experience
+   ============================================ */
+
+.experience {
+  width: 100%;
+}
+
+.experience__inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: var(--space-sm) var(--space-md);
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 768px) {
+  .experience__inner {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+}
+
+.experience__title {
+  font-size: 1.75rem;
+  line-height: 1.2;
+  font-weight: var(--font-weight-roman);
+  color: var(--color-text);
+  margin-bottom: var(--space-lg);
+}
+
+.experience__list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.experience__row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: var(--space-xs) 0;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.25);
+  gap: var(--space-md);
+}
+
+
+
+.experience__role {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.experience__title-primary {
+  color: var(--color-text);
+  font-weight: var(--font-weight-medium);
+}
+
+.experience__company {
+  color: var(--color-text);
+  font-weight: var(--font-weight-roman);
+}
+
+.experience__years {
+  opacity: 0.6;
+  font-weight: var(--font-weight-roman);
+  flex-shrink: 0;
+  text-align: right;
+}
+
+@media (min-width: 768px) {
+  .experience__inner {
+    padding: var(--space-md) var(--space-sm);
+  }
+
+  .experience__title {
+    font-size: 2rem;
+    margin-bottom: 0;
+  }
+
+  .experience__list {
+    width: 50%;
+    margin-left: auto;
+  }
+}
+
+@media (min-width: 1024px) {
+  .experience__inner {
+    padding: var(--space-md) var(--space-xl);
+  }
+
+  .experience__title {
+    font-size: 2.75rem;
+  }
+}
+
+.experience__note-wrap {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--space-md);
+  display: flex;
+  justify-content: flex-end;
+}
+
+.experience__note {
+  text-align: right;
+  opacity: 0.6;
+  font-weight: var(--font-weight-roman);
+  font-size: 0.875rem;
+  margin: 0;
+  padding: var(--space-xs) 0;
+}
+
+@media (min-width: 768px) {
+  .experience__note-wrap {
+    padding: 0 var(--space-sm);
+  }
+
+  .experience__note {
+    width: 50%;
+  }
+}
+
+@media (min-width: 1024px) {
+  .experience__note-wrap {
+    padding: 0 var(--space-xl);
+  }
+}
+
+/* ============================================
    Footer
    ============================================ */
 
