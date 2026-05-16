@@ -53,7 +53,7 @@
 
 @font-face {
   font-family: "Neue Haas Display";
-  src: url("fonts/NeueHaasDisplayRoman.ttf") format("truetype");
+  src: url("assets/fonts/NeueHaasDisplayRoman.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -61,7 +61,7 @@
 
 @font-face {
   font-family: "Neue Haas Display";
-  src: url("fonts/NeueHaasDisplayMediu.ttf") format("truetype");
+  src: url("assets/fonts/NeueHaasDisplayMediu.ttf") format("truetype");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -69,7 +69,7 @@
 
 @font-face {
   font-family: "Neue Haas Display";
-  src: url("fonts/NeueHaasDisplayBold.ttf") format("truetype");
+  src: url("assets/fonts/NeueHaasDisplayBold.ttf") format("truetype");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -185,10 +185,10 @@ a {
   width: 44px;
   height: 33px;
   background-color: var(--color-icon);
-  -webkit-mask-image: url("logo.svg");
+  -webkit-mask-image: url("assets/icons/logo.svg");
   -webkit-mask-size: contain;
   -webkit-mask-repeat: no-repeat;
-  mask-image: url("logo.svg");
+  mask-image: url("assets/icons/logo.svg");
   mask-size: contain;
   mask-repeat: no-repeat;
 }
@@ -450,10 +450,10 @@ a {
   height: 33px;
   flex-shrink: 0;
   background-color: var(--color-icon);
-  -webkit-mask-image: url("logo.svg");
+  -webkit-mask-image: url("assets/icons/logo.svg");
   -webkit-mask-size: contain;
   -webkit-mask-repeat: no-repeat;
-  mask-image: url("logo.svg");
+  mask-image: url("assets/icons/logo.svg");
   mask-size: contain;
   mask-repeat: no-repeat;
 }
@@ -468,10 +468,10 @@ a {
   width: 100%;
   height: 10px;
   background-color: var(--color-icon);
-  -webkit-mask-image: url("zig.svg");
+  -webkit-mask-image: url("assets/icons/zig.svg");
   -webkit-mask-repeat: repeat-x;
   -webkit-mask-size: 16px 10px;
-  mask-image: url("zig.svg");
+  mask-image: url("assets/icons/zig.svg");
   mask-repeat: repeat-x;
   mask-size: 16px 10px;
 }
@@ -600,17 +600,13 @@ a {
 }
 
 .cursor--hover {
-  width: 60px;
-  height: 60px;
-  background: rgba(217, 217, 217, 0);
-  backdrop-filter: blur(2px) saturate(1.2);
-  -webkit-backdrop-filter: blur(2px) saturate(1.2);
+  width: 24px;
+  height: 24px;
+  background: rgba(217, 217, 217, 0.2);
+  backdrop-filter: blur(12px) saturate(1.2);
+  -webkit-backdrop-filter: blur(12px) saturate(1.2);
   border-color: rgba(255, 255, 255, 0.25);
   box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1), 0 4px 12px rgba(0, 0, 0, 0.08);
-  background-image: conic-gradient(
-    from 0deg,
-    #0080ff, #bf00ff, #ff0040, #ff6600, #0080ff
-  );
 }
 
 /* Hide on touch devices */
