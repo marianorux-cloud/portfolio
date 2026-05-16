@@ -1,0 +1,6 @@
+# Agent / AI tooling
+.kilo/
+.claude/
+
+# Agent configuration
+AGENTS.md
