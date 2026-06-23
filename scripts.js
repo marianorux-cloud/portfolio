@@ -82,6 +82,7 @@
       requestAnimationFrame(animateCursor);
     }
     animateCursor();
+    document.body.classList.add('custom-cursor-active');
 
     const hoverTargets = document.querySelectorAll('a, button');
     hoverTargets.forEach((el) => {
@@ -119,5 +120,22 @@
         queue = shuffle([...altClasses]);
       }
     }, 5000);
+  }
+  /* ---------- Experience duration label ---------- */
+  const currentRole = document.querySelector('.experience__row:not([style*="--duration"])');
+  if (currentRole) {
+    const yearsEl = currentRole.querySelector('.experience__years');
+    const match = yearsEl.textContent.match(/(\w+)\s+(\d{4})\s*[–-]\s*Present/i);
+    if (match) {
+      const start = new Date(match[1] + ' 1, ' + match[2]);
+      const now = new Date();
+      const diffMonths = (now.getFullYear() - start.getFullYear()) * 12 + (now.getMonth() - start.getMonth());
+      const yrs = Math.floor(diffMonths / 12);
+      const mos = diffMonths % 12;
+      const parts = [];
+      if (yrs > 0) parts.push(yrs + (yrs === 1 ? ' yr' : ' yrs'));
+      if (mos > 0) parts.push(mos + (mos === 1 ? ' mo' : ' mos'));
+      currentRole.style.setProperty('--duration', `'${parts.join(' ')}'`);
+    }
   }
 })();
