@@ -1,6 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+
 /* ============================================
    CSS Custom Properties
    ============================================ */
+
 
 :root {
   /* Colors — light (default) */
@@ -9,7 +12,7 @@
   --color-icon: #282828;
 
    /* Fonts */
-   --font-family: "Neue Haas Grotesk Display Pro", "Neue Haas Display", Arial, sans-serif;
+    --font-family: "Overused Grotesk", "Inter", Arial, sans-serif;
    --font-weight-regular: 400;
    --font-weight-medium: 500;
    --font-weight-bold: 700;
@@ -74,28 +77,29 @@
    ============================================ */
 
 @font-face {
-  font-family: "Neue Haas Display";
-  src: url("assets/fonts/NeueHaasDisplayRoman.woff2") format("woff2");
+  font-family: "Overused Grotesk";
+  src: url("assets/fonts/OverusedGrotesk-Roman.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Neue Haas Display";
-  src: url("assets/fonts/NeueHaasDisplayMediu.woff2") format("woff2");
+  font-family: "Overused Grotesk";
+  src: url("assets/fonts/OverusedGrotesk-Medium.woff2") format("woff2");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Neue Haas Display";
-  src: url("assets/fonts/NeueHaasDisplayBold.woff2") format("woff2");
+  font-family: "Overused Grotesk";
+  src: url("assets/fonts/OverusedGrotesk-Bold.woff2") format("woff2");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
+
 
 /* ============================================
    Base
@@ -461,7 +465,7 @@ a {
 .experience__inner {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: var(--space-sm) var(--space-md);
+  padding: var(--space-md) var(--space-lg);
   display: flex;
   flex-direction: column;
 }
@@ -557,7 +561,7 @@ a {
 
 @media (min-width: 768px) {
   .experience__inner {
-    padding: var(--space-md) var(--space-sm);
+    padding: var(--space-md) var(--space-lg);
   }
 }
 
@@ -566,6 +570,7 @@ a {
     flex-direction: row;
     justify-content: space-between;
     align-items: flex-start;
+    padding: var(--space-md) var(--space-lg);
   }
 
   .experience__title {
@@ -794,17 +799,17 @@ a {
     flex-direction: row;
     align-items: flex-start;
     gap: var(--space-2xl);
-    padding: var(--space-md) var(--space-sm);
+    padding: var(--space-md) var(--space-lg);
   }
 
   .hero__content {
     order: 1;
-    flex: 1 1 50%;
+    flex: 1 1 60%;
   }
 
   .hero__media {
     order: 2;
-    flex: 1 1 50%;
+    flex: 1 1 40%;
     display: flex;
     justify-content: flex-end;
     align-items: flex-end;
@@ -813,7 +818,7 @@ a {
   .hero__headline {
     font-size: var(--text-2xl);
     line-height: var(--leading-tight);
-    max-width: 22ch;
+    max-width: 32ch;
     padding-right: 0;
   }
 
@@ -826,7 +831,7 @@ a {
   }
 
   .footer__inner {
-    padding: var(--space-md) var(--space-sm);
+    padding: var(--space-md) var(--space-lg);
   }
 }
 
@@ -836,26 +841,30 @@ a {
 
 @media (min-width: 1024px) {
   .navbar__inner {
-    padding: var(--space-md) var(--space-xl);
+    padding: var(--space-md) var(--space-lg);
   }
 
   .footer__inner {
-    padding: var(--space-md) var(--space-xl);
+    padding: var(--space-md) var(--space-lg);
   }
 
   .hero__inner {
-    padding: var(--space-md) var(--space-xl);
+    padding: var(--space-md) var(--space-lg);
     gap: var(--space-sm);
   }
 
+  .experience__inner {
+    padding: var(--space-md) var(--space-lg);
+  }
+
   .hero__headline {
-    font-size: var(--text-3xl);
+    font-size: var(--text-2xl);
     line-height: var(--leading-tight);
-    max-width: 26ch;
+    max-width: 32ch;
   }
 
   .hero__cta {
-    font-size: var(--text-3xl);
+    font-size: var(--text-2xl);
   }
 
   .hero__image {
@@ -894,8 +903,8 @@ a {
   width: 24px;
   height: 24px;
   background: rgba(217, 217, 217, 0.2);
-  backdrop-filter: blur(12px) saturate(1.2);
-  -webkit-backdrop-filter: blur(12px) saturate(1.2);
+  backdrop-filter: blur(2px) saturate(1.2);
+  -webkit-backdrop-filter: blur(2px) saturate(1.2);
   border-color: rgba(255, 255, 255, 0.25);
   box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1), 0 4px 12px rgba(0, 0, 0, 0.08);
 }
