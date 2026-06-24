@@ -66,7 +66,8 @@
        const dy = mouseY - cursorY;
        cursorX += dx * 0.15;
        cursorY += dy * 0.15;
-       cursor.style.transform = `translate(${cursorX}px, ${cursorY}px) translate(-50%, -50%)`;
+       cursor.style.setProperty('--translate-x', `${cursorX}px`);
+       cursor.style.setProperty('--translate-y', `${cursorY}px`);
        requestAnimationFrame(animateCursor);
      }
      animateCursor();
@@ -80,7 +81,7 @@
 
      // Add click feedback
      document.addEventListener('mousedown', () => {
-       if (cursor && window.matchMedia('(hover: hover)').matches) {
+       if (cursor) {
          cursor.classList.add('cursor--active');
        }
      });
