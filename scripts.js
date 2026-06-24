@@ -48,36 +48,49 @@
     init();
   }
 
-  /* ---------- Custom cursor ---------- */
-  const cursor = document.querySelector('.cursor');
-  let mouseX = window.innerWidth / 2;
-  let mouseY = window.innerHeight / 2;
-  let cursorX = mouseX;
-  let cursorY = mouseY;
+/* ---------- Custom cursor ---------- */
+   const cursor = document.querySelector('.cursor');
+   let mouseX = window.innerWidth / 2;
+   let mouseY = window.innerHeight / 2;
+   let cursorX = mouseX;
+   let cursorY = mouseY;
 
-  if (cursor && window.matchMedia('(hover: hover)').matches) {
-    document.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-    });
+   if (cursor && window.matchMedia('(hover: hover)').matches) {
+     document.addEventListener('mousemove', (e) => {
+       mouseX = e.clientX;
+       mouseY = e.clientY;
+     });
 
-    function animateCursor() {
-      const dx = mouseX - cursorX;
-      const dy = mouseY - cursorY;
-      cursorX += dx * 0.15;
-      cursorY += dy * 0.15;
-      cursor.style.transform = `translate(${cursorX}px, ${cursorY}px) translate(-50%, -50%)`;
-      requestAnimationFrame(animateCursor);
-    }
-    animateCursor();
-    document.body.classList.add('custom-cursor-active');
+     function animateCursor() {
+       const dx = mouseX - cursorX;
+       const dy = mouseY - cursorY;
+       cursorX += dx * 0.15;
+       cursorY += dy * 0.15;
+       cursor.style.transform = `translate(${cursorX}px, ${cursorY}px) translate(-50%, -50%)`;
+       requestAnimationFrame(animateCursor);
+     }
+     animateCursor();
+     document.body.classList.add('custom-cursor-active');
 
-    const hoverTargets = document.querySelectorAll('a, button');
-    hoverTargets.forEach((el) => {
-      el.addEventListener('mouseenter', () => cursor.classList.add('cursor--hover'));
-      el.addEventListener('mouseleave', () => cursor.classList.remove('cursor--hover'));
-    });
-  }
+     const hoverTargets = document.querySelectorAll('a, button');
+     hoverTargets.forEach((el) => {
+       el.addEventListener('mouseenter', () => cursor.classList.add('cursor--hover'));
+       el.addEventListener('mouseleave', () => cursor.classList.remove('cursor--hover'));
+     });
+
+     // Add click feedback
+     document.addEventListener('mousedown', () => {
+       if (cursor && window.matchMedia('(hover: hover)').matches) {
+         cursor.classList.add('cursor--active');
+       }
+     });
+
+     document.addEventListener('mouseup', () => {
+       if (cursor) {
+         cursor.classList.remove('cursor--active');
+       }
+     });
+   }
 
   /* ---------- Shimmer color swap ---------- */
   const heroLink = document.querySelector('.hero__link');
