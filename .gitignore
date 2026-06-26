@@ -5,3 +5,19 @@
 # Agent configuration
 AGENTS.md
 .DS_Store
+
+# Staging assets
+assets/staging/
+
+# Dependencies
+node_modules/
+
+# Environment
+.env
+.env.*
+
+# Logs
+*.log
+
+# Dev / test files
+dev-test-*

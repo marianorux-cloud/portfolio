@@ -28,13 +28,9 @@
   }
 
   function init() {
-    const saved = getSavedTheme();
-    const theme = saved || 'neutral';
-    setTheme(theme);
-
     if (toggle) {
       toggle.addEventListener('click', function () {
-        const current = html.getAttribute('data-theme') || 'neutral';
+        const current = html.getAttribute('data-theme') || 'light';
         const currentIndex = THEME_ORDER.indexOf(current);
         const nextIndex = (currentIndex + 1) % THEME_ORDER.length;
         setTheme(THEME_ORDER[nextIndex]);
@@ -50,10 +46,10 @@
 
 /* ---------- Custom cursor ---------- */
    const cursor = document.querySelector('.cursor');
-   let mouseX = window.innerWidth / 2;
-   let mouseY = window.innerHeight / 2;
-   let cursorX = mouseX;
-   let cursorY = mouseY;
+   let mouseX = 0;
+   let mouseY = 0;
+   let cursorX = 0;
+   let cursorY = 0;
 
    if (cursor && window.matchMedia('(hover: hover)').matches) {
      document.addEventListener('mousemove', (e) => {
@@ -64,8 +60,8 @@
      function animateCursor() {
        const dx = mouseX - cursorX;
        const dy = mouseY - cursorY;
-       cursorX += dx * 0.15;
-       cursorY += dy * 0.15;
+cursorX += dx * 0.35;
+        cursorY += dy * 0.35;
        cursor.style.setProperty('--translate-x', `${cursorX}px`);
        cursor.style.setProperty('--translate-y', `${cursorY}px`);
        requestAnimationFrame(animateCursor);
@@ -73,11 +69,11 @@
      animateCursor();
      document.body.classList.add('custom-cursor-active');
 
-     const hoverTargets = document.querySelectorAll('a, button');
-     hoverTargets.forEach((el) => {
-       el.addEventListener('mouseenter', () => cursor.classList.add('cursor--hover'));
-       el.addEventListener('mouseleave', () => cursor.classList.remove('cursor--hover'));
-     });
+      const hoverTargets = document.querySelectorAll('a, button, .project-card__image-wrapper');
+      hoverTargets.forEach((el) => {
+        el.addEventListener('mouseenter', () => cursor.classList.add('cursor--hover'));
+        el.addEventListener('mouseleave', () => cursor.classList.remove('cursor--hover'));
+      });
 
      // Add click feedback
      document.addEventListener('mousedown', () => {
@@ -93,36 +89,6 @@
      });
    }
 
-  /* ---------- Shimmer color swap ---------- */
-  const heroLink = document.querySelector('.hero__link');
-  const altClasses = ['hero__link--alt-1', 'hero__link--alt-2', 'hero__link--alt-3'];
-  let currentAlt = null;
-
-  function shuffle(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-  }
-
-  let queue = shuffle([...altClasses]);
-
-  if (heroLink && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    setInterval(() => {
-      if (currentAlt) {
-        heroLink.classList.remove(currentAlt);
-      }
-      const next = queue.shift();
-      if (next) {
-        heroLink.classList.add(next);
-        currentAlt = next;
-      } else {
-        currentAlt = null;
-        queue = shuffle([...altClasses]);
-      }
-    }, 5000);
-  }
   /* ---------- Mobile menu ---------- */
   const mobileMenuToggle = document.querySelector('.navbar__toggle');
   const mobileMenuClose = document.querySelector('.mobile-menu__close');
@@ -184,5 +150,67 @@
       }
     });
   }
+
+  /* ---------- Work page: filter ---------- */
+  const filterPills = document.querySelectorAll('.filter-pill');
+
+  filterPills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      filterPills.forEach(p => p.classList.remove('filter-pill--active'));
+      pill.classList.add('filter-pill--active');
+      const filterValue = pill.dataset.filter;
+      document.querySelectorAll('.project-card').forEach(card => {
+        card.classList.toggle('filter-hidden', filterValue !== 'all' && card.dataset.company !== filterValue);
+      });
+    });
+  });
+
+  /* ---------- Lightbox ---------- */
+  const lightbox = document.createElement('div');
+  lightbox.className = 'lightbox';
+  lightbox.setAttribute('role', 'dialog');
+  lightbox.setAttribute('aria-modal', 'true');
+  lightbox.setAttribute('aria-label', 'Image preview');
+  lightbox.innerHTML = `
+    <button class="lightbox__close" aria-label="Close">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M10.5859 12L2.79297 4.20706L4.20718 2.79285L12.0001 10.5857L19.793 2.79285L21.2072 4.20706L13.4143 12L21.2072 19.7928L19.793 21.2071L12.0001 13.4142L4.20718 21.2071L2.79297 19.7928L10.5859 12Z"/>
+      </svg>
+    </button>
+    <img class="lightbox__img" alt="">
+  `;
+  document.body.appendChild(lightbox);
+
+  const lightboxImg = lightbox.querySelector('.lightbox__img');
+  const lightboxClose = lightbox.querySelector('.lightbox__close');
+
+  function openLightbox(src, alt) {
+    lightboxImg.src = src;
+    lightboxImg.alt = alt || '';
+    lightbox.classList.add('lightbox--open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove('lightbox--open');
+    document.body.style.overflow = '';
+  }
+
+  const projectsGrid = document.getElementById('projects-grid');
+  if (projectsGrid) {
+    projectsGrid.addEventListener('click', (e) => {
+      const img = e.target.closest('.project-card__image');
+      if (!img) return;
+      openLightbox(img.src, img.alt);
+    });
+  }
+
+  lightboxClose.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && lightbox.classList.contains('lightbox--open')) closeLightbox();
+  });
 
 })();

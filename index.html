@@ -5,7 +5,7 @@
   <!-- umami analytics -->
   <script defer src="https://cloud.umami.is/script.js" data-website-id="20473bbb-aaa3-4d65-a1da-4b8870e56e31" crossorigin="anonymous"></script>
 <meta charset="UTF-8" />
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline'; img-src 'self' https://marianodesigns.com data:; font-src 'self'; connect-src 'self' https://cloud.umami.is; frame-src 'none';">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' https://marianodesigns.com data:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://cloud.umami.is; frame-src 'none';">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="description" content="Portfolio of Mariano Rodriguez, Principal UX Designer." />
 <link rel="canonical" href="https://marianodesigns.com/" />
@@ -25,6 +25,10 @@
 
   <title>Mariano Rodriguez — Principal UX Designer</title>
   <link rel="icon" type="image/svg+xml" href="assets/icons/logo.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap">
+  <script src="theme-init.js"></script>
   <link rel="stylesheet" href="styles.css" />
 </head>
 
@@ -36,18 +40,13 @@
       <div class="navbar__right">
         <nav class="navbar__nav" aria-label="Primary">
           <ul class="navbar__list">
-            <li class="navbar__item navbar__item--hidden">
-              <a href="./work/">Work</a>
-            </li>
-            <li class="navbar__item navbar__item--hidden">
-              <a href="./tools/">Tools</a>
-            </li>
-            <li class="navbar__item navbar__item--hidden">
-              <a href="./contact/">Contact</a>
-            </li>
             <li class="navbar__item navbar__item--active">
               <a href="./" aria-current="page">home</a>
             </li>
+            <li class="navbar__item">
+              <a href="./work/">work</a>
+            </li>
+
           </ul>
         </nav>
         <button class="theme-toggle" aria-label="Toggle theme" type="button">
@@ -82,11 +81,9 @@
               <a href="./" aria-current="page">home</a>
         </li>
         <li class="mobile-menu__item">
-          <span class="mobile-menu__link mobile-menu__link--disabled" aria-disabled="true">work</span>
+          <a href="./work/">work</a>
         </li>
-        <li class="mobile-menu__item">
-          <span class="mobile-menu__link mobile-menu__link--disabled" aria-disabled="true">contact</span>
-        </li>
+
       </ul>
     </nav>
   </div>
@@ -100,7 +97,7 @@
           </h1>
           <p class="hero__cta">
             <a href="https://www.linkedin.com/in/marianojrodriguez/" target="_blank" rel="noopener noreferrer"
-              class="hero__link">Available to chat.</a>
+              class="hero__link text--grainy">Available to chat.</a>
           </p>
         </div>
         <div class="hero__media">
