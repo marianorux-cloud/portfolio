@@ -653,7 +653,7 @@ a {
 
   .experience__list {
     flex: 1 1 0;
-    max-width: 800px;
+    max-width: 600px;
     margin-left: auto;
   }
 }
