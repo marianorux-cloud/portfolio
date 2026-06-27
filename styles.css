@@ -252,6 +252,12 @@ a {
   justify-content: space-between;
 }
 
+.navbar__left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
 .navbar__right {
   display: flex;
   align-items: center;
@@ -420,6 +426,10 @@ a {
   opacity: 0.6;
 }
 
+[data-theme="dark"] .hero__link {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
 /* ── Grainy gradient text utility ── */
 
 .text--grainy {
@@ -444,7 +454,6 @@ a {
         from calc(var(--grainy-angle) * 1deg) at calc(var(--grainy-pos-x) * 1%) 150%,
         var(--color-text),
         hsl(270deg 40% 60%),
-        hsl(248deg 100% 31%),
         hsl(244deg 93% 31%),
         hsl(281deg 80% 41%),
         hsl(267deg 69% 51%),
@@ -963,7 +972,7 @@ a {
   --translate-y: 0px;
   --cursor-scale: 1;
   transform: translate(var(--translate-x), var(--translate-y)) translate(-50%, -50%) scale(var(--cursor-scale));
-  transition: width 0.2s ease, height 0.2s ease, transform 0.1s ease, background 0.3s ease, border-color 0.3s ease;
+  transition: width 0.2s ease, height 0.2s ease, background 0.3s ease, border-color 0.3s ease;
   will-change: transform;
 }
 
@@ -1190,6 +1199,11 @@ a {
 
 .project-card:nth-child(3) .project-card__image-wrapper--half {
   width: 50%;
+}
+
+.project-card__image--bordered {
+  outline: 1px solid #000;
+  outline-offset: -1px;
 }
 
 .project-card__image-wrapper--half .project-card__image {

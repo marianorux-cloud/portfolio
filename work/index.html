@@ -45,12 +45,15 @@
   <!-- NAV -->
   <header class="navbar">
     <div class="navbar__inner">
-      <a href="../" class="navbar__back" aria-label="Back to home">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-          <path
-            d="M7.82843 10.9999H20V12.9999H7.82843L13.1924 18.3638L11.7782 19.778L4 11.9999L11.7782 4.22168L13.1924 5.63589L7.82843 10.9999Z" />
-        </svg>
-      </a>
+      <div class="navbar__left">
+        <a href="../" class="navbar__back" aria-label="Back to home">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path
+              d="M7.82843 10.9999H20V12.9999H7.82843L13.1924 18.3638L11.7782 19.778L4 11.9999L11.7782 4.22168L13.1924 5.63589L7.82843 10.9999Z" />
+          </svg>
+        </a>
+        <a href="../" class="navbar__logo" aria-label="Mariano Rodriguez home"></a>
+      </div>
       <div class="navbar__right">
         <nav class="navbar__nav" aria-label="Primary">
           <ul class="navbar__list">
@@ -130,7 +133,7 @@
         <div class=" project-card__image-wrapper project-card__image-wrapper--half">
           <img src="../assets/images/work/clinical-connector.webp"
             data-full="../assets/images/work/clinical-connector.png" alt="Clinical Connector"
-            class="project-card__image" loading="lazy" decoding="async">
+            class="project-card__image project-card__image--bordered" loading="lazy" decoding="async">
         </div>
       </article>
       <article class="project-card" data-company="oracle">
@@ -143,7 +146,7 @@
         <div class="project-card__image-wrapper project-card__image-wrapper--half">
           <img src="../assets/images/work/patient-recruitment.webp"
             data-full="../assets/images/work/patient-recruitment.png" alt="Patient Recruitment"
-            class="project-card__image" loading="lazy" decoding="async">
+            class="project-card__image project-card__image--bordered" loading="lazy" decoding="async">
         </div>
       </article>
       <article class="project-card" data-company="oracle">

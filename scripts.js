@@ -60,8 +60,8 @@
      function animateCursor() {
        const dx = mouseX - cursorX;
        const dy = mouseY - cursorY;
-cursorX += dx * 0.35;
-        cursorY += dy * 0.35;
+cursorX += dx * 0.5;
+         cursorY += dy * 0.5;
        cursor.style.setProperty('--translate-x', `${cursorX}px`);
        cursor.style.setProperty('--translate-y', `${cursorY}px`);
        requestAnimationFrame(animateCursor);
