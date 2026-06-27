@@ -201,7 +201,7 @@ cursorX += dx * 0.35;
     projectsGrid.addEventListener('click', (e) => {
       const img = e.target.closest('.project-card__image');
       if (!img) return;
-      openLightbox(img.src, img.alt);
+      openLightbox(img.dataset.full || img.src, img.alt);
     });
   }
 

@@ -1,6 +1,8 @@
 # Agent / AI tooling
 .kilo/
 .claude/
+ai/
+memory-bank/
 
 # Agent configuration
 AGENTS.md
