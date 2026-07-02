@@ -8,7 +8,7 @@
 
   <meta charset="UTF-8" />
   <meta http-equiv="Content-Security-Policy"
-    content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' https://marianodesigns.com data:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://cloud.umami.is; frame-src 'none';">
+    content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' https://marianodesigns.com data:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://cloud.umami.is; frame-src https://player.vimeo.com;">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="view-transition" content="same-origin" />
   <meta name="description" content="Portfolio of Mariano Rodriguez, Principal UX Designer." />
@@ -123,20 +123,132 @@
       <hr class="work-separator">
     </div>
     <div id="projects-grid" class="projects-grid">
-      <article class="project-card" data-company="oracle">
+      <article class="project-card" data-company="consulting" data-year="2017">
+        <div class="project-card__text">
+          <div class="project-card__overline">Bose Product Vision</div>
+          <h2 class="project-card__title">Global co-design program testing major product concepts to inform Bose's
+            hardware roadmap.</h2>
+          <p class="project-card__description">Included Bose Frames and Ultra Open Earbuds</p>
+        </div>
+        <div class="project-card__image-wrapper project-card__image-wrapper--fill">
+          <img src="../assets/images/work/bose.webp" data-full="../assets/images/work/bose.png"
+            alt="Bose Product Vision prototype concept" class="project-card__image" loading="lazy" decoding="async">
+        </div>
+      </article>
+      <article class="project-card" data-company="consulting" data-year="2018">
+        <div class="project-card__text">
+          <div class="project-card__overline">Jigsaw Trainer</div>
+          <h2 class="project-card__title">VR simulation platform that trains police officers on high stress deescalation
+            techniques.</h2>
+          <p class="project-card__description">Tested with Newark Police Department</p>
+        </div>
+        <div class="project-card__image-wrapper project-card__image-wrapper--fill">
+          <img src="../assets/images/work/trainer.webp" alt="Jigsaw VR Trainer simulation" class="project-card__image"
+            loading="lazy" decoding="async"
+            data-video="https://player.vimeo.com/video/642265105?dnt=1&autoplay=1&badge=0&autopause=0&player_id=0&app_id=58479">
+        </div>
+      </article>
+      <article class="project-card" data-company="consulting" data-year="2018">
+        <div class="project-card__text">
+          <div class="project-card__overline">Harley-Davidson Electric Motorcycle</div>
+          <h2 class="project-card__title">Pre-launch testing and interface design improvements for the LiveWire display,
+            including navigation and safety features.</h2>
+          <p class="project-card__description">On-road testing with riders</p>
+        </div>
+        <div class="project-card__image-wrapper project-card__image-wrapper--fill">
+          <img src="../assets/images/work/hd.webp" data-full="../assets/images/work/hd.png"
+            alt="Harley-Davidson LiveWire electric motorcycle display" class="project-card__image" loading="lazy"
+            decoding="async">
+        </div>
+      </article>
+      <article class="project-card" data-company="consulting" data-year="2018">
+        <div class="project-card__text">
+          <div class="project-card__overline">Jigsaw Intra</div>
+          <h2 class="project-card__title">App that helps prevent blocking and tracking for journalists,
+            activists, and citizens in censored countries.</h2>
+          <p class="project-card__description">Launch research and design iteration</p>
+        </div>
+        <div class="project-card__image-wrapper project-card__image-wrapper--fill">
+          <img src="../assets/images/work/intra.gif" alt="Jigsaw Intra DNS protection app" class="project-card__image"
+            loading="lazy" decoding="async">
+        </div>
+      </article>
+      <article class="project-card" data-company="zumba" data-year="2020">
+        <div class="project-card__text">
+          <div class="project-card__overline">Zumba Virtual Class Platform</div>
+          <h2 class="project-card__title">Online class platform that allowed students worldwide to find and join
+            livestream classes.</h2>
+          <p class="project-card__description">COVID-19 pandemic emergency project</p>
+        </div>
+        <div class="project-card__image-wrapper project-card__image-wrapper--half">
+          <img src="../assets/images/work/zumba.webp" data-full="../assets/images/work/zumba.png"
+            alt="Zumba Virtual live streaming platform" class="project-card__image" loading="lazy" decoding="async">
+        </div>
+      </article>
+      <article class="project-card" data-company="zumba" data-year="2021">
+        <div class="project-card__text">
+          <div class="project-card__overline">Zumba B1 Training Page</div>
+          <h2 class="project-card__title">Landing page that helps people discover, evaluate, and sign up to become
+            instructors.</h2>
+          <p class="project-card__description">40% conversion increase during testing</p>
+        </div>
+        <div class="project-card__image-wrapper project-card__image-wrapper--half">
+          <img src="../assets/images/work/zin.webp" data-full="../assets/images/work/zin.png"
+            alt="Zumba instructor training landing page" class="project-card__image" loading="lazy" decoding="async">
+        </div>
+      </article>
+      <article class="project-card" data-company="zumba" data-year="2020">
+        <div class="project-card__text">
+          <div class="project-card__overline">Zumba ZIN Studio</div>
+          <h2 class="project-card__title">Allows instructors to manage, schedule, and livestream their online classes to
+            students worldwide.</h2>
+          <p class="project-card__description">Evolution of the Zumba Virtual Class Platform</p>
+        </div>
+        <div class="project-card__image-wrapper project-card__image-wrapper--half">
+          <img src="../assets/images/work/zin-studio.webp" data-full="../assets/images/work/zin-studio.png"
+            alt="Zumba ZIN Studio class management interface" class="project-card__image" loading="lazy"
+            decoding="async">
+        </div>
+      </article>
+      <article class="project-card" data-company="zumba" data-year="2019">
+        <div class="project-card__text">
+          <div class="project-card__overline">Zumba AI Choreo Challenge</div>
+          <h2 class="project-card__title">Tool to help instructors learn new choreography by testing their accuracy and
+            performance.</h2>
+          <p class="project-card__description">Early AI and ML algorithms</p>
+        </div>
+        <div class="project-card__image-wrapper project-card__image-wrapper--half">
+          <img src="../assets/images/work/choreo-challenge.webp" data-full="../assets/images/work/choreo-challenge.png"
+            alt="Zumba AI Choreo Challenge motion tracking" class="project-card__image" loading="lazy" decoding="async">
+        </div>
+      </article>
+      <article class="project-card" data-company="zumba" data-year="2019">
+        <div class="project-card__text">
+          <div class="project-card__overline">Zumba Class Buzz</div>
+          <h2 class="project-card__title">Instructor marketing app updates and improvements to address post-launch needs
+            and feedback.</h2>
+          <p class="project-card__description">Expanded template libraries and tools</p>
+        </div>
+        <div class="project-card__image-wrapper project-card__image-wrapper--fill">
+          <img src="../assets/images/work/class-buzz.webp" data-full="../assets/images/work/class-buzz.png"
+            alt="Zumba Class Buzz instructor marketing app" class="project-card__image" loading="lazy" decoding="async">
+        </div>
+      </article>
+      <article class="project-card" data-company="oracle" data-year="2025">
         <div class="project-card__text">
           <div class="project-card__overline">Oracle Clinical Connector</div>
-          <h2 class="project-card__title">Data integration tool for clinical trial staff to copy patient data from a
+          <h2 class="project-card__title">Data integration tool for clinical trial staff to copy patient data from
             their health record into study forms.</h2>
           <p class="project-card__description">Reduced data entry time by 78%</p>
         </div>
-        <div class=" project-card__image-wrapper project-card__image-wrapper--half">
+        <div class="project-card__image-wrapper project-card__image-wrapper--half">
           <img src="../assets/images/work/clinical-connector.webp"
-            data-full="../assets/images/work/clinical-connector.png" alt="Clinical Connector"
+            data-full="../assets/images/work/clinical-connector.png"
+            alt="Oracle Clinical Connector data integration interface"
             class="project-card__image project-card__image--bordered" loading="lazy" decoding="async">
         </div>
       </article>
-      <article class="project-card" data-company="oracle">
+      <article class="project-card" data-company="oracle" data-year="2024">
         <div class="project-card__text">
           <div class="project-card__overline">Oracle Patient Recruitment</div>
           <h2 class="project-card__title">Platform for health systems to identify,
@@ -145,11 +257,12 @@
         </div>
         <div class="project-card__image-wrapper project-card__image-wrapper--half">
           <img src="../assets/images/work/patient-recruitment.webp"
-            data-full="../assets/images/work/patient-recruitment.png" alt="Patient Recruitment"
+            data-full="../assets/images/work/patient-recruitment.png"
+            alt="Oracle Patient Recruitment clinical trial enrollment platform"
             class="project-card__image project-card__image--bordered" loading="lazy" decoding="async">
         </div>
       </article>
-      <article class="project-card" data-company="oracle">
+      <article class="project-card" data-company="oracle" data-year="2024">
         <div class="project-card__text">
           <div class="project-card__overline">Oracle Hackathon</div>
           <h2 class="project-card__title">Tool that matches relevant clinical trials based on
@@ -158,43 +271,8 @@
         </div>
         <div class="project-card__image-wrapper project-card__image-wrapper--half">
           <img src="../assets/images/work/orahacks.webp" data-full="../assets/images/work/orahacks.png"
-            alt="Hackathon (Clinical Trial Recommendation)" class="project-card__image" loading="lazy" decoding="async">
-        </div>
-      </article>
-      <article class="project-card" data-company="zumba">
-        <div class="project-card__text">
-          <div class="project-card__overline">Zumba B1 Training Page</div>
-          <h2 class="project-card__title">Landing page that helps people discover, evaluate, and sign up to become
-            instructors.</h2>
-          <p class="project-card__description"> 40% conversion increase during testing</p>
-        </div>
-        <div class="project-card__image-wrapper project-card__image-wrapper--half">
-          <img src="../assets/images/work/zin.webp" data-full="../assets/images/work/zin.png"
-            alt="Zumba Instructor Marketing Page" class="project-card__image" loading="lazy" decoding="async">
-        </div>
-      </article>
-      <article class="project-card" data-company="zumba">
-        <div class="project-card__text">
-          <div class="project-card__overline">Zumba Virtual</div>
-          <h2 class="project-card__title">Virtual class platform that allowed Zumba instructors worldwide to stream live
-            classes.</h2>
-          <p class="project-card__description">COVID-19 pandemic emergency project</p>
-        </div>
-        <div class="project-card__image-wrapper project-card__image-wrapper--half">
-          <img src="../assets/images/work/zumba.webp" data-full="../assets/images/work/zumba.png"
-            alt="Zumba.dance (COVID Virtual Class Tool)" class="project-card__image" loading="lazy" decoding="async">
-        </div>
-      </article>
-      <article class="project-card" data-company="consulting">
-        <div class="project-card__text">
-          <div class="project-card__overline">Jigsaw Intra</div>
-          <h2 class="project-card__title">App that helps prevent blocking and tracking for journalists,
-            activists, and citizens in censored countries.</h2>
-          <p class="project-card__description">Launch research and design iteration</p>
-        </div>
-        <div class="project-card__image-wrapper project-card__image-wrapper--fill">
-          <img src="../assets/images/work/intra.gif" alt="Jigsaw Intra (DNS Protection)" class="project-card__image"
-            loading="lazy" decoding="async">
+            alt="Oracle Hackathon clinical trial recommendation tool" class="project-card__image" loading="lazy"
+            decoding="async">
         </div>
       </article>
     </div>

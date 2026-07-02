@@ -1245,7 +1245,14 @@ a {
   max-width: 85vw;
   max-height: 85vh;
   object-fit: contain;
-  cursor: default;
+}
+
+.lightbox__video {
+  width: 85vw;
+  max-width: 100%;
+  aspect-ratio: 16 / 9;
+  height: auto;
+  max-height: 85vh;
 }
 
 .lightbox__close {
@@ -1261,7 +1268,6 @@ a {
   border: none;
   border-radius: 50%;
   color: #fff;
-  cursor: pointer;
   transition: background var(--transition-fast);
 }
 

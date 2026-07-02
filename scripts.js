@@ -165,6 +165,14 @@ cursorX += dx * 0.5;
     });
   });
 
+  /* ---------- Work page: year sort ---------- */
+  const projectGrid = document.getElementById('projects-grid');
+  if (projectGrid) {
+    const projectCards = Array.from(projectGrid.querySelectorAll('.project-card'));
+    projectCards.sort((a, b) => parseInt(b.dataset.year) - parseInt(a.dataset.year));
+    projectCards.forEach(card => projectGrid.appendChild(card));
+  }
+
   /* ---------- Lightbox ---------- */
   const lightbox = document.createElement('div');
   lightbox.className = 'lightbox';
@@ -184,14 +192,31 @@ cursorX += dx * 0.5;
   const lightboxImg = lightbox.querySelector('.lightbox__img');
   const lightboxClose = lightbox.querySelector('.lightbox__close');
 
-  function openLightbox(src, alt) {
-    lightboxImg.src = src;
-    lightboxImg.alt = alt || '';
+  function openLightbox(src, alt, videoSrc) {
+    if (videoSrc) {
+      lightboxImg.style.display = 'none';
+      const vid = document.createElement('iframe');
+      vid.className = 'lightbox__video';
+      vid.allow = 'autoplay; fullscreen; picture-in-picture';
+      vid.style.display = 'block';
+      vid.setAttribute('frameborder', '0');
+      vid.src = videoSrc;
+      lightbox.appendChild(vid);
+    } else {
+      const existing = lightbox.querySelector('.lightbox__video');
+      if (existing) existing.remove();
+      lightboxImg.style.display = 'block';
+      lightboxImg.src = src;
+      lightboxImg.alt = alt || '';
+    }
     lightbox.classList.add('lightbox--open');
     document.body.style.overflow = 'hidden';
   }
 
   function closeLightbox() {
+    const existing = lightbox.querySelector('.lightbox__video');
+    if (existing) existing.remove();
+    lightboxImg.style.display = 'block';
     lightbox.classList.remove('lightbox--open');
     document.body.style.overflow = '';
   }
@@ -201,7 +226,7 @@ cursorX += dx * 0.5;
     projectsGrid.addEventListener('click', (e) => {
       const img = e.target.closest('.project-card__image');
       if (!img) return;
-      openLightbox(img.dataset.full || img.src, img.alt);
+      openLightbox(img.dataset.full || img.src, img.alt, img.dataset.video || null);
     });
   }
 
