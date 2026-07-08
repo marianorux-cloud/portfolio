@@ -1,4 +1,5 @@
 (function () {
+  'use strict';
   var saved;
   try { saved = localStorage.getItem('theme'); } catch (e) { saved = null; }
   if (!saved) {
@@ -14,13 +15,15 @@
           document.documentElement.classList.add('vt-active');
         }
       }
-    } catch(e) {}
+     } catch(e) {
+       // View Transitions API not supported — fall through
+     }
   }
-})();
 
-document.addEventListener('DOMContentLoaded', function () {
-  var grainyElements = document.querySelectorAll('.text--grainy');
-  grainyElements.forEach(function (el) {
-    el.style.setProperty('--grainy-angle', Math.floor(Math.random() * 360));
+  document.addEventListener('DOMContentLoaded', function () {
+    var grainyElements = document.querySelectorAll('.text--grainy');
+    grainyElements.forEach(function (el) {
+      el.style.setProperty('--grainy-angle', Math.floor(Math.random() * 360));
+    });
   });
-});
+})();

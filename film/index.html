@@ -5,56 +5,66 @@
   <!-- umami analytics -->
   <script defer src="https://cloud.umami.is/script.js" data-website-id="20473bbb-aaa3-4d65-a1da-4b8870e56e31"
     crossorigin="anonymous"></script>
+
   <meta charset="UTF-8" />
   <meta http-equiv="Content-Security-Policy"
-    content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' https://marianodesigns.com data:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://cloud.umami.is; frame-src 'none';">
+    content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' https://marianodesigns.com data:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://cloud.umami.is; frame-src https://player.vimeo.com;">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="view-transition" content="same-origin" />
   <meta name="description" content="Portfolio of Mariano Rodriguez, Principal UX Designer." />
-  <link rel="canonical" href="https://marianodesigns.com/" />
+  <link rel="canonical" href="https://marianodesigns.com/film/" />
+
 
   <!-- Open Graph -->
-  <meta property="og:title" content="Mariano Rodriguez — Principal UX Designer" />
+  <meta property="og:title" content="Film — Mariano Rodriguez" />
   <meta property="og:description" content="Portfolio of Mariano Rodriguez, Principal UX Designer." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://marianodesigns.com/" />
-  <meta property="og:image" content="https://marianodesigns.com/assets/images/picture.png" />
+  <meta property="og:url" content="https://marianodesigns.com/film/" />
+  <meta property="og:image" content="../assets/images/picture.png" />
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Mariano Rodriguez — Principal UX Designer" />
+  <meta name="twitter:title" content="Film — Mariano Rodriguez" />
   <meta name="twitter:description" content="Portfolio of Mariano Rodriguez, Principal UX Designer." />
-  <meta name="twitter:image" content="https://marianodesigns.com/assets/images/picture.png" />
+  <meta name="twitter:image" content="../assets/images/picture.png" />
 
-  <title>Mariano Rodriguez — Principal UX Designer</title>
-  <link rel="icon" type="image/svg+xml" href="assets/icons/logo.svg" />
+  <title>Film — Mariano Rodriguez</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/icons/logo.svg" />
+  <link rel="preload" href="../assets/fonts/OverusedGrotesk-Roman.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../assets/fonts/OverusedGrotesk-Medium.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../assets/fonts/OverusedGrotesk-Bold.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preload" href="assets/fonts/OverusedGrotesk-Roman.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="assets/fonts/OverusedGrotesk-Medium.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="assets/fonts/OverusedGrotesk-Bold.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap">
-  <script src="theme-init.js"></script>
-  <link rel="stylesheet" href="styles.css" />
+  <script src="../theme-init.js"></script>
+  <link rel="stylesheet" href="../styles.css" />
 </head>
 
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
-  <!-- NAVBAR: sync with 404.html -->
+  <!-- NAV -->
   <header class="navbar">
     <div class="navbar__inner">
-      <a href="./" class="navbar__logo" aria-label="Mariano Rodriguez home"></a>
+      <div class="navbar__left">
+        <a href="../" class="navbar__back btn--icon btn--ghost" aria-label="Back to home">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path
+              d="M7.82843 10.9999H20V12.9999H7.82843L13.1924 18.3638L11.7782 19.778L4 11.9999L11.7782 4.22168L13.1924 5.63589L7.82843 10.9999Z" />
+          </svg>
+        </a>
+        <a href="../" class="navbar__logo" aria-label="Mariano Rodriguez home"></a>
+      </div>
       <div class="navbar__right">
         <nav class="navbar__nav" aria-label="Primary">
           <ul class="navbar__list">
+            <li class="navbar__item">
+              <a href="../">home</a>
+            </li>
+            <li class="navbar__item">
+              <a href="../work/">work</a>
+            </li>
             <li class="navbar__item navbar__item--active">
-              <a href="./" aria-current="page">home</a>
-            </li>
-            <li class="navbar__item">
-              <a href="./work/">work</a>
-            </li>
-            <li class="navbar__item">
-              <a href="./film/">film</a>
+              <a href="../film/" aria-current="page">film</a>
             </li>
           </ul>
         </nav>
@@ -75,11 +85,11 @@
               d="M10 7C10 10.866 13.134 14 17 14C18.9584 14 20.729 13.1957 21.9995 11.8995C22 11.933 22 11.9665 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C12.0335 2 12.067 2 12.1005 2.00049C10.8043 3.27098 10 5.04157 10 7ZM4 12C4 16.4183 7.58172 20 12 20C15.0583 20 17.7158 18.2839 19.062 15.7621C18.3945 15.9187 17.7035 16 17 16C12.0294 16 8 11.9706 8 7C8 6.29648 8.08133 5.60547 8.2379 4.938C5.71611 6.28423 4 8.9417 4 12Z" />
           </svg>
         </button>
-        <button class="navbar__toggle btn--icon btn--ghost" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu"
-          type="button">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M3 4H21V6H3V4ZM3 11H21V13H3V11ZM3 18H21V20H3V18Z" />
-          </svg>
+        <button class="navbar__toggle btn--icon btn--ghost" aria-label="Open menu" aria-expanded="false"
+          aria-controls="mobile-menu" type="button">
+          <span class="navbar__toggle-bar"></span>
+          <span class="navbar__toggle-bar"></span>
+          <span class="navbar__toggle-bar"></span>
         </button>
       </div>
     </div>
@@ -94,97 +104,40 @@
     </button>
     <nav class="mobile-menu__nav" aria-label="Mobile">
       <ul class="mobile-menu__list">
+        <li class="mobile-menu__item">
+          <a href="../">home</a>
+        </li>
+        <li class="mobile-menu__item">
+          <a href="../work/">work</a>
+        </li>
         <li class="mobile-menu__item mobile-menu__item--active">
-          <a href="./" aria-current="page">home</a>
+          <a href="../film/">film</a>
         </li>
-        <li class="mobile-menu__item">
-          <a href="./work/">work</a>
-        </li>
-        <li class="mobile-menu__item">
-          <a href="./film/">film</a>
-        </li>
-
       </ul>
     </nav>
   </div>
 
   <main id="main-content">
-    <section class="hero">
-      <div class="hero__inner">
-        <div class="hero__content">
-          <h1 class="hero__headline">
-            I'm Mariano, a designer working to improve life for everyday people.
-          </h1>
-          <p class="hero__cta">
-            <a href="https://www.linkedin.com/in/marianojrodriguez/" target="_blank" rel="noopener noreferrer"
-              class="hero__link text--grainy" aria-label="Available to chat — opens in new tab"
-              title="Opens in new tab">Available to chat.</a>
-          </p>
-        </div>
-        <div class="hero__media">
-          <picture>
-            <source srcset="assets/images/picture.webp" type="image/webp">
-            <img src="assets/images/picture.png" alt="Portrait of Mariano Rodriguez" class="hero__image" width="800"
-              height="1204" loading="eager" decoding="async">
-          </picture>
-
-        </div>
+    <div class="film-header">
+      <div class="film-header__top">
+        <h1 class="film-title">film photos</h1>
       </div>
-    </section>
-
-    <section class="experience">
-      <div class="experience__inner">
-        <h2 class="experience__title">Experience</h2>
-        <div class="experience__list">
-          <div class="experience__row">
-            <div class="experience__role">
-              <span class="experience__title-primary">Principal User Experience Designer</span>
-              <span class="experience__company">Oracle</span>
-            </div>
-            <span class="experience__years">May 2021 – Present</span>
-          </div>
-          <div class="experience__row">
-            <div class="experience__role">
-              <span class="experience__title-primary">Senior UX/UI Designer</span>
-              <span class="experience__company">Zumba</span>
-            </div>
-            <span class="experience__years">Apr 2019 – May 2021</span>
-          </div>
-          <div class="experience__row">
-            <div class="experience__role">
-              <span class="experience__title-primary">UX Researcher and Designer</span>
-              <span class="experience__company">Key Lime Interactive</span>
-            </div>
-            <span class="experience__years">Dec 2016 – Apr 2019</span>
-          </div>
-          <div class="experience__row">
-            <div class="experience__role">
-              <span class="experience__title-primary">UI Designer</span>
-              <span class="experience__company">Freelance</span>
-            </div>
-            <span class="experience__years">Jun 2016 – Apr 2017</span>
-          </div>
-          <div class="experience__row">
-            <div class="experience__role">
-              <span class="experience__title-primary">Research Assistant</span>
-              <span class="experience__company">Florida International University</span>
-            </div>
-            <span class="experience__years">Sept 2013 – Jul 2016</span>
-          </div>
-        </div>
-      </div>
-    </section>
+      <hr class="film-separator">
+    </div>
+    <div class="film-grid" id="film-grid"></div>
   </main>
 
   <footer class="footer">
     <div class="footer__inner">
       <div class="footer__line" aria-hidden="true"></div>
-      <a href="./" class="footer__logo" aria-label="Mariano Rodriguez home"></a>
+      <a href="../" class="footer__logo" aria-label="Mariano Rodriguez home"></a>
     </div>
   </footer>
 
   <div class="cursor" aria-hidden="true"></div>
-  <script src="scripts.js"></script>
+  <script src="../lightbox.js"></script>
+  <script src="../scripts.js"></script>
+  <script src="../film.js"></script>
 </body>
 
 </html>

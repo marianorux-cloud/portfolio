@@ -54,5 +54,3 @@ User-agent: *
 Disallow: /assets/images/
 Disallow: /assets/icons/
 Allow: /
-
-Sitemap: https://marianodesigns.com/sitemap.xml
