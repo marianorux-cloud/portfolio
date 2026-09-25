@@ -57,8 +57,11 @@
     const isActive = cursor.classList.contains("cursor--active");
     const isHover = cursor.classList.contains("cursor--hover");
     const isText = cursor.classList.contains("cursor--text");
+    const isExpand = cursor.classList.contains("cursor--expand");
 
-    if (isHover) {
+    if (isExpand) {
+      targetScale = isActive ? 0.9 : 1;
+    } else if (isHover) {
       targetScale = isActive ? 0.5 : 0.6;
     } else if (isText) {
       targetScale = isActive ? 0.64 : 0.8;
@@ -75,18 +78,21 @@
 
     document.addEventListener("mouseover", (e) => {
       const t = e.target;
-      if (t.closest("a, button, .project-card__image-wrapper, .film-grid__cell")) {
+      if (t.closest(".project-modal__image")) {
+        cursor.classList.add("cursor--expand");
+        cursor.classList.remove("cursor--hover", "cursor--text");
+      } else if (t.closest("a, button, .project-card__image-wrapper, .film-grid__cell")) {
         cursor.classList.add("cursor--hover");
-        cursor.classList.remove("cursor--text");
+        cursor.classList.remove("cursor--text", "cursor--expand");
       } else if (
         t.closest(
           "p, h1, h2, h3, h4, h5, h6, li, figcaption, blockquote, label",
         )
       ) {
         cursor.classList.add("cursor--text");
-        cursor.classList.remove("cursor--hover");
+        cursor.classList.remove("cursor--hover", "cursor--expand");
       } else {
-        cursor.classList.remove("cursor--hover", "cursor--text");
+        cursor.classList.remove("cursor--hover", "cursor--text", "cursor--expand");
       }
       updateTargetScale();
     });
@@ -286,12 +292,13 @@
     pill.addEventListener("click", () => {
       filterPills.forEach((p) => p.classList.remove("filter-pill--active"));
       pill.classList.add("filter-pill--active");
-      const filterValue = pill.dataset.company;
-      const company = filterValue || "unknown";
+      const filterValue = pill.dataset.keyword;
       document.querySelectorAll(".project-card").forEach((card) => {
+        const keywordsStr = card.dataset.keywords || "";
+        const keywords = keywordsStr ? keywordsStr.split(/\s+/).filter(Boolean) : [];
         card.classList.toggle(
           "filter-hidden",
-          filterValue !== "all" && card.dataset.company !== filterValue,
+          filterValue !== "all" && !keywords.includes(filterValue),
         );
       });
       const statusEl = document.getElementById("filter-status");
@@ -319,24 +326,25 @@
   /* ---------- Lightbox ---------- */
   const projectsGrid = document.getElementById("projects-grid");
   if (projectsGrid) {
-    function openLightboxForElement(el) {
-      const card = el.closest(".project-card");
-      const slug = (card && card.dataset.slug) || "unknown";
-      const year = card ? card.dataset.year : null;
-      if (window.Analytics && typeof window.Analytics.track === "function") {
-        window.Analytics.track(`${slug}:open`, { slug, year });
-      }
-      const itemVideo = el.dataset.video || null;
-      const items = [{
-        src: el.dataset.full || el.src,
-        alt: el.alt,
-        video: itemVideo
-      }];
-      if (itemVideo && window.Analytics && typeof window.Analytics.track === "function") {
-        window.Analytics.track(`${slug}:video-started`, { slug, year });
-      }
-      window.Lightbox.open({ items, startIndex: 0, showNav: false }, { prefix: "project-card", identity: slug });
+function openLightboxForElement(el) {
+    const card = el.closest(".project-card");
+    if (card && card.dataset.details) return;
+    const slug = (card && card.dataset.slug) || "unknown";
+    const year = card ? card.dataset.year : null;
+    if (window.Analytics && typeof window.Analytics.track === "function") {
+      window.Analytics.track(`${slug}:open`, { slug, year });
     }
+    const itemVideo = el.dataset.video || null;
+    const items = [{
+      src: el.dataset.full || el.src,
+      alt: el.alt,
+      video: itemVideo
+    }];
+    if (itemVideo && window.Analytics && typeof window.Analytics.track === "function") {
+      window.Analytics.track(`${slug}:video-started`, { slug, year });
+    }
+    window.Lightbox.open({ items, startIndex: 0, showNav: false }, { prefix: "project-card", identity: slug });
+  }
 
     projectsGrid.addEventListener("click", (e) => {
       const img = e.target.closest(".project-card__image");
@@ -348,6 +356,8 @@
       if (e.key !== "Enter" && e.key !== " ") return;
       const img = e.target.closest(".project-card__image");
       if (!img) return;
+      const card = img.closest(".project-card");
+      if (card && card.dataset.details) return;
       e.preventDefault();
       openLightboxForElement(img);
     });
