@@ -41,11 +41,12 @@
 
   document.body.appendChild(lightbox);
 
-  /* ── Internal state ── */
+   /* ── Internal state ── */
   let items = [];
   let currentIndex = 0;
   let showNav = true;
   let lastFocusedElement = null;
+  let analyticsContext = null;
 
   const FOCUSABLE_SELECTOR =
     'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
@@ -79,10 +80,11 @@
   }
 
   /* ── API ── */
-  function open(config) {
+  function open(config, context) {
     items = config.items || [];
     showNav = config.showNav !== undefined ? config.showNav : true;
     currentIndex = Math.max(0, Math.min(config.startIndex || 0, items.length - 1));
+    analyticsContext = context || null;
 
     lastFocusedElement = document.activeElement;
 
@@ -107,8 +109,14 @@
       videoEl.src = "";
       videoEl.style.display = "none";
     }
-    if (window.Analytics) {
-      window.Analytics.track("project-card:lightbox_close");
+    if (window.Analytics && typeof window.Analytics.track === "function") {
+      if (analyticsContext) {
+        const { prefix, identity } = analyticsContext;
+        const safeIdentity = identity || "unknown";
+        window.Analytics.track(`${prefix}:lightbox_close:${safeIdentity}`, { identity: safeIdentity });
+      } else {
+        window.Analytics.track("project-card:lightbox_close");
+      }
     }
   }
 

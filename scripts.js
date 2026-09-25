@@ -203,17 +203,28 @@
     });
   }
 
-  /* ---------- Navigation tracking ---------- */
+   /* ---------- Navigation tracking ---------- */
   const navbarList = document.querySelector(".navbar__list");
+  let currentPage = "home";
+
+  function getPageFromPath() {
+    const path = window.location.pathname;
+    if (path === "/" || path === "") return "home";
+    const match = path.match(/\/(\w+)\/?$/);
+    return match ? match[1] : "home";
+  }
+
   if (navbarList) {
+    currentPage = getPageFromPath();
     navbarList.addEventListener("click", (e) => {
       const link = e.target.closest("a");
       if (!link) return;
       const href = link.getAttribute("href");
-      const page = href.startsWith("./") ? href.slice(2).replace(/\/$/, "") || "home" : "home";
-      if (window.Analytics) {
-        window.Analytics.track("navigation:click", { page });
+      const dest = href.startsWith("./") ? href.slice(2).replace(/\/$/, "") || "home" : "home";
+      if (window.Analytics && typeof window.Analytics.track === "function") {
+        window.Analytics.track(`navigation:to_${dest}`, { from: currentPage });
       }
+      currentPage = dest;
     });
   }
 
@@ -272,6 +283,7 @@
       filterPills.forEach((p) => p.classList.remove("filter-pill--active"));
       pill.classList.add("filter-pill--active");
       const filterValue = pill.dataset.company;
+      const company = filterValue || "unknown";
       document.querySelectorAll(".project-card").forEach((card) => {
         card.classList.toggle(
           "filter-hidden",
@@ -282,8 +294,8 @@
       if (statusEl) {
         statusEl.textContent = filterValue === "all" ? "Showing all projects" : `Showing ${filterValue} projects`;
       }
-      if (window.Analytics) {
-        window.Analytics.track("filter-pill:change", { filter: filterValue });
+      if (window.Analytics && typeof window.Analytics.track === "function") {
+        window.Analytics.track(`filter:change:${company}`, { filter: filterValue });
       }
     });
   });
@@ -305,17 +317,17 @@
   if (projectsGrid) {
     function openLightboxForElement(el) {
       const card = el.closest(".project-card");
-      const company = card ? card.dataset.company : null;
+      const company = (card && card.dataset.company) || "unknown";
       const year = card ? card.dataset.year : null;
-      if (window.Analytics) {
-        window.Analytics.track("project-card:lightbox_open", { company, year });
+      if (window.Analytics && typeof window.Analytics.track === "function") {
+        window.Analytics.track(`project-card:lightbox_open:${company}`, { company, year });
       }
       const items = [{
         src: el.dataset.full || el.src,
         alt: el.alt,
         video: el.dataset.video || null
       }];
-      window.Lightbox.open({ items, startIndex: 0, showNav: false });
+      window.Lightbox.open({ items, startIndex: 0, showNav: false }, { prefix: "project-card", identity: company });
     }
 
     projectsGrid.addEventListener("click", (e) => {
