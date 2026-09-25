@@ -48,19 +48,14 @@
         targetImg.dataset.loaded = "true";
         const fullSrc = cell.dataset.src;
         const fullImg = new Image();
-        fullImg.onload = () => {
-          targetImg.src = fullSrc;
-          targetImg.classList.remove("film-grid__image--placeholder");
-          targetImg.classList.add("film-grid__image--loaded");
-          if (fullImg.naturalWidth < fullImg.naturalHeight) {
-            targetImg.classList.add("film-grid__image--portrait");
-          }
-           const index = parseInt(cell.dataset.index, 10);
-           const slug = deriveSlug(fullSrc);
-           if (window.Analytics) {
-             window.Analytics.track("film-grid:photo_in_view", { slug, index, isInitialLoad: !hasScrolled });
-           }
-        };
+fullImg.onload = () => {
+            targetImg.src = fullSrc;
+            targetImg.classList.remove("film-grid__image--placeholder");
+            targetImg.classList.add("film-grid__image--loaded");
+            if (fullImg.naturalWidth < fullImg.naturalHeight) {
+              targetImg.classList.add("film-grid__image--portrait");
+            }
+         };
         fullImg.src = fullSrc;
         observer.unobserve(cell);
       });
@@ -93,9 +88,9 @@
       const photo = photos[index];
       const slug = photo ? deriveSlug(photo.src) : "unknown";
       if (window.Analytics) {
-        window.Analytics.track("film-grid:photo_open", { slug, index, alt: photo.alt });
+        window.Analytics.track(`${slug}:open`, { slug, index, alt: photo.alt });
       }
-      window.Lightbox.open({ items: photos, startIndex: index, showNav: true }, { prefix: "film-grid", identity: slug, suffixIdentity: false });
+      window.Lightbox.open({ items: photos, startIndex: index, showNav: true }, { prefix: "film-grid", identity: slug, suffixIdentity: true });
     });
 
     grid.addEventListener("keydown", (e) => {
@@ -107,9 +102,9 @@
       const photo = photos[index];
       const slug = photo ? deriveSlug(photo.src) : "unknown";
       if (window.Analytics) {
-        window.Analytics.track("film-grid:photo_open", { slug, index, alt: photo.alt });
+        window.Analytics.track(`${slug}:open`, { slug, index, alt: photo.alt });
       }
-      window.Lightbox.open({ items: photos, startIndex: index, showNav: true }, { prefix: "film-grid", identity: slug, suffixIdentity: false });
+      window.Lightbox.open({ items: photos, startIndex: index, showNav: true }, { prefix: "film-grid", identity: slug, suffixIdentity: true });
     });
 
   }

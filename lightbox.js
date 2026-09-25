@@ -80,6 +80,12 @@
       }
       imgEl.src = item.lightboxSrc || item.src;
       imgEl.alt = item.alt || "";
+      imgEl.onload = () => {
+        if (window.Analytics && typeof window.Analytics.track === 'function') {
+          const slug = deriveSlug(imgEl.src || '');
+          window.Analytics.track(`${slug}:view`, { slug });
+        }
+      };
     }
 
     counterEl.textContent = (currentIndex + 1) + " / " + items.length + " — " + (imgEl.alt || "");
@@ -123,12 +129,12 @@
         const { prefix, identity, suffixIdentity } = ctx;
         const safeIdentity = identity || "unknown";
         if (suffixIdentity !== false) {
-          window.Analytics.track(`${prefix}:lightbox_close:${safeIdentity}`, { slug: safeIdentity });
+          window.Analytics.track(`${safeIdentity}:close`, { slug: safeIdentity });
         } else {
-          window.Analytics.track(`${prefix}:lightbox_close`, { slug: safeIdentity });
+          window.Analytics.track("lightbox:close", { slug: safeIdentity });
         }
       } else {
-        window.Analytics.track("project-card:lightbox_close");
+        window.Analytics.track("lightbox:close");
       }
     }
   }
@@ -139,7 +145,9 @@
     renderCurrentItem();
     if (window.Analytics && typeof window.Analytics.track === "function" && analyticsContext) {
       const slug = deriveSlug(items[currentIndex].src || items[currentIndex].lightboxSrc || "");
-      window.Analytics.track(`${analyticsContext.prefix}:nav:${slug}`, { direction });
+      const directionLabel = direction === 1 ? 'next' : 'previous';
+      const suffix = analyticsContext.prefix === "film-grid" ? '-photo' : '-project';
+      window.Analytics.track(`${directionLabel}${suffix}`, { direction });
     }
   }
 

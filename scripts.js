@@ -27,7 +27,7 @@
         const nextIndex = (currentIndex + 1) % THEME_ORDER.length;
         setTheme(THEME_ORDER[nextIndex]);
         if (window.Analytics) {
-          window.Analytics.track("theme-toggle:change", { theme: THEME_ORDER[nextIndex] });
+          window.Analytics.track(`theme-toggle:${THEME_ORDER[nextIndex]}`, { theme: THEME_ORDER[nextIndex] });
         }
       });
     }
@@ -141,7 +141,7 @@
       document.body.style.overflow = "hidden";
       mobileMenuClose.focus();
       if (window.Analytics) {
-        window.Analytics.track("mobile-menu:toggle", { open: true });
+        window.Analytics.track("mobile-nav:open", { open: true });
       }
     }
 
@@ -151,7 +151,7 @@
       document.body.style.overflow = "";
       mobileMenuToggle.focus();
       if (window.Analytics) {
-        window.Analytics.track("mobile-menu:toggle", { open: false });
+        window.Analytics.track("mobile-nav:close", { open: false });
       }
     }
 
@@ -226,7 +226,7 @@
       const dest = href.startsWith("./") ? href.slice(2).replace(/\/$/, "") || "home" : "home";
       if (dest === currentPage) return;
       if (window.Analytics && typeof window.Analytics.track === "function") {
-        window.Analytics.track(`navigation:to_${dest}`, { from: currentPage });
+        window.Analytics.track(`nav:${currentPage}-${dest}`, { from: currentPage });
       }
       currentPage = dest;
     });
@@ -237,7 +237,7 @@
   if (backBtn) {
     backBtn.addEventListener("click", () => {
       if (window.Analytics) {
-        window.Analytics.track("navigation:back_home");
+        window.Analytics.track("nav:back-home");
       }
     });
   }
@@ -247,7 +247,7 @@
   if (skipLink) {
     skipLink.addEventListener("click", () => {
       if (window.Analytics) {
-        window.Analytics.track("skip-link:click");
+        window.Analytics.track("nav:skip-link");
       }
     });
   }
@@ -257,7 +257,7 @@
   if (linkedinLink) {
     linkedinLink.addEventListener("click", () => {
       if (window.Analytics) {
-        window.Analytics.track("linkedin:click");
+        window.Analytics.track("hero:linkedin");
       }
     });
   }
@@ -272,7 +272,7 @@
       if (percent >= threshold && !firedThresholds.has(threshold)) {
         firedThresholds.add(threshold);
         if (window.Analytics) {
-          window.Analytics.track("scroll:depth", { percent: threshold });
+          window.Analytics.track(`scroll-past-${threshold}`, { percent: threshold });
         }
       }
     });
@@ -299,7 +299,7 @@
         statusEl.textContent = filterValue === "all" ? "Showing all projects" : `Showing ${filterValue} projects`;
       }
       if (window.Analytics && typeof window.Analytics.track === "function") {
-        window.Analytics.track(`filter:change:${company}`, { filter: filterValue });
+        window.Analytics.track(`filter:${filterValue}`, { filter: filterValue });
       }
     });
   });
@@ -321,10 +321,10 @@
   if (projectsGrid) {
     function openLightboxForElement(el) {
       const card = el.closest(".project-card");
-      const company = (card && card.dataset.company) || "unknown";
+      const slug = (card && card.dataset.slug) || "unknown";
       const year = card ? card.dataset.year : null;
       if (window.Analytics && typeof window.Analytics.track === "function") {
-        window.Analytics.track(`project-card:lightbox_open:${company}`, { company, year });
+        window.Analytics.track(`${slug}:open`, { slug, year });
       }
       const itemVideo = el.dataset.video || null;
       const items = [{
@@ -333,9 +333,9 @@
         video: itemVideo
       }];
       if (itemVideo && window.Analytics && typeof window.Analytics.track === "function") {
-        window.Analytics.track(`lightbox:video_shown:${company}`, { company, year });
+        window.Analytics.track(`${slug}:video-started`, { slug, year });
       }
-      window.Lightbox.open({ items, startIndex: 0, showNav: false }, { prefix: "project-card", identity: company });
+      window.Lightbox.open({ items, startIndex: 0, showNav: false }, { prefix: "project-card", identity: slug });
     }
 
     projectsGrid.addEventListener("click", (e) => {
