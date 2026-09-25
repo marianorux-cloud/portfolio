@@ -141,7 +141,7 @@
       const slug = deriveSlug(items[currentIndex].src || items[currentIndex].lightboxSrc || "");
       const directionLabel = direction === 1 ? 'next' : 'previous';
       const suffix = analyticsContext.prefix === "film-grid" ? '-photo' : '-project';
-      window.Analytics.track(`${directionLabel}${suffix}`, { direction });
+      window.Analytics.track(`${directionLabel}${suffix}`, { direction, slug });
     }
   }
 

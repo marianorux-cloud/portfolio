@@ -7,6 +7,7 @@
   var lastFocused = null;
   var pushedState = false;
   var closingViaHistory = false;
+  var modalScrollFired = new Set();
 
   var FOCUSABLE_SELECTOR =
     'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
@@ -121,6 +122,7 @@
     var config = configs[projectId];
     if (!config) return;
     currentProjectId = projectId;
+    modalScrollFired = new Set();
 
     var content = modal.querySelector("#project-modal__content");
     content.innerHTML = renderContent(config);
@@ -150,6 +152,9 @@
 
   function teardown() {
     if (!modal) return;
+    if (currentProjectId && window.Analytics && typeof window.Analytics.track === "function") {
+      window.Analytics.track(currentProjectId + ":close", { slug: currentProjectId });
+    }
     modal.classList.remove("project-modal--open");
     document.body.classList.remove("modal-open");
     if (lastFocused && lastFocused.focus) {
@@ -227,6 +232,22 @@
       closingViaHistory = false;
     });
 
+    // Modal scroll depth tracking
+    modal.addEventListener("scroll", function () {
+      if (!currentProjectId) return;
+      var scrollableHeight = modal.scrollHeight - modal.clientHeight;
+      if (scrollableHeight <= 0) return;
+      var percent = Math.round((modal.scrollTop / scrollableHeight) * 100);
+      [25, 50, 75, 100].forEach(function (threshold) {
+        if (percent >= threshold && !modalScrollFired.has(threshold)) {
+          modalScrollFired.add(threshold);
+          if (window.Analytics && typeof window.Analytics.track === "function") {
+            window.Analytics.track(currentProjectId + ":scroll-depth", { slug: currentProjectId, percent: threshold });
+          }
+        }
+      });
+    });
+
     // Delegated click on details button
     document.addEventListener("click", function (e) {
       var btn = e.target.closest(".project-card__details");
@@ -265,6 +286,9 @@
       if (images.length === 0) return;
       var startIndex = parseInt(img.dataset.imageIndex, 10);
       if (isNaN(startIndex)) startIndex = 0;
+      if (window.Analytics && typeof window.Analytics.track === "function" && currentProjectId) {
+        window.Analytics.track(currentProjectId + ":image-view", { slug: currentProjectId, imageIndex: startIndex, imageAlt: img.alt || "" });
+      }
       if (window.Lightbox && typeof window.Lightbox.open === "function") {
         window.Lightbox.open({
           items: images,
