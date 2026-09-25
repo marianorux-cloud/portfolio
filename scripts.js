@@ -209,7 +209,8 @@
     navbarList.addEventListener("click", (e) => {
       const link = e.target.closest("a");
       if (!link) return;
-      const page = link.getAttribute("href") === "./" ? "home" : link.getAttribute("href").replace(/\.\.\//, "").replace(/\//, "");
+      const href = link.getAttribute("href");
+      const page = href.startsWith("./") ? href.slice(2).replace(/\/$/, "") || "home" : "home";
       if (window.Analytics) {
         window.Analytics.track("navigation:click", { page });
       }
