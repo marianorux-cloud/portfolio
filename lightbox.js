@@ -41,7 +41,13 @@
 
   document.body.appendChild(lightbox);
 
-   /* ── Internal state ── */
+   /* ── Helpers ── */
+  function deriveSlug(src) {
+    const basename = src.split("/").pop();
+    return basename.replace(/\.\w+$/, "").toLowerCase().replace(/_/g, "-");
+  }
+
+  /* ── Internal state ── */
   let items = [];
   let currentIndex = 0;
   let showNav = true;
@@ -100,6 +106,9 @@
   }
 
   function close() {
+    const ctx = analyticsContext;
+    analyticsContext = null;
+
     lightbox.classList.remove("lightbox--open");
     document.body.style.overflow = "";
     if (lastFocusedElement && lastFocusedElement.focus) {
@@ -110,17 +119,31 @@
       videoEl.style.display = "none";
     }
     if (window.Analytics && typeof window.Analytics.track === "function") {
-      if (analyticsContext) {
-        const { prefix, identity } = analyticsContext;
+      if (ctx) {
+        const { prefix, identity, suffixIdentity } = ctx;
         const safeIdentity = identity || "unknown";
-        window.Analytics.track(`${prefix}:lightbox_close:${safeIdentity}`, { identity: safeIdentity });
+        if (suffixIdentity !== false) {
+          window.Analytics.track(`${prefix}:lightbox_close:${safeIdentity}`, { slug: safeIdentity });
+        } else {
+          window.Analytics.track(`${prefix}:lightbox_close`, { slug: safeIdentity });
+        }
       } else {
         window.Analytics.track("project-card:lightbox_close");
       }
     }
   }
 
-  window.Lightbox = { open, close };
+  function navigate(direction) {
+    if (items.length === 0) return;
+    currentIndex = (currentIndex + direction + items.length) % items.length;
+    renderCurrentItem();
+    if (window.Analytics && typeof window.Analytics.track === "function" && analyticsContext) {
+      const slug = deriveSlug(items[currentIndex].src || items[currentIndex].lightboxSrc || "");
+      window.Analytics.track(`${analyticsContext.prefix}:nav:${slug}`, { direction });
+    }
+  }
+
+  window.Lightbox = { open, close, navigate };
 
   /* ── Event listeners ── */
   closeEl.addEventListener("click", close);
@@ -129,17 +152,9 @@
     if (e.target === lightbox) close();
   });
 
-  prevEl.addEventListener("click", function () {
-    if (items.length === 0) return;
-    currentIndex = (currentIndex - 1 + items.length) % items.length;
-    renderCurrentItem();
-  });
+  prevEl.addEventListener("click", function () { navigate(-1); });
 
-  nextEl.addEventListener("click", function () {
-    if (items.length === 0) return;
-    currentIndex = (currentIndex + 1) % items.length;
-    renderCurrentItem();
-  });
+  nextEl.addEventListener("click", function () { navigate(1); });
 
   lightbox.addEventListener("keydown", function (e) {
     if (e.key !== "Tab" || !lightbox.classList.contains("lightbox--open"))

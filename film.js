@@ -9,6 +9,11 @@
     );
   }
 
+  function deriveSlug(src) {
+    const basename = src.split("/").pop();
+    return basename.replace(/\.\w+$/, "").toLowerCase().replace(/_/g, "-");
+  }
+
   const photos = [
   { src: "../assets/images/film/webp/IMG_0001.webp", alt: "hand holding coffee", lightboxSrc: "../assets/images/film/IMG_0001.jpg" },
   { src: "../assets/images/film/webp/IMG_0002.webp", alt: "music express carnival ride", lightboxSrc: "../assets/images/film/IMG_0002.jpg" },
@@ -25,7 +30,10 @@
   { src: "../assets/images/film/webp/IMG_0014.webp", alt: "no witchcraft sign on a tree", lightboxSrc: "../assets/images/film/IMG_0014.jpg" },
   { src: "../assets/images/film/webp/IMG_0015.webp", alt: "witchcraft behind tree", lightboxSrc: "../assets/images/film/IMG_0015.jpg" },
   { src: "../assets/images/film/webp/IMG_0016.webp", alt: "all day coffee shop 2", lightboxSrc: "../assets/images/film/IMG_0016.jpg" },
-];
+  ];
+
+  let hasScrolled = false;
+  document.addEventListener("scroll", () => { hasScrolled = true; }, { passive: true });
 
   function init() {
     const grid = document.getElementById("film-grid");
@@ -47,10 +55,11 @@
           if (fullImg.naturalWidth < fullImg.naturalHeight) {
             targetImg.classList.add("film-grid__image--portrait");
           }
-          const index = parseInt(cell.dataset.index, 10);
-          if (window.Analytics) {
-            window.Analytics.track("film-grid:photo_reveal", { index });
-          }
+           const index = parseInt(cell.dataset.index, 10);
+           const slug = deriveSlug(fullSrc);
+           if (window.Analytics) {
+             window.Analytics.track("film-grid:photo_in_view", { slug, index, isInitialLoad: !hasScrolled });
+           }
         };
         fullImg.src = fullSrc;
         observer.unobserve(cell);
@@ -81,10 +90,12 @@
       const cell = e.target.closest(".film-grid__cell");
       if (!cell) return;
       const index = parseInt(cell.dataset.index, 10);
+      const photo = photos[index];
+      const slug = photo ? deriveSlug(photo.src) : "unknown";
       if (window.Analytics) {
-        window.Analytics.track("film-grid:photo_open", { index });
+        window.Analytics.track("film-grid:photo_open", { slug, index, alt: photo.alt });
       }
-      window.Lightbox.open({ items: photos, startIndex: index, showNav: true });
+      window.Lightbox.open({ items: photos, startIndex: index, showNav: true }, { prefix: "film-grid", identity: slug, suffixIdentity: false });
     });
 
     grid.addEventListener("keydown", (e) => {
@@ -93,10 +104,12 @@
       if (!cell) return;
       e.preventDefault();
       const index = parseInt(cell.dataset.index, 10);
+      const photo = photos[index];
+      const slug = photo ? deriveSlug(photo.src) : "unknown";
       if (window.Analytics) {
-        window.Analytics.track("film-grid:photo_open", { index });
+        window.Analytics.track("film-grid:photo_open", { slug, index, alt: photo.alt });
       }
-      window.Lightbox.open({ items: photos, startIndex: index, showNav: true });
+      window.Lightbox.open({ items: photos, startIndex: index, showNav: true }, { prefix: "film-grid", identity: slug, suffixIdentity: false });
     });
 
   }

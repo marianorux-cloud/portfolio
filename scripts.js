@@ -211,7 +211,10 @@
     const path = window.location.pathname;
     if (path === "/" || path === "") return "home";
     const match = path.match(/\/(\w+)\/?$/);
-    return match ? match[1] : "home";
+    if (!match) return "unknown";
+    const page = match[1];
+    if (["home", "work", "film"].includes(page)) return page;
+    return "unknown";
   }
 
   if (navbarList) {
@@ -221,6 +224,7 @@
       if (!link) return;
       const href = link.getAttribute("href");
       const dest = href.startsWith("./") ? href.slice(2).replace(/\/$/, "") || "home" : "home";
+      if (dest === currentPage) return;
       if (window.Analytics && typeof window.Analytics.track === "function") {
         window.Analytics.track(`navigation:to_${dest}`, { from: currentPage });
       }
@@ -322,11 +326,15 @@
       if (window.Analytics && typeof window.Analytics.track === "function") {
         window.Analytics.track(`project-card:lightbox_open:${company}`, { company, year });
       }
+      const itemVideo = el.dataset.video || null;
       const items = [{
         src: el.dataset.full || el.src,
         alt: el.alt,
-        video: el.dataset.video || null
+        video: itemVideo
       }];
+      if (itemVideo && window.Analytics && typeof window.Analytics.track === "function") {
+        window.Analytics.track(`lightbox:video_shown:${company}`, { company, year });
+      }
       window.Lightbox.open({ items, startIndex: 0, showNav: false }, { prefix: "project-card", identity: company });
     }
 
