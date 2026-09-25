@@ -340,9 +340,6 @@ function openLightboxForElement(el) {
       alt: el.alt,
       video: itemVideo
     }];
-    if (itemVideo && window.Analytics && typeof window.Analytics.track === "function") {
-      window.Analytics.track(`${slug}:video-started`, { slug, year });
-    }
     window.Lightbox.open({ items, startIndex: 0, showNav: false }, { prefix: "project-card", identity: slug });
   }
 
