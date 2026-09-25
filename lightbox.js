@@ -80,12 +80,6 @@
       }
       imgEl.src = item.lightboxSrc || item.src;
       imgEl.alt = item.alt || "";
-      imgEl.onload = () => {
-        if (window.Analytics && typeof window.Analytics.track === 'function') {
-          const slug = deriveSlug(imgEl.src || '');
-          window.Analytics.track(`${slug}:view`, { slug });
-        }
-      };
     }
 
     counterEl.textContent = (currentIndex + 1) + " / " + items.length + " — " + (imgEl.alt || "");
