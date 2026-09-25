@@ -102,7 +102,7 @@
 
     lightbox.classList.add("lightbox--open");
     document.body.style.overflow = "hidden";
-    closeEl.focus();
+    
   }
 
   function close() {
