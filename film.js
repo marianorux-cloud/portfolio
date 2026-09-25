@@ -47,6 +47,10 @@
           if (fullImg.naturalWidth < fullImg.naturalHeight) {
             targetImg.classList.add("film-grid__image--portrait");
           }
+          const index = parseInt(cell.dataset.index, 10);
+          if (window.Analytics) {
+            window.Analytics.track("film-grid:photo_reveal", { index });
+          }
         };
         fullImg.src = fullSrc;
         observer.unobserve(cell);
@@ -77,6 +81,9 @@
       const cell = e.target.closest(".film-grid__cell");
       if (!cell) return;
       const index = parseInt(cell.dataset.index, 10);
+      if (window.Analytics) {
+        window.Analytics.track("film-grid:photo_open", { index });
+      }
       window.Lightbox.open({ items: photos, startIndex: index, showNav: true });
     });
 
@@ -86,6 +93,9 @@
       if (!cell) return;
       e.preventDefault();
       const index = parseInt(cell.dataset.index, 10);
+      if (window.Analytics) {
+        window.Analytics.track("film-grid:photo_open", { index });
+      }
       window.Lightbox.open({ items: photos, startIndex: index, showNav: true });
     });
 

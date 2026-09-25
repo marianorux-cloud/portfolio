@@ -34,6 +34,9 @@
    --color-icon: #282828;
    --color-secondary: rgba(128, 128, 128, 0.25);
     --color-cursor-border: rgba(0, 0, 0, 0.35);
+    --color-cursor-fill: rgba(40, 40, 40, 0.11);
+    --color-cursor-fill-hover: rgba(40, 40, 40, 0.17);
+    --color-cursor-fill-active: rgba(40, 40, 40, 0.23);
    --cursor-scale: 1;
 
     /* Fonts */
@@ -69,6 +72,8 @@
 
     /* Transitions */
     --transition-fast: 150ms ease;
+    --cursor-duration: 280ms;
+    --cursor-ease: cubic-bezier(0.22, 1, 0.36, 1);
 
     --bg-grain: url("data:image/svg+xml,%3Csvg viewBox='0 0 600 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 
@@ -83,6 +88,9 @@
   --color-icon: #e5e5e5;
   --color-secondary: rgba(255, 255, 255, 0.2);
   --color-cursor-border: rgba(255, 255, 255, 0.4);
+  --color-cursor-fill: rgba(229, 229, 229, 0.12);
+  --color-cursor-fill-hover: rgba(229, 229, 229, 0.18);
+  --color-cursor-fill-active: rgba(229, 229, 229, 0.24);
   --cursor-scale: 1;
 }
 
@@ -93,6 +101,9 @@
   --color-icon: #3a3632;
   --color-secondary: rgba(128, 128, 128, 0.25);
   --color-cursor-border: rgba(0, 0, 0, 0.35);
+  --color-cursor-fill: rgba(58, 54, 50, 0.11);
+  --color-cursor-fill-hover: rgba(58, 54, 50, 0.17);
+  --color-cursor-fill-active: rgba(58, 54, 50, 0.23);
   --cursor-scale: 1;
 }
 
@@ -102,6 +113,9 @@
     --color-text: #e5e5e5;
     --color-icon: #e5e5e5;
     --color-cursor-border: rgba(255, 255, 255, 0.4);
+    --color-cursor-fill: rgba(229, 229, 229, 0.12);
+    --color-cursor-fill-hover: rgba(229, 229, 229, 0.18);
+    --color-cursor-fill-active: rgba(229, 229, 229, 0.24);
   }
 }
 
@@ -943,23 +957,32 @@ a {
   border-radius: 50%;
   pointer-events: none;
   z-index: 9999;
-  background: rgba(217, 217, 217, 0.2);
-  backdrop-filter: blur(12px) saturate(1.2);
-  -webkit-backdrop-filter: blur(12px) saturate(1.2);
+  background: var(--color-cursor-fill);
   border: 1px solid var(--color-cursor-border);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   --translate-x: 0px;
   --translate-y: 0px;
   --cursor-scale: 1;
   transform: translate(var(--translate-x), var(--translate-y)) translate(-50%, -50%) scale(var(--cursor-scale));
-  transition: width 0.2s ease, height 0.2s ease, background 0.3s ease, border-color 0.3s ease;
+  /* transform is deliberately excluded: the 0.3 damping loop in scripts.js already
+     smooths position, and transitioning it on top caused visible lag. */
+  transition:
+    width var(--cursor-duration) var(--cursor-ease),
+    height var(--cursor-duration) var(--cursor-ease),
+    background var(--cursor-duration) var(--cursor-ease),
+    border-color var(--cursor-duration) var(--cursor-ease);
   will-change: transform;
 }
 
+/* color-mix path: derive the cursor fill from --color-text so retuning the theme
+   text colour retunes the cursor too. */
 @supports (background: color-mix(in srgb, red, transparent)) {
+  :root {
+    --color-cursor-fill: color-mix(in srgb, var(--color-text) 11%, transparent);
+    --color-cursor-fill-hover: color-mix(in srgb, var(--color-text) 17%, transparent);
+    --color-cursor-fill-active: color-mix(in srgb, var(--color-text) 23%, transparent);
+  }
   .cursor {
     border: 1px solid color-mix(in srgb, var(--color-text), transparent 60%);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   }
   .cursor--hover {
     border-color: color-mix(in srgb, var(--color-text), transparent 60%);
@@ -973,15 +996,14 @@ a {
 .cursor--hover {
   width: 24px;
   height: 24px;
-  background: rgba(217, 217, 217, 0.2);
+  background: var(--color-cursor-fill-hover);
   border-color: var(--color-cursor-border);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 /* Active state - scale down */
 .cursor--active {
   --cursor-scale: 0.8;
-  background: rgba(255, 255, 255, 0.3);
+  background: var(--color-cursor-fill-active);
   border-color: var(--color-cursor-border);
 }
 
@@ -1508,12 +1530,21 @@ body.custom-cursor-active label {
 
 /* ── View Transitions ── */
 
+/* Opt in to cross-document view transitions. Without this rule nothing ever
+   starts a transition, so the ::view-transition-* rules below are inert.
+   Spec: css-view-transitions-2 §8.3.1. `types` is deliberately left at its
+   initial `none` — an empty type set does not skip the transition (§12.3), it
+   only means :active-view-transition-type() never matches. */
+@view-transition {
+  navigation: auto;
+}
+
 ::view-transition-old(root) {
-  animation: vt-fade-out 150ms ease;
+  animation: vt-fade-out 500ms cubic-bezier(0.4, 0, 0.2, 1) both;
 }
 
 ::view-transition-new(root) {
-  animation: vt-fade-in 150ms ease;
+  animation: vt-fade-in 500ms cubic-bezier(0.4, 0, 0.2, 1) both;
 }
 
 @keyframes vt-fade-out {
@@ -1526,8 +1557,16 @@ body.custom-cursor-active label {
   to { opacity: 1; }
 }
 
-:root:not(.vt-active) main {
-  animation: vt-fade-in 150ms ease both;
+/* Load-in fade, for documents where no snapshot will exist. The feature query
+   uses view-transition-name, which is the Baseline feature test for the API.
+   It must NOT use view-transition-type: that is a Level 2 property no shipping
+   engine implements, so `@supports not (view-transition-type: ...)` evaluates
+   true in Chrome and would re-enable this alongside the snapshot, which is
+   exactly the double animation this gate exists to prevent. */
+@supports not (view-transition-name: none) {
+  :root:not(.vt-active) main {
+    animation: vt-fade-in 150ms ease both;
+  }
 }
 
 @supports not (background: color-mix(in srgb, red, transparent)) {
@@ -1539,17 +1578,5 @@ body.custom-cursor-active label {
   .navbar__back:hover {
     opacity: 1;
     background: transparent;
-  }
-}
-
-@supports not (background: color-mix(in srgb, red, transparent)) {
-  .cursor {
-    background: rgba(217, 217, 217, 0.2);
-  }
-  .cursor--hover {
-    background: rgba(217, 217, 217, 0.2);
-  }
-  .cursor--active {
-    background: rgba(255, 255, 255, 0.3);
   }
 }

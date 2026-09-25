@@ -107,6 +107,9 @@
       videoEl.src = "";
       videoEl.style.display = "none";
     }
+    if (window.Analytics) {
+      window.Analytics.track("project-card:lightbox_close");
+    }
   }
 
   window.Lightbox = { open, close };

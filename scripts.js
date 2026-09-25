@@ -26,6 +26,9 @@
         const currentIndex = THEME_ORDER.indexOf(current);
         const nextIndex = (currentIndex + 1) % THEME_ORDER.length;
         setTheme(THEME_ORDER[nextIndex]);
+        if (window.Analytics) {
+          window.Analytics.track("theme-toggle:change", { theme: THEME_ORDER[nextIndex] });
+        }
       });
     }
   }
@@ -137,6 +140,9 @@
       mobileMenuToggle.setAttribute("aria-expanded", "true");
       document.body.style.overflow = "hidden";
       mobileMenuClose.focus();
+      if (window.Analytics) {
+        window.Analytics.track("mobile-menu:toggle", { open: true });
+      }
     }
 
     function closeMenu() {
@@ -144,6 +150,9 @@
       mobileMenuToggle.setAttribute("aria-expanded", "false");
       document.body.style.overflow = "";
       mobileMenuToggle.focus();
+      if (window.Analytics) {
+        window.Analytics.track("mobile-menu:toggle", { open: false });
+      }
     }
 
     mobileMenu.addEventListener("transitionend", (e) => {
@@ -194,6 +203,66 @@
     });
   }
 
+  /* ---------- Navigation tracking ---------- */
+  const navbarList = document.querySelector(".navbar__list");
+  if (navbarList) {
+    navbarList.addEventListener("click", (e) => {
+      const link = e.target.closest("a");
+      if (!link) return;
+      const page = link.getAttribute("href") === "./" ? "home" : link.getAttribute("href").replace(/\.\.\//, "").replace(/\//, "");
+      if (window.Analytics) {
+        window.Analytics.track("navigation:click", { page });
+      }
+    });
+  }
+
+  /* ---------- Back home tracking ---------- */
+  const backBtn = document.querySelector(".navbar__back");
+  if (backBtn) {
+    backBtn.addEventListener("click", () => {
+      if (window.Analytics) {
+        window.Analytics.track("navigation:back_home");
+      }
+    });
+  }
+
+  /* ---------- Skip link tracking ---------- */
+  const skipLink = document.querySelector(".skip-link");
+  if (skipLink) {
+    skipLink.addEventListener("click", () => {
+      if (window.Analytics) {
+        window.Analytics.track("skip-link:click");
+      }
+    });
+  }
+
+  /* ---------- LinkedIn click tracking ---------- */
+  const linkedinLink = document.querySelector(".hero__link");
+  if (linkedinLink) {
+    linkedinLink.addEventListener("click", () => {
+      if (window.Analytics) {
+        window.Analytics.track("linkedin:click");
+      }
+    });
+  }
+
+  /* ---------- Scroll depth tracking ---------- */
+  const firedThresholds = new Set();
+  function checkScrollDepth() {
+    const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+    if (scrollableHeight <= 0) return;
+    const percent = Math.round((window.scrollY / scrollableHeight) * 100);
+    [25, 50, 75, 100].forEach((threshold) => {
+      if (percent >= threshold && !firedThresholds.has(threshold)) {
+        firedThresholds.add(threshold);
+        if (window.Analytics) {
+          window.Analytics.track("scroll:depth", { percent: threshold });
+        }
+      }
+    });
+  }
+  window.addEventListener("scroll", checkScrollDepth, { passive: true });
+
   /* ---------- Work page: filter ---------- */
   const filterPills = document.querySelectorAll(".filter-pill");
 
@@ -211,6 +280,9 @@
       const statusEl = document.getElementById("filter-status");
       if (statusEl) {
         statusEl.textContent = filterValue === "all" ? "Showing all projects" : `Showing ${filterValue} projects`;
+      }
+      if (window.Analytics) {
+        window.Analytics.track("filter-pill:change", { filter: filterValue });
       }
     });
   });
@@ -231,6 +303,12 @@
   const projectsGrid = document.getElementById("projects-grid");
   if (projectsGrid) {
     function openLightboxForElement(el) {
+      const card = el.closest(".project-card");
+      const company = card ? card.dataset.company : null;
+      const year = card ? card.dataset.year : null;
+      if (window.Analytics) {
+        window.Analytics.track("project-card:lightbox_open", { company, year });
+      }
       const items = [{
         src: el.dataset.full || el.src,
         alt: el.alt,
