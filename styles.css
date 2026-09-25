@@ -1429,10 +1429,6 @@ body.custom-cursor-active label {
   gap: var(--space-xs);
 }
 
-.project-card__media .project-card__image-wrapper {
-  margin-bottom: 0;
-}
-
 .project-card__details {
   font-size: var(--text-xs);
   font-weight: var(--font-weight-medium);
@@ -1517,8 +1513,8 @@ body.modal-open {
 }
 
 @media (max-width: 767px) {
-  .project-card__image-wrapper {
-    margin-bottom: var(--space-md);
+  .project-card {
+    padding-bottom: var(--space-md);
   }
 }
 
