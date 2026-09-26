@@ -53,6 +53,9 @@
       if (section.type === "text") {
         var paragraphs = String(section.content || "").split(/\n{2,}/);
         html += '<div class="project-modal__section">';
+        if (section.label) {
+          html += '<div class="project-modal__overline">' + esc(section.label) + "</div>";
+        }
         paragraphs.forEach(function (para) {
           html += '<p class="project-modal__text">' + esc(para) + "</p>";
         });

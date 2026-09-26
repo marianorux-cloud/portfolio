@@ -131,6 +131,17 @@
       <hr class="work-separator">
     </div>
     <div id="projects-grid" class="projects-grid">
+<article class="project-card" data-slug="nyt" data-company="consulting" data-year="2016" data-keywords="consumer research">
+         <div class="project-card__text">
+           <div class="project-card__overline">New York Times Website</div>
+           <h2 class="project-card__title">Eye tracking study to obtain precise understanding of reading patterns and discover article legibility improvements.</h2>
+           <p class="project-card__description">Using Tobii and SMI hardware</p>
+         </div>
+         <div class="project-card__image-wrapper project-card__image-wrapper--fill">
+           <img src="../assets/images/work/nyt.webp" data-full="../assets/images/work/nyt.png"
+             alt="New York Times eye tracking study" class="project-card__image project-card__image--bordered" loading="lazy" decoding="async">
+         </div>
+       </article>
 <article class="project-card" data-slug="bose-product-vision" data-company="consulting" data-year="2017" data-keywords="b2b consumer research">
          <div class="project-card__text">
            <div class="project-card__overline">Bose Product Vision</div>
@@ -319,7 +330,8 @@
   "sections": [
     {
       "type": "text",
-      "content": "To submit collected clinical trial data, staff has to manually copy data from their health record into study forms. This can result in wasted time and allows for the opportunity for error as the person has to go back and forth between the two systems. This is a well-known clinical trial pain point called the \"swivel-chair problem\"."
+      "label": "Problem",
+      "content": "Clinical trial staff have to manually copy patient data from health records into study forms. This is a slow, error-prone, and frustrating process resulting in a well-known clinical trial pain point called the \"swivel-chair problem\". This forces users to go back and forth between two systems for every data point."
     },
     {
       "type": "image",
@@ -330,7 +342,8 @@
     },
     {
       "type": "text",
-      "content": "We spoke to many users of the study form system to understand the problem, their workflow, and explored possible solutions. I worked closely with product management and engineering teams to address user, business, and technical concerns."
+      "label": "Role & Process",
+      "content": "Led design from discovery, user research, and through to delivery. Partnered with product and engineering team members to understand user workflow, explore solution options, and navigate technical and regulatory constraints of connecting safety-critical systems."
     },
     {
       "type": "flow",
@@ -351,7 +364,8 @@
     },
     {
       "type": "text",
-      "content": "After a lot of cross-functional problem solving, our team released the Clinical Connector that integrates the health record with the study form system. The solution simply allowed users to import data from the health record and the system automatically formatted based on the trial. This was a major Oracle Life Sciences advancement and reduced task completion time by nearly 78% in our testing."
+      "label": "Solution",
+      "content": "A simple import mechanism that bridges two very different systems, while providing the ability for control and specificity. Users select health record data that's automatically formatted for the trial context.\n\nA very complex integration and data mapping challenge, made invisible to the user. In testing, the solution reduced task completion time by 78%."
     }
   ]
 }
