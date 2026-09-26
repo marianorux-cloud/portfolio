@@ -1515,6 +1515,10 @@ body.modal-open {
   margin-top: var(--space-2xs);
 }
 
+.project-modal__flow-captions .project-modal__caption {
+  margin-top: 0;
+}
+
 .project-modal__flow-caption-spacer {
   grid-column: 2;
 }
