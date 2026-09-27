@@ -63,7 +63,7 @@
         result.push({
           type: "grid",
           columns: columns,
-          arrows: section.arrows !== false,
+          arrows: section.arrows === true,
           items: items
         });
       } else if (type === "split") {
@@ -137,7 +137,7 @@
         html += '<div class="project-modal__section">';
         if (section.label) {
           html +=
-            '<div class="project-modal__overline">' + esc(section.label) + "</div>";
+            '<h3 class="project-modal__overline">' + esc(section.label) + '</h3>';
         }
         var paragraphs = String(section.content || "").split(/\n{2,}/);
         paragraphs.forEach(function (para) {
@@ -238,9 +238,9 @@
         html += '<div class="project-modal__split-text">';
         if (section.text.label) {
           html +=
-            '<div class="project-modal__overline">' +
+            '<h3 class="project-modal__overline">' +
             esc(section.text.label) +
-            "</div>";
+            "</h3>";
         }
         var splitParagraphs = String(
           section.text.content || ""
@@ -543,16 +543,12 @@
       var btn = e.target.closest(".project-modal__video-poster");
       if (!btn) return;
       var videoId = btn.dataset.videoId;
-       var title = btn.getAttribute("aria-label") || "";
-       var iframe = document.createElement("iframe");
-       iframe.src = "https://player.vimeo.com/video/" + videoId + "?dnt=1&badge=0&autopause=0&player_id=0&app_id=58479";
-       iframe.title = title;
-       iframe.frameBorder = "0";
-       iframe.allow = "autoplay; fullscreen; picture-in-picture";
-       iframe.style.width = "100%";
-       iframe.style.height = "315px";
-       iframe.style.border = "none";
-       btn.replaceWith(iframe);
+      var title = btn.getAttribute("aria-label") || "";
+      var iframe = document.createElement("iframe");
+      iframe.src = "https://player.vimeo.com/video/" + videoId + "?dnt=1&badge=0&autopause=0&app_id=122963";
+      iframe.title = title;
+      iframe.allow = "autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share";
+      btn.replaceWith(iframe);
     });
 
     var hash = window.location.hash.slice(1);
