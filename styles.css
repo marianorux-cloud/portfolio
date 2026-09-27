@@ -318,6 +318,60 @@ a {
   background: color-mix(in srgb, var(--color-text) 30%, transparent);
 }
 
+/* Dark mode flips the hovered button to a full white surface with black
+   content, so the press target stays legible against the dark background.
+   !important pins the inversion over the ghost/solid hover rules above, the
+   per-component hover rules (.navbar__back, .lightbox__*), and the
+   non-color-mix fallback at the end of this file. */
+[data-theme="dark"] .navbar__back:hover,
+[data-theme="dark"] .btn--icon:hover,
+[data-theme="dark"] .btn--ghost:hover,
+[data-theme="dark"] .btn--solid:hover,
+[data-theme="dark"] .theme-toggle:hover,
+[data-theme="dark"] .lightbox__prev:hover,
+[data-theme="dark"] .lightbox__next:hover,
+[data-theme="dark"] .lightbox__close:hover {
+  background-color: #fff !important;
+  color: #000 !important;
+}
+
+[data-theme="dark"] .navbar__back:hover svg,
+[data-theme="dark"] .btn--icon:hover svg,
+[data-theme="dark"] .btn--ghost:hover svg,
+[data-theme="dark"] .btn--solid:hover svg,
+[data-theme="dark"] .theme-toggle:hover svg,
+[data-theme="dark"] .lightbox__prev:hover svg,
+[data-theme="dark"] .lightbox__next:hover svg,
+[data-theme="dark"] .lightbox__close:hover svg {
+  fill: #000 !important;
+}
+
+/* Same inversion when dark mode comes from the OS preference and no explicit
+   theme is set on <html> yet, mirroring the token block near the top. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) .navbar__back:hover,
+  :root:not([data-theme]) .btn--icon:hover,
+  :root:not([data-theme]) .btn--ghost:hover,
+  :root:not([data-theme]) .btn--solid:hover,
+  :root:not([data-theme]) .theme-toggle:hover,
+  :root:not([data-theme]) .lightbox__prev:hover,
+  :root:not([data-theme]) .lightbox__next:hover,
+  :root:not([data-theme]) .lightbox__close:hover {
+    background-color: #fff !important;
+  }
+
+  :root:not([data-theme]) .navbar__back:hover svg,
+  :root:not([data-theme]) .btn--icon:hover svg,
+  :root:not([data-theme]) .btn--ghost:hover svg,
+  :root:not([data-theme]) .btn--solid:hover svg,
+  :root:not([data-theme]) .theme-toggle:hover svg,
+  :root:not([data-theme]) .lightbox__prev:hover svg,
+  :root:not([data-theme]) .lightbox__next:hover svg,
+  :root:not([data-theme]) .lightbox__close:hover svg {
+    fill: #000 !important;
+  }
+}
+
 /* ============================================
    Navbar
    ============================================ */
@@ -366,6 +420,10 @@ a {
 .navbar__back:hover {
   opacity: 1;
   background: var(--color-hover-bg);
+}
+
+[data-theme="dark"] .navbar__back:hover {
+  background-color: #fff !important;
 }
 
 .navbar__list {
@@ -1226,6 +1284,17 @@ body.custom-cursor-active label {
   aspect-ratio: auto;
 }
 
+.project-card__image-wrapper--cropped[data-b1="true"] {
+  aspect-ratio: 16 / 9;
+}
+
+.project-card__image-wrapper--cropped[data-b1="true"] .project-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+
 .project-card__image-wrapper--half .project-card__image,
 .project-card__image-wrapper--three-quarters .project-card__image,
 .project-card__image-wrapper--fill .project-card__image {
@@ -1539,16 +1608,37 @@ body.modal-open {
 }
 
 .project-modal__split-media {
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: 1fr 3fr;
   align-items: stretch;
-  gap: var(--space-2xs);
-  aspect-ratio: var(--split-media-ratio, auto);
+  gap: var(--space-sm);
+  overflow: hidden;
 }
-.project-modal__split-media img {
+
+.project-modal__split-media > .project-modal__media {
+  grid-template-columns: minmax(0, 1fr);
+  min-width: 0;
+  overflow: hidden;
+}
+
+.project-modal__split-media > .project-modal__media:first-child {
+  position: relative;
+}
+
+.project-modal__split-media > .project-modal__media:first-child img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
   height: 100%;
-  width: auto;
-  object-fit: contain;
+  object-fit: cover;
+  object-position: center top;
+}
+
+.project-modal__split-media img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  object-position: center top;
 }
 
 .project-modal__video {
@@ -1834,9 +1924,29 @@ body.modal-open {
     background: transparent;
   }
 
+  [data-theme="dark"] .btn--ghost:hover {
+    background-color: #fff !important;
+  }
+
   .navbar__back:hover {
     opacity: 1;
     background: transparent;
+  }
+
+  [data-theme="dark"] .navbar__back:hover {
+    background-color: #fff !important;
+  }
+
+  .lightbox__prev:hover,
+  .lightbox__next:hover,
+  .lightbox__close:hover {
+    background: rgba(255, 255, 255, 0.30);
+  }
+
+  [data-theme="dark"] .lightbox__prev:hover,
+  [data-theme="dark"] .lightbox__next:hover,
+  [data-theme="dark"] .lightbox__close:hover {
+    background-color: rgba(255, 255, 255, 0.30) !important;
   }
 }
 
