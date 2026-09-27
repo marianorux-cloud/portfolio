@@ -249,6 +249,25 @@
             details</button>
         </div>
       </article>
+      <article class="project-card" data-slug="zumba-sommos" data-company="zumba" data-year="2021"
+        data-keywords="fitness b2b consumer" data-details="sommos">
+        <div class="project-card__text">
+          <div class="project-card__overline">Sommos</div>
+          <h2 class="project-card__title">Platform where instructors run their business and sell classes, memberships,
+            and on-demand video.</h2>
+          <p class="project-card__description">Fitness content creator economy platform
+          </p>
+        </div>
+        <div class="project-card__media">
+          <div class="project-card__image-wrapper project-card__image-wrapper--fill">
+            <img src="../assets/images/work/sommos_dashboard.webp" width="1600" height="1138"
+              alt="Sommos creator dashboard with an upcoming class banner, summary totals, and a schedule of classes"
+              class="project-card__image project-card__image--bordered" loading="lazy" decoding="async">
+          </div>
+          <button class="project-card__details" type="button" data-project-id="sommos">project
+            details</button>
+        </div>
+      </article>
       <article class="project-card" data-slug="zumba-zin-studio" data-company="zumba" data-year="2020"
         data-keywords="fitness b2b">
         <div class="project-card__text">
@@ -328,17 +347,21 @@
         </div>
       </article>
       <article class="project-card" data-slug="oracle-hackathon" data-company="oracle" data-year="2024"
-        data-keywords="life-sciences b2b">
+        data-keywords="life-sciences b2b" data-details="oracle-hackathon">
         <div class="project-card__text">
           <div class="project-card__overline">Oracle Hackathon</div>
           <h2 class="project-card__title">Tool that matches relevant clinical trials based on
             a patient's medical history and eligibility.</h2>
           <p class="project-card__description">Patent pending</p>
         </div>
-        <div class="project-card__image-wrapper project-card__image-wrapper--half" data-layout="half-to-two-thirds">
-          <img src="../assets/images/work/orahacks.webp" data-full="../assets/images/work/orahacks.png"
-            alt="Oracle Hackathon clinical trial recommendation tool"
-            class="project-card__image project-card__image--bordered" loading="lazy" decoding="async">
+        <div class="project-card__media">
+          <div class="project-card__image-wrapper project-card__image-wrapper--half" data-layout="half-to-two-thirds">
+            <img src="../assets/images/work/orahacks.webp" data-full="../assets/images/work/orahacks.png"
+              alt="Oracle Hackathon clinical trial recommendation tool"
+              class="project-card__image project-card__image--bordered" loading="lazy" decoding="async">
+          </div>
+          <button class="project-card__details" type="button" data-project-id="oracle-hackathon">project
+            details</button>
         </div>
       </article>
     </div>
@@ -573,6 +596,159 @@
       "type": "text",
       "label": "",
       "content": "30% increase in training sign-ups during the test, along with reduced time on page and higher mobile conversion."
+    }
+  ]
+}
+  </script>
+
+    <script type="application/json" id="project--oracle-hackathon">
+{
+  "id": "oracle-hackathon",
+  "title": "Oracle Hackathon",
+  "overline": "Oracle Hackathon",
+  "year": 2024,
+  "company": "oracle",
+  "sections": [
+    {
+      "type": "text",
+      "label": "Problem",
+      "content": "Less than 5% of adult cancer patients participate in clinical trials and 80% of trials fail to meet enrollment targets. Complex eligibility criteria make it difficult for patients and physicians to find relevant trials. This often means delayed access to potentially life-saving treatments."
+    },
+    {
+      "type": "text",
+      "label": "Role & Process",
+      "content": "Lead designer on a 3-person team (with a PM and engineer) for a 5-day hackathon. I worked with the PM to define the problem, explored multiple concepts before landing on our challenge. Required multiple design versions daily to accommodate shifting technical capabilities."
+    },
+    {
+      "type": "grid",
+      "columns": 3,
+      "arrows": false,
+      "items": [
+        {
+          "src": "../assets/images/work/orahacks_list.webp",
+          "alt": "Oracle Health Patients list showing patient rows with name, age, sex, date of birth, contact details, and an overflow menu",
+          "caption": "Clinicians start from the patient list"
+        },
+        {
+          "src": "../assets/images/work/orahacks_profile.webp",
+          "alt": "Oracle Health patient chart for a routine oncology follow-up showing a generated clinical summary and three recommended clinical trials with match and eligibility concern counts",
+          "caption": "Recommended trials in the patient chart"
+        },
+        {
+          "src": "../assets/images/work/orahacks_eligibility.webp",
+          "alt": "Trial eligibility panel for a matched hormone therapy trial listing inclusion and exclusion criteria with Met, Not Met, and Need More Info statuses",
+          "caption": "Eligibility breakdown for a matched trial"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "label": "Solution",
+      "content": "In the short time we created a system that matches patients to recruiting trials on ClinicalTrials.gov based on their medical history and shares the details directly in the patient's electronic health record (EHR). Small LLM structures plain-language explanations for why each trial matches. Recommended trials appear directly in the EHR interface with eligibility completeness indicators."
+    },
+    {
+      "type": "text",
+      "label": "",
+      "content": "Placed 12th of 250+ projects. Patent pending (listed under Oracle filing)."
+    }
+  ]
+}
+  </script>
+
+    <script type="application/json" id="project--sommos">
+{
+  "id": "sommos",
+  "title": "Sommos",
+  "overline": "Sommos",
+  "year": 2021,
+  "company": "zumba",
+  "sections": [
+    {
+      "type": "text",
+      "label": "Problem",
+      "content": "Independent instructors and fitness content creators faced fragmented, expensive tools to run their businesses. They had to piece together multiple services like PayPal, Zoom, Venmo, Mailchimp, Patreon, and more to run their classes. Students dealt with constantly changing links, payment methods, and access issues. The pandemic accelerated a rush to online, intensifying these logistical headaches."
+    },
+    {
+      "type": "text",
+      "label": "Role & Process",
+      "content": "Designer on a 2-person design team. Constantly surveyed and met with instructors during the pandemic shift, iterating on smaller predecessors (Zumba Virtual Class Platform, ZIN Studio) before Sommos launched."
+    },
+    {
+      "type": "text",
+      "label": "",
+      "content": "Comprehensive management dashboard for VOD library, schedule, posts, and more."
+    },
+    {
+      "type": "grid",
+      "columns": 2,
+      "arrows": false,
+      "items": [
+        {
+          "src": "../assets/images/work/sommos_dashboard.webp",
+          "alt": "Creator dashboard with a navigation rail for memberships, class packs, and reporting, a next-class banner with a start class button, follower, member, earnings, and registration totals, and a table of upcoming classes with registration counts"
+        },
+        {
+          "src": "../assets/images/work/sommos_posts.webp",
+          "alt": "Posts tab showing a feed of photo and PDF attachment posts, each with a date, body copy, and a members-only sharing row"
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "columns": 4,
+      "arrows": false,
+      "items": [
+        {
+          "src": "../assets/images/work/sommos_mobile.webp",
+          "alt": "Mobile home tab with a next-class banner, a set up payments card, stacked follower, member, earnings, and registration totals, and a row of next-step cards"
+        },
+        {
+          "src": "../assets/images/work/sommos_mobile-menu.webp",
+          "alt": "Mobile side menu opened over the home tab, listing membership, class packs, special offers, live event, VOD, and post destinations"
+        },
+        {
+          "src": "../assets/images/work/sommos_schedule.webp",
+          "alt": "Mobile schedule tab with a past classes filter and stacked class entries showing date, time, venue or virtual studio, and attendee counts"
+        },
+        {
+          "src": "../assets/images/work/sommos_vod.webp",
+          "alt": "Mobile video on demand tab listing recorded classes with thumbnails, added dates, titles, and view counts"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "label": "",
+      "content": "Virtual class experience to support multi-device support, student engagement, instructor controls, and more."
+    },
+    {
+      "type": "grid",
+      "columns": 3,
+      "arrows": false,
+      "items": [
+        {
+          "src": "../assets/images/work/sommos_virtual-desktop.webp",
+          "alt": "Desktop livestream stage with the instructor video, floating heart reactions, a participant panel alongside, join and leave notifications, and a bottom control bar with microphone, camera, and leave controls"
+        },
+        {
+          "src": "../assets/images/work/sommos_virtual-mobile.webp",
+          "alt": "Portrait livestream view with a rotate to landscape prompt, instructor video with heart reactions, an overlay noting student microphones are being turned off, and leave, microphone, and camera controls"
+        },
+        {
+          "src": "../assets/images/work/sommos_virtual-mobile-menu.webp",
+          "alt": "Portrait livestream view with the control panel expanded, showing a countdown to class start and instructor, grid view, fullscreen, class info, chat, students, tools, and settings controls"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "label": "Solution",
+      "content": "Double-sided creator economy platform eliminating manual workflows. Instructors upload VODs or schedule live classes (in-person or online); students pay per class, per VOD, or via membership tiers with automatic access to class details."
+    },
+    {
+      "type": "text",
+      "label": "",
+      "content": "Sommos was validated as a standalone incubator and the architecture was eventually absorbed into Zumba's ZIN membership."
     }
   ]
 }
