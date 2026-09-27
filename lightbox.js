@@ -145,7 +145,11 @@
     }
   }
 
-  window.Lightbox = { open, close, navigate };
+  function isOpen() {
+    return lightbox.classList.contains("lightbox--open");
+  }
+
+  window.Lightbox = { open, close, navigate, isOpen };
 
   /* ── Event listeners ── */
   closeEl.addEventListener("click", close);
@@ -177,6 +181,7 @@
   document.addEventListener("keydown", function (e) {
     if (!lightbox.classList.contains("lightbox--open")) return;
     if (e.key === "Escape") {
+      e.lightboxHandled = true;
       close();
       return;
     }

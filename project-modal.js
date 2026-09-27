@@ -418,7 +418,9 @@
     document.addEventListener("keydown", function (e) {
       if (
         e.key === "Escape" &&
-        modal.classList.contains("project-modal--open")
+        modal.classList.contains("project-modal--open") &&
+        !e.lightboxHandled &&
+        !(window.Lightbox && window.Lightbox.isOpen())
       ) {
         e.preventDefault();
         close();
