@@ -1552,6 +1552,57 @@ body.custom-cursor-active label {
   }
 }
 
+/* Modal prev/next footer. Token values mirror .project-card__details, but the
+   class is deliberately not shared: that block is card-scoped, and reusing it
+   would couple the modal to the grid. */
+.project-modal__nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: var(--space-sm);
+  margin-top: var(--modal-block-gap);
+}
+
+/* Outline button. The 2px border is paid for out of the padding, so the label
+   keeps the same offset from the element edge and the outer box stays the size
+   the solid card button was. The hover fill is the theme extreme on purpose:
+   --color-text is #282828 / #3a3632 / #e5e5e5, none of which is a full
+   inversion. Keeping it in one property holds the theme branch to two rules,
+   with no !important. */
+.project-modal__nav-btn {
+  --nav-btn-hover-bg: #000;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text);
+  background: transparent;
+  border: 2px solid var(--color-text);
+  padding: calc(0.75rem - 2px) calc(1.5rem - 2px);
+  margin-top: 0;
+  cursor: pointer;
+  transition: color 300ms ease, background-color 300ms ease;
+}
+
+[data-theme="dark"] .project-modal__nav-btn {
+  --nav-btn-hover-bg: #fff;
+}
+
+.project-modal__nav-btn:hover {
+  background-color: var(--nav-btn-hover-bg);
+  color: var(--color-bg);
+}
+
+@media (max-width: 767px) {
+  .project-modal__nav-btn {
+    padding: calc(0.75rem - 2px) calc(var(--space-sm) - 2px);
+  }
+}
+
 body.modal-open {
   overflow: hidden;
 }

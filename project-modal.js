@@ -12,6 +12,12 @@
   var FOCUSABLE_SELECTOR =
     'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
+  /* Arrow paths shared with the lightbox controls (lightbox.js). */
+  var ARROW_LEFT_PATH =
+    "M7.82843 10.9999H20V12.9999H7.82843L13.1924 18.3638L11.7782 19.778L4 11.9999L11.7782 4.22168L13.1924 5.63589L7.82843 10.9999Z";
+  var ARROW_RIGHT_PATH =
+    "M16.1716 10.9999H4V12.9999H16.1716L10.8076 18.3638L12.2218 19.778L20 11.9999L12.2218 4.22168L10.8074 5.63589L16.1716 10.9999Z";
+
   function esc(str) {
     if (str == null) return "";
     return String(str)
@@ -120,7 +126,7 @@
     return parts.join(" ");
   }
 
-  function renderContent(config) {
+  function renderContent(config, navHtml) {
     var html = "";
     html += '<div class="project-modal__header">';
     html +=
@@ -297,7 +303,7 @@
       }
     });
 
-    return html;
+    return html + (navHtml || "");
   }
 
   function collectImages(config) {
@@ -328,17 +334,142 @@
     return images;
   }
 
-  function open(projectId, trigger) {
+  /* Live chain of the projects the visitor can currently see on the grid.
+     scripts.js has already year-sorted the cards and the filter pills only
+     toggle .filter-hidden on them, so the grid is re-read on every render
+     instead of cached: there is no filter state to subscribe to. */
+  function getNavigableProjects() {
+    var grid = document.getElementById("projects-grid");
+    if (!grid) return [];
+    var items = [];
+    Array.prototype.forEach.call(
+      grid.querySelectorAll(".project-card"),
+      function (card) {
+        if (card.classList.contains("filter-hidden")) return;
+        var btn = card.querySelector(".project-card__details[data-project-id]");
+        var id = btn ? btn.dataset.projectId : card.dataset.details;
+        if (!id || !configs[id]) return;
+        items.push({ id: id, config: configs[id] });
+      }
+    );
+    return items;
+  }
+
+  function getNavIndex(items, projectId) {
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].id === projectId) return i;
+    }
+    return -1;
+  }
+
+  function getProjectTitle(config, fallbackId) {
+    return config.title || config.overline || fallbackId;
+  }
+
+  function renderNavButton(visibleText, ariaText, direction, target, path) {
+    var svg =
+      '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">' +
+      '<path d="' +
+      path +
+      '" /></svg>';
+    var children =
+      direction < 0
+        ? svg + "<span>" + visibleText + "</span>"
+        : "<span>" + visibleText + "</span>" + svg;
+    return (
+      '<button class="project-modal__nav-btn" type="button" data-nav-direction="' +
+      direction +
+      '" aria-label="' +
+      esc(ariaText + ": " + getProjectTitle(target.config, target.id)) +
+      '">' +
+      children +
+      "</button>"
+    );
+  }
+
+  function renderNav(projectId) {
+    var items = getNavigableProjects();
+    if (items.length < 2) return "";
+    var index = getNavIndex(items, projectId);
+    /* No position in the chain means no footer. The only way there is no
+       position is a deep link to a project the active filter hides: there is
+       no honest PREVIOUS/NEXT pair for a project that is not in the chain. */
+    if (index === -1) return "";
+    var prev = items[(index - 1 + items.length) % items.length];
+    var next = items[(index + 1) % items.length];
+    return (
+      '<div class="project-modal__nav">' +
+      renderNavButton("PREVIOUS", "Previous project", -1, prev, ARROW_LEFT_PATH) +
+      renderNavButton("NEXT", "Next project", 1, next, ARROW_RIGHT_PATH) +
+      "</div>"
+    );
+  }
+
+  function showProject(projectId) {
     var config = configs[projectId];
-    if (!config) return;
+    if (!config) return false;
     currentProjectId = projectId;
     modalScrollFired = new Set();
 
     var content = modal.querySelector("#project-modal__content");
-    content.innerHTML = renderContent(config);
+    content.innerHTML = renderContent(config, renderNav(projectId));
 
     modal.classList.add("project-modal--open");
     document.body.classList.add("modal-open");
+    return true;
+  }
+
+  function navigate(direction) {
+    if (!currentProjectId) return;
+    var items = getNavigableProjects();
+    if (items.length < 2) return;
+    var index = getNavIndex(items, currentProjectId);
+    /* Unreachable: renderNav omits the footer for a project outside the chain,
+       so there is no button to press. */
+    if (index === -1) return;
+    var target = items[(index + direction + items.length) % items.length];
+    if (!target) return;
+
+    var fromId = currentProjectId;
+    showProject(target.id);
+
+    /* replaceState, not pushState: Back must still close the modal instead of
+       stepping back through the chain. */
+    if (history.replaceState) {
+      history.replaceState({ projectModal: target.id }, "", "#" + target.id);
+    }
+
+    var live = modal.querySelector("#project-modal__live");
+    if (live) {
+      live.textContent = getProjectTitle(target.config, target.id);
+    }
+
+    /* Focus follows the pressed control so the same key walks the chain.
+       lastFocused is untouched: closing must still restore focus to the card
+       that opened the modal. */
+    var btn = modal.querySelector(
+      '.project-modal__nav-btn[data-nav-direction="' + direction + '"]'
+    );
+    /* preventScroll, and the reset after it: .project-modal is the scroll
+       container, and focusing the footer would otherwise scroll it back into
+       view. */
+    if (btn) {
+      btn.focus({ preventScroll: true });
+    } else {
+      modal.focus({ preventScroll: true });
+    }
+    modal.scrollTop = 0;
+
+    if (window.Analytics && typeof window.Analytics.track === "function") {
+      window.Analytics.track(
+        fromId + ":" + (direction === 1 ? "next" : "previous"),
+        { slug: target.id, direction: direction }
+      );
+    }
+  }
+
+  function open(projectId, trigger) {
+    if (!showProject(projectId)) return;
 
     lastFocused = document.activeElement;
     var closeBtn = modal.querySelector(".project-modal__close");
@@ -488,6 +619,15 @@
       }
     });
 
+    modal.addEventListener("click", function (e) {
+      var navBtn = e.target.closest(".project-modal__nav-btn");
+      if (!navBtn) return;
+      var direction = parseInt(navBtn.dataset.navDirection, 10);
+      if (direction === 1 || direction === -1) {
+        navigate(direction);
+      }
+    });
+
     grid.addEventListener("click", function (e) {
       var img = e.target.closest(".project-card__image");
       if (!img) return;
@@ -573,7 +713,8 @@
       '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">' +
       '<path d="M10.5859 12L2.79297 4.20706L4.20718 2.79285L12.0001 10.5857L19.793 2.79285L21.2072 4.20706L13.4143 12L21.2072 19.7928L19.793 21.2071L12.0001 13.4142L4.20718 21.2071L2.79297 19.7928L10.5859 12Z"/>' +
       "</svg></button>" +
-      '<div class="project-modal__content" id="project-modal__content"></div>';
+      '<div class="project-modal__content" id="project-modal__content"></div>' +
+      '<div class="sr-only" id="project-modal__live" aria-live="polite"></div>';
 
     document.body.appendChild(el);
     return el;

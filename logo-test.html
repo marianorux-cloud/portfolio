@@ -1,0 +1,753 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Logo test — local prototype</title>
+  <link rel="icon" type="image/svg+xml" href="assets/icons/logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="assets/fonts/OverusedGrotesk-Roman.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/OverusedGrotesk-Medium.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/OverusedGrotesk-Bold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap">
+  <script src="theme-init.js"></script>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body.logo-test {
+      --logo-test-slot-width: 44px;
+      --logo-test-large-scale: 1;
+      min-height: 100vh;
+      background: var(--color-bg);
+      color: var(--color-text);
+    }
+
+    body.logo-test #logo-test {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    body.logo-test .logo-test-navbar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      width: 100%;
+      background: var(--color-bg);
+      background: color-mix(in srgb, var(--color-bg) 88%, transparent);
+      border-bottom: 1px solid color-mix(in srgb, var(--color-text) 12%, transparent);
+      -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(16px);
+    }
+
+    body.logo-test .logo-test-navbar .navbar__inner {
+      width: 100%;
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: var(--space-md) var(--space-lg);
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+
+    body.logo-test .logo-test-navbar .navbar__left {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2xs);
+      flex: 0 0 auto;
+    }
+
+    body.logo-test .logo-test-navbar .navbar__right {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2xs);
+      margin-left: auto;
+      flex: 0 0 auto;
+    }
+
+    body.logo-test .logo-test-back[hidden] {
+      display: none;
+    }
+
+    body.logo-test .logo-test-logo {
+      position: relative;
+      display: block;
+      flex: 0 0 var(--logo-test-slot-width);
+      width: var(--logo-test-slot-width);
+      height: 33px;
+      padding: 0;
+      overflow: hidden;
+      border: 0;
+      border-radius: 8px;
+      background-color: transparent;
+      -webkit-mask-image: none;
+      mask-image: none;
+      cursor: pointer;
+    }
+
+    body.logo-test .logo-test-logo:hover {
+      background-color: transparent;
+    }
+
+    body.logo-test .logo-test-logo__small,
+    body.logo-test .logo-test-logo__large-clip,
+    body.logo-test .logo-test-logo__large {
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: block;
+      pointer-events: none;
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+      -webkit-mask-size: 100% 100%;
+      mask-size: 100% 100%;
+    }
+
+    body.logo-test .logo-test-logo__small,
+    body.logo-test .logo-test-logo__large {
+      background-color: var(--color-icon);
+    }
+
+    body.logo-test .logo-test-logo__small {
+      width: 44px;
+      height: 33px;
+      opacity: 1;
+      -webkit-mask-image: url("assets/staging/logo-sm.svg");
+      mask-image: url("assets/staging/logo-sm.svg");
+      will-change: opacity;
+    }
+
+    body.logo-test .logo-test-logo__large-clip {
+      width: 152px;
+      height: 33px;
+      opacity: 0;
+      overflow: hidden;
+      clip-path: inset(0 94px 0 0);
+      -webkit-clip-path: inset(0 94px 0 0);
+      will-change: clip-path, opacity;
+    }
+
+    body.logo-test .logo-test-logo__large {
+      width: 152px;
+      height: 33px;
+      transform: scale(var(--logo-test-large-scale));
+      transform-origin: left center;
+      -webkit-mask-image: url("assets/staging/logo-xl.svg");
+      mask-image: url("assets/staging/logo-xl.svg");
+    }
+
+    body.logo-test .logo-test-logo[data-logo-state="expanded"] .logo-test-logo__small {
+      opacity: 0;
+    }
+
+    body.logo-test .logo-test-logo[data-logo-state="expanded"] .logo-test-logo__large-clip {
+      opacity: 1;
+      clip-path: inset(0 0 0 0);
+      -webkit-clip-path: inset(0 0 0 0);
+    }
+
+    body.logo-test .logo-test-logo__sprite {
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: none;
+      height: 33px;
+      width: auto;
+      overflow: visible;
+      pointer-events: none;
+    }
+
+    body.logo-test[data-treatment="single-source"] .logo-test-logo__small,
+    body.logo-test[data-treatment="single-source"] .logo-test-logo__large-clip {
+      display: none;
+    }
+
+    body.logo-test[data-treatment="single-source"] .logo-test-logo__sprite {
+      display: block;
+    }
+
+    body.logo-test .logo-test-logo__sprite [data-logo-piece],
+    body.logo-test .logo-test-logo__sprite [data-letter-index] {
+      transform-box: view-box;
+    }
+
+    body.logo-test .logo-test-logo__sprite [data-logo-piece="top-rail"],
+    body.logo-test .logo-test-logo__sprite [data-logo-piece="bottom-rail"] {
+      transform-origin: 21.5058px 0px;
+      will-change: transform;
+    }
+
+    body.logo-test .logo-test-logo__sprite [data-logo-piece="right-cap"] {
+      transform-origin: 0px 0px;
+      will-change: transform;
+    }
+
+    body.logo-test .logo-test-logo__sprite [data-letter-index="0"],
+    body.logo-test .logo-test-logo__sprite [data-letter-index="7"] {
+      transform-origin: 0px 0px;
+      will-change: transform;
+    }
+
+    body.logo-test .logo-test-logo__sprite [data-letter-index] {
+      will-change: opacity;
+    }
+
+    body.logo-test .logo-test-footer__logo--large {
+      display: flex;
+      align-items: center;
+      width: 152px;
+      height: 33px;
+      flex: 0 0 152px;
+    }
+
+    body.logo-test .logo-test-footer__large-mark {
+      display: block;
+      width: 152px;
+      height: 33px;
+      background-color: var(--color-icon);
+      -webkit-mask-image: url("assets/staging/logo-xl.svg");
+      mask-image: url("assets/staging/logo-xl.svg");
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+      -webkit-mask-size: 100% 100%;
+      mask-size: 100% 100%;
+    }
+
+    body.logo-test .logo-test-tunable {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2xs);
+    }
+
+    body.logo-test .logo-test-tunable-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-sm);
+      font-size: var(--text-sm);
+    }
+
+    body.logo-test .logo-test-tunable-row output {
+      color: var(--color-text);
+      font-weight: var(--font-weight-bold);
+    }
+
+    body.logo-test .logo-test-tunable input[type="range"] {
+      width: 100%;
+      accent-color: var(--color-text);
+      cursor: pointer;
+    }
+
+    body.logo-test .logo-test-main {
+      flex: 1 0 auto;
+      width: 100%;
+    }
+
+    body.logo-test .logo-test-section {
+      width: 100%;
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: var(--space-2xl) var(--space-lg);
+    }
+
+    body.logo-test .logo-test-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(260px, 0.75fr);
+      gap: var(--space-2xl);
+      align-items: end;
+      padding-top: var(--space-3xl);
+      padding-bottom: var(--space-2xl);
+    }
+
+    body.logo-test .logo-test-eyebrow,
+    body.logo-test .logo-test-kicker {
+      color: var(--color-icon);
+      font-size: var(--text-sm);
+      font-weight: var(--font-weight-bold);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    body.logo-test .logo-test-hero h1 {
+      max-width: 13ch;
+      margin-top: var(--space-sm);
+      font-size: clamp(2.75rem, 7vw, 6.75rem);
+      line-height: 0.96;
+      letter-spacing: -0.055em;
+    }
+
+    body.logo-test .logo-test-hero-copy {
+      max-width: 46ch;
+      margin-top: var(--space-lg);
+      color: color-mix(in srgb, var(--color-text) 72%, transparent);
+      font-size: var(--text-md);
+    }
+
+    body.logo-test .logo-test-hero-copy strong {
+      color: var(--color-text);
+      font-weight: var(--font-weight-bold);
+    }
+
+    body.logo-test .logo-test-hero-panel {
+      padding: var(--space-lg);
+      border: 1px solid color-mix(in srgb, var(--color-text) 18%, transparent);
+      border-radius: 18px;
+      background: color-mix(in srgb, var(--color-text) 4%, transparent);
+    }
+
+    body.logo-test .logo-test-panel-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-sm);
+      padding-bottom: var(--space-md);
+      border-bottom: 1px solid color-mix(in srgb, var(--color-text) 14%, transparent);
+      font-weight: var(--font-weight-bold);
+    }
+
+    body.logo-test .logo-test-panel-heading output {
+      font-size: var(--text-lg);
+      letter-spacing: -0.04em;
+    }
+
+    body.logo-test .logo-test-panel-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: var(--space-md);
+      padding-top: var(--space-sm);
+      color: color-mix(in srgb, var(--color-text) 70%, transparent);
+      font-size: var(--text-sm);
+    }
+
+    body.logo-test .logo-test-panel-row output {
+      color: var(--color-text);
+      font-weight: var(--font-weight-bold);
+      text-align: right;
+    }
+
+    body.logo-test .logo-test-controls {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(300px, 0.72fr);
+      gap: var(--space-2xl);
+      align-items: start;
+      border-top: 1px solid color-mix(in srgb, var(--color-text) 14%, transparent);
+    }
+
+    body.logo-test .logo-test-section-heading {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: var(--space-md);
+      margin-bottom: var(--space-lg);
+    }
+
+    body.logo-test .logo-test-section-heading h2 {
+      font-size: var(--text-xl);
+      letter-spacing: -0.035em;
+    }
+
+    body.logo-test .logo-test-section-heading p {
+      max-width: 42ch;
+      color: color-mix(in srgb, var(--color-text) 65%, transparent);
+      font-size: var(--text-sm);
+      text-align: right;
+    }
+
+    body.logo-test .logo-test-control-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-md);
+    }
+
+    body.logo-test .logo-test-fieldset {
+      min-width: 0;
+      padding: 0;
+      border: 0;
+    }
+
+    body.logo-test .logo-test-fieldset legend,
+    body.logo-test .logo-test-control-label {
+      display: block;
+      margin-bottom: var(--space-sm);
+      color: var(--color-text);
+      font-size: var(--text-sm);
+      font-weight: var(--font-weight-bold);
+    }
+
+    body.logo-test .logo-test-choice-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2xs);
+    }
+
+    body.logo-test .logo-test-choice,
+    body.logo-test .logo-test-select,
+    body.logo-test .logo-test-motion-toggle {
+      min-height: 42px;
+      border: 1px solid color-mix(in srgb, var(--color-text) 22%, transparent);
+      border-radius: 999px;
+      background: var(--color-bg);
+      color: var(--color-text);
+      font: inherit;
+      font-size: var(--text-sm);
+    }
+
+    body.logo-test .logo-test-choice,
+    body.logo-test .logo-test-select {
+      padding: 0.55rem 0.9rem;
+    }
+
+    body.logo-test .logo-test-choice {
+      cursor: pointer;
+    }
+
+    body.logo-test .logo-test-choice:hover,
+    body.logo-test .logo-test-select:hover,
+    body.logo-test .logo-test-motion-toggle:hover {
+      border-color: var(--color-text);
+    }
+
+    body.logo-test .logo-test-choice[aria-pressed="true"] {
+      border-color: var(--color-text);
+      background: var(--color-text);
+      color: var(--color-bg);
+    }
+
+    body.logo-test .logo-test-select {
+      width: 100%;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    body.logo-test .logo-test-policy-copy {
+      margin-top: var(--space-sm);
+      color: color-mix(in srgb, var(--color-text) 65%, transparent);
+      font-size: var(--text-sm);
+    }
+
+    body.logo-test .logo-test-motion-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-sm);
+      padding: 0.55rem 0.9rem;
+      cursor: pointer;
+    }
+
+    body.logo-test .logo-test-motion-toggle input {
+      width: 18px;
+      height: 18px;
+      margin: 0;
+      accent-color: var(--color-text);
+    }
+
+    body.logo-test .logo-test-note {
+      margin-top: var(--space-md);
+      color: color-mix(in srgb, var(--color-text) 65%, transparent);
+      font-size: var(--text-sm);
+    }
+
+    body.logo-test .logo-test-diagnostics {
+      border-top: 1px solid color-mix(in srgb, var(--color-text) 14%, transparent);
+    }
+
+    body.logo-test .logo-test-diagnostic-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-md);
+    }
+
+    body.logo-test .logo-test-diagnostic {
+      min-height: 92px;
+      padding: var(--space-md);
+      border: 1px solid color-mix(in srgb, var(--color-text) 14%, transparent);
+      border-radius: 14px;
+    }
+
+    body.logo-test .logo-test-diagnostic span {
+      display: block;
+      color: color-mix(in srgb, var(--color-text) 60%, transparent);
+      font-size: var(--text-xs);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    body.logo-test .logo-test-diagnostic output {
+      display: block;
+      margin-top: var(--space-sm);
+      color: var(--color-text);
+      font-size: var(--text-md);
+      font-weight: var(--font-weight-bold);
+    }
+
+    body.logo-test .logo-test-status {
+      min-height: 1.5em;
+      margin-top: var(--space-lg);
+      color: color-mix(in srgb, var(--color-text) 70%, transparent);
+      font-size: var(--text-sm);
+    }
+
+    body.logo-test .logo-test-footer {
+      margin-top: auto;
+    }
+
+    body.logo-test .logo-test-footer .footer__inner {
+      max-width: var(--max-width);
+      padding: var(--space-md) var(--space-lg);
+    }
+
+    body.logo-test .logo-test-footer__logo {
+      width: 44px;
+      height: 33px;
+      flex: 0 0 44px;
+      background-color: var(--color-icon);
+      -webkit-mask-image: url("assets/staging/logo-sm.svg");
+      mask-image: url("assets/staging/logo-sm.svg");
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+      -webkit-mask-size: 100% 100%;
+      mask-size: 100% 100%;
+    }
+
+    body.logo-test .logo-test-footer__label {
+      color: color-mix(in srgb, var(--color-text) 60%, transparent);
+      font-size: var(--text-xs);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    body.logo-test .logo-test-sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (min-width: 1024px) {
+      body.logo-test[data-policy="gap"] {
+        --logo-test-slot-width: 152px;
+      }
+
+      body.logo-test[data-policy="scale"] {
+        --logo-test-slot-width: 152px;
+        --logo-test-large-scale: 0.82;
+      }
+    }
+
+    @media (min-width: 1200px) {
+      body.logo-test[data-policy="large"] {
+        --logo-test-slot-width: 152px;
+      }
+
+      body.logo-test[data-policy="scale"] {
+        --logo-test-slot-width: 152px;
+        --logo-test-large-scale: 1;
+      }
+    }
+
+    @media (max-width: 900px) {
+      body.logo-test .logo-test-hero,
+      body.logo-test .logo-test-controls {
+        grid-template-columns: 1fr;
+      }
+
+      body.logo-test .logo-test-hero {
+        gap: var(--space-2xl);
+      }
+
+      body.logo-test .logo-test-section-heading {
+        display: block;
+      }
+
+      body.logo-test .logo-test-section-heading p {
+        margin-top: var(--space-sm);
+        text-align: left;
+      }
+    }
+
+    @media (max-width: 767px) {
+      body.logo-test .logo-test-navbar .navbar__inner {
+        padding: var(--space-sm) var(--space-md);
+      }
+
+      body.logo-test .logo-test-section {
+        padding: var(--space-xl) var(--space-md);
+      }
+
+      body.logo-test .logo-test-hero {
+        padding-top: var(--space-2xl);
+        padding-bottom: var(--space-xl);
+      }
+
+      body.logo-test .logo-test-hero h1 {
+        font-size: clamp(2.6rem, 15vw, 4.5rem);
+      }
+
+      body.logo-test .logo-test-control-grid,
+      body.logo-test .logo-test-diagnostic-grid {
+        grid-template-columns: 1fr;
+      }
+
+      body.logo-test .logo-test-footer .footer__inner {
+        padding: var(--space-md) var(--space-md);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      body.logo-test *,
+      body.logo-test *::before,
+      body.logo-test *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 1ms !important;
+        animation-duration: 1ms !important;
+        animation-iteration-count: 1 !important;
+      }
+    }
+
+    body.logo-test[data-motion="reduced"] *,
+    body.logo-test[data-motion="reduced"] *::before,
+    body.logo-test[data-motion="reduced"] *::after {
+      scroll-behavior: auto !important;
+      transition-duration: 1ms !important;
+      animation-duration: 1ms !important;
+      animation-iteration-count: 1 !important;
+    }
+  </style>
+</head>
+
+<body class="logo-test" data-context="home" data-policy="gap" data-treatment="single-source" data-motion="full">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="logo-test">
+    <header class="navbar logo-test-navbar" data-logo-test-nav>
+      <div class="navbar__inner">
+        <div class="navbar__left">
+          <a class="navbar__back logo-test-back btn--icon btn--ghost" href="index.html" data-logo-test-back aria-label="Back to home" hidden>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M7.82843 10.9999H20V12.9999H7.82843L13.1924 18.3638L11.7782 19.778L4 11.9999L11.7782 4.22168L13.1924 5.63589L7.82843 10.9999Z" />
+            </svg>
+          </a>
+          <a class="navbar__logo logo-test-logo" href="index.html" aria-label="Mariano Rodriguez home" data-logo-trigger data-logo-state="small">
+            <span class="logo-test-logo__small" aria-hidden="true"></span>
+            <span class="logo-test-logo__large-clip" aria-hidden="true">
+              <span class="logo-test-logo__large"></span>
+            </span>
+          </a>
+        </div>
+        <div class="navbar__right">
+          <nav class="navbar__nav" aria-label="Primary">
+            <ul class="navbar__list">
+              <li class="navbar__item navbar__item--active" data-logo-test-item="home">
+                <a href="index.html" data-logo-test-link="home" aria-current="page">home</a>
+              </li>
+              <li class="navbar__item" data-logo-test-item="work">
+                <a href="work/" data-logo-test-link="work">work</a>
+              </li>
+              <li class="navbar__item" data-logo-test-item="film">
+                <a href="film/" data-logo-test-link="film">film</a>
+              </li>
+            </ul>
+          </nav>
+          <button class="theme-toggle btn--icon btn--ghost" type="button" aria-label="Toggle theme" data-logo-test-theme>
+            <svg class="theme-toggle__icon theme-toggle__icon--light" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 18C8.68629 18 6 15.3137 6 12C6 8.68629 8.68629 6 12 6C15.3137 6 18 8.68629 18 12C18 15.3137 15.3137 18 12 18ZM12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16ZM11 1H13V4H11V1ZM11 20H13V23H11V20ZM3.51472 4.92893L4.92893 3.51472L7.05025 5.63604L5.63604 7.05025L3.51472 4.92893ZM16.9497 18.364L18.364 16.9497L20.4853 19.0711L19.0711 20.4853L16.9497 18.364ZM19.0711 3.51472L20.4853 4.92893L18.364 7.05025L16.9497 5.63604L19.0711 3.51472ZM5.63604 16.9497L7.05025 18.364L4.92893 20.4853L3.51472 18.364L5.63604 16.9497ZM23 11V13H20V11H23ZM4 11V13H1V11H4Z" />
+            </svg>
+            <svg class="theme-toggle__icon theme-toggle__icon--neutral" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M9.98392 5.05991C11.1323 3.22236 13.1734 2 15.5 2C19.0899 2 22 4.91015 22 8.5C22 9.58031 21.7365 10.5991 21.2701 11.4955C22.3351 12.4985 23 13.9216 23 15.5C23 18.5376 20.5376 21 17.5 21H9C4.58172 21 1 17.4183 1 13C1 8.58172 4.58172 5 9 5C9.33312 5 9.66149 5.02036 9.98392 5.05991ZM12.0554 5.60419C14.0675 6.43637 15.6662 8.06578 16.4576 10.0986C16.7951 10.0339 17.1436 10 17.5 10C18.2351 10 18.9366 10.1442 19.5776 10.4059C19.8486 9.82719 20 9.18128 20 8.5C20 6.01472 17.9853 4 15.5 4C14.1177 4 12.8809 4.6233 12.0554 5.60419ZM17.5 19C19.433 19 21 17.433 21 15.5C21 13.567 19.433 12 17.5 12C16.5205 12 15.6351 12.4023 14.9998 13.0507C14.9999 13.0338 15 13.0169 15 13C15 9.68629 12.3137 7 9 7C5.68629 7 3 9.68629 3 13C3 16.3137 5.68629 19 9 19H17.5Z" />
+              </svg>
+              <svg class="theme-toggle__icon theme-toggle__icon--dark" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M10 7C10 10.866 13.134 14 17 14C18.9584 14 20.729 13.1957 21.9995 11.8995C22 11.933 22 11.9665 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C12.0335 2 12.067 2 12.1005 2.00049C10.8043 3.27098 10 5.04157 10 7ZM4 12C4 16.4183 7.58172 20 12 20C15.0583 20 17.7158 18.2839 19.062 15.7621C18.3945 15.9187 17.7035 16 17 16C12.0294 16 8 11.9706 8 7C8 6.29648 8.08133 5.60547 8.2379 4.938C5.71611 6.28423 4 8.9417 4 12Z" />
+              </svg>
+            </button>
+          </nav>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <script>
+    // Essential Logo Test functionality
+    (function () {
+      "use strict";
+      const root = document.getElementById("logo-test");
+      const logo = root.querySelector("[data-logo-trigger]");
+      const body = document.body;
+
+      // Simple navigation functionality
+      function setContext(context) {
+        const buttons = root.querySelectorAll("[data-logo-test-context]");
+        buttons.forEach(button => {
+          const isActive = button.dataset.logoTestContext === context;
+          button.setAttribute("aria-pressed", isActive.toString());
+        });
+        body.dataset.context = context;
+      }
+
+      // Initialize navigation
+      setContext("home");
+
+      // Theme toggle functionality
+      const themeToggle = root.querySelector("[data-logo-test-theme]");
+      function cycleTheme() {
+        const currentTheme = document.documentElement.getAttribute("data-theme") || "light";
+        const nextTheme = currentTheme === "light" ? "dark" : "light";
+        document.documentElement.setAttribute("data-theme", nextTheme);
+        localStorage.setItem("theme", nextTheme);
+      }
+      if (themeToggle) {
+        themeToggle.addEventListener("click", cycleTheme);
+      }
+
+      // Logo hover/tap functionality
+      if (logo) {
+        logo.addEventListener("click", function () {
+          const isExpanded = logo.dataset.logoState === "expanded";
+          logo.dataset.logoState = isExpanded ? "small" : "expanded";
+        });
+      }
+
+      // Mobile menu functionality
+      const menuToggle = root.querySelector("[data-logo-test-menu-toggle]");
+      const menuClose = root.querySelector("[data-logo-test-menu-close]");
+      const mobileMenu = root.querySelector("#logo-test-mobile-menu");
+
+      function openMenu() {
+        mobileMenu.hidden = false;
+        requestAnimationFrame(() => {
+          mobileMenu.classList.add("mobile-menu--open");
+        });
+      }
+
+      function closeMenu() {
+        mobileMenu.classList.remove("mobile-menu--open");
+        mobileMenu.addEventListener("transitionend", function handler(event) {
+          if (event.target === mobileMenu && !mobileMenu.classList.contains("mobile-menu--open")) {
+            mobileMenu.hidden = true;
+          }
+          mobileMenu.removeEventListener("transitionend", handler);
+        }, { once: true });
+      }
+
+      if (menuToggle) menuToggle.addEventListener("click", openMenu);
+      if (menuClose) menuClose.addEventListener("click", closeMenu);
+      if (mobileMenu) {
+        mobileMenu.addEventListener("click", function (event) {
+          if (event.target === mobileMenu) closeMenu();
+        });
+      }
+
+      // Keyboard navigation
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape" && mobileMenu && mobileMenu.classList.contains("mobile-menu--open")) {
+          closeMenu();
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
