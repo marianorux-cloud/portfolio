@@ -415,40 +415,9 @@
     var content = modal.querySelector("#project-modal__content");
     content.innerHTML = renderContent(config, renderNav(projectId));
 
-    attachVideoListeners();
-
     modal.classList.add("project-modal--open");
     document.body.classList.add("modal-open");
     return true;
-  }
-
-  function attachVideoListeners() {
-    var videoElements = modal.querySelectorAll(".project-modal__video video");
-    videoElements.forEach(function (video) {
-      var videoId = video.id || video.src || "unknown";
-      var projectId = currentProjectId;
-      var projectName = getProjectTitle(configs[currentProjectId], currentProjectId);
-      function getVideoProps() {
-        return {
-          projectId: projectId,
-          projectName: projectName,
-          videoId: videoId,
-          videoSrc: video.src || ""
-        };
-      }
-      video.addEventListener("play", function () {
-        if (window.Analytics) window.Analytics.track("video:started", getVideoProps());
-      });
-      video.addEventListener("pause", function () {
-        if (window.Analytics) window.Analytics.track("video:pause", getVideoProps());
-      });
-      video.addEventListener("ended", function () {
-        if (window.Analytics) window.Analytics.track("video:ended", getVideoProps());
-      });
-      video.addEventListener("error", function () {
-        if (window.Analytics) window.Analytics.track("video:error", getVideoProps());
-      });
-    });
   }
 
   function navigate(direction) {
