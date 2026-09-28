@@ -1535,7 +1535,7 @@ body.custom-cursor-active label {
   padding: 0.75rem 1.5rem;
   margin-top: 0;
   cursor: pointer;
-  transition: opacity 300ms ease, background-color 300ms ease;
+  transition: opacity 300ms ease, background-color 300ms ease, color 300ms ease;
   display: inline-block;
   text-align: center;
 }
@@ -1543,6 +1543,13 @@ body.custom-cursor-active label {
 .project-card__details:hover {
   background-color: #000;
   opacity: 1;
+  color: #fff;
+}
+
+[data-theme="dark"] .project-card__details:hover,
+@media (prefers-color-scheme: dark) .project-card__details:hover {
+  background-color: #fff !important;
+  color: #000 !important;
 }
 
 @media (max-width: 767px) {
