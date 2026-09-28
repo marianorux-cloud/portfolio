@@ -46,9 +46,15 @@
         const targetImg = cell.querySelector(".film-grid__image");
         if (!targetImg || targetImg.dataset.loaded) return;
         targetImg.dataset.loaded = "true";
+        const index = parseInt(cell.dataset.index, 10);
+        const photo = photos[index];
+        const slug = photo ? deriveSlug(photo.src) : "unknown";
+        if (window.Analytics) {
+          window.Analytics.track("film:image-enter", { index, slug, alt: photo.alt });
+        }
         const fullSrc = cell.dataset.src;
         const fullImg = new Image();
-fullImg.onload = () => {
+        fullImg.onload = () => {
             targetImg.src = fullSrc;
             targetImg.classList.remove("film-grid__image--placeholder");
             targetImg.classList.add("film-grid__image--loaded");
@@ -66,6 +72,8 @@ fullImg.onload = () => {
       cell.className = "film-grid__cell";
       cell.dataset.index = index;
       cell.dataset.src = photo.src;
+      cell.dataset.slug = deriveSlug(photo.src);
+      cell.dataset.alt = photo.alt;
       cell.tabIndex = 0;
       cell.setAttribute("role", "button");
 
@@ -77,6 +85,14 @@ fullImg.onload = () => {
       img.decoding = "async";
 
       cell.appendChild(img);
+      cell.addEventListener("focus", () => {
+        const idx = parseInt(cell.dataset.index, 10);
+        const photo = photos[idx];
+        const slug = photo ? deriveSlug(photo.src) : "unknown";
+        if (window.Analytics) {
+          window.Analytics.track("film:cell-focus", { index: idx, slug, alt: photo.alt });
+        }
+      });
       observer.observe(cell);
       grid.appendChild(cell);
     });
@@ -88,9 +104,10 @@ fullImg.onload = () => {
       const photo = photos[index];
       const slug = photo ? deriveSlug(photo.src) : "unknown";
       if (window.Analytics) {
-        window.Analytics.track(`${slug}:open`, { slug, index, alt: photo.alt });
+        window.Analytics.track("film:grid-open", { index, slug, alt: photo.alt });
+        window.Analytics.track(`film-${slug}:open`, { slug, index, alt: photo.alt });
       }
-      window.Lightbox.open({ items: photos, startIndex: index, showNav: true }, { prefix: "film-grid", identity: slug, suffixIdentity: true });
+      window.Lightbox.open({ items: photos, startIndex: index, showNav: true }, { prefix: "film-grid", identity: slug });
     });
 
     grid.addEventListener("keydown", (e) => {
@@ -102,9 +119,9 @@ fullImg.onload = () => {
       const photo = photos[index];
       const slug = photo ? deriveSlug(photo.src) : "unknown";
       if (window.Analytics) {
-        window.Analytics.track(`${slug}:open`, { slug, index, alt: photo.alt });
+        window.Analytics.track(`film-${slug}:open`, { slug, index, alt: photo.alt });
       }
-      window.Lightbox.open({ items: photos, startIndex: index, showNav: true }, { prefix: "film-grid", identity: slug, suffixIdentity: true });
+      window.Lightbox.open({ items: photos, startIndex: index, showNav: true }, { prefix: "film-grid", identity: slug });
     });
 
   }

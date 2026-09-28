@@ -207,6 +207,18 @@
         first.focus();
       }
     });
+
+    const mobileNavLinks = mobileMenu.querySelectorAll(".mobile-menu__list a");
+    mobileNavLinks.forEach((link) => {
+      link.addEventListener("click", () => {
+        const href = link.getAttribute("href");
+        const to = href.startsWith("./") ? href.slice(2).replace(/\/$/, "") || "home" : "home";
+        const from = getPageFromPath();
+        if (window.Analytics) {
+          window.Analytics.track(`mobile-nav:${from}-${to}`, { from, to });
+        }
+      });
+    });
   }
 
    /* ---------- Navigation tracking ---------- */
@@ -230,23 +242,22 @@
       if (!link) return;
       const href = link.getAttribute("href");
       const dest = href.startsWith("./") ? href.slice(2).replace(/\/$/, "") || "home" : "home";
-      if (dest === currentPage) return;
+      if (dest === currentPage && dest !== "home") return;
+      if (currentPage === "unknown") return;
       if (window.Analytics && typeof window.Analytics.track === "function") {
-        window.Analytics.track(`nav:${currentPage}-${dest}`, { from: currentPage });
+        if (dest === currentPage && dest === "home") {
+          window.Analytics.track("nav:home-click", {});
+        } else {
+          window.Analytics.track(`nav:${currentPage}-${dest}`, { from: currentPage });
+        }
       }
-      currentPage = dest;
+      if (dest !== currentPage) {
+        currentPage = dest;
+      }
     });
   }
 
-  /* ---------- Back home tracking ---------- */
-  const backBtn = document.querySelector(".navbar__back");
-  if (backBtn) {
-    backBtn.addEventListener("click", () => {
-      if (window.Analytics) {
-        window.Analytics.track("nav:back-home");
-      }
-    });
-  }
+
 
   /* ---------- Skip link tracking ---------- */
   const skipLink = document.querySelector(".skip-link");
@@ -266,6 +277,59 @@
         window.Analytics.track("hero:linkedin");
       }
     });
+  }
+
+  /* ---------- Logo click tracking ---------- */
+  const navbarLogo = document.querySelector(".navbar__logo");
+  if (navbarLogo) {
+    navbarLogo.addEventListener("click", () => {
+      if (window.Analytics) {
+        window.Analytics.track("logo:click", { location: "navbar" });
+      }
+    });
+  }
+
+  const footerLogo = document.querySelector(".footer__logo");
+  if (footerLogo) {
+    footerLogo.addEventListener("click", () => {
+      if (window.Analytics) {
+        window.Analytics.track("logo:click", { location: "footer" });
+      }
+    });
+  }
+
+  /* ---------- 404 page tracking ---------- */
+  if (window.location.pathname === "/404") {
+    if (window.Analytics) {
+      window.Analytics.track("404-page:visit", { referrer: document.referrer });
+    }
+
+    const homeLink = document.querySelector(".page__link");
+    if (homeLink) {
+      homeLink.addEventListener("click", () => {
+        if (window.Analytics) {
+          window.Analytics.track("404-nav:home-click", {});
+        }
+      });
+    }
+
+    const navbarLogo = document.querySelector(".navbar__logo");
+    if (navbarLogo) {
+      navbarLogo.addEventListener("click", () => {
+        if (window.Analytics) {
+          window.Analytics.track("404-nav:logo-click", { location: "navbar" });
+        }
+      });
+    }
+
+    const footerLogo = document.querySelector(".footer__logo");
+    if (footerLogo) {
+      footerLogo.addEventListener("click", () => {
+        if (window.Analytics) {
+          window.Analytics.track("404-nav:logo-click", { location: "footer" });
+        }
+      });
+    }
   }
 
   /* ---------- Scroll depth tracking ---------- */
@@ -330,9 +394,8 @@ function openLightboxForElement(el) {
     const card = el.closest(".project-card");
     if (card && card.dataset.details) return;
     const slug = (card && card.dataset.slug) || "unknown";
-    const year = card ? card.dataset.year : null;
     if (window.Analytics && typeof window.Analytics.track === "function") {
-      window.Analytics.track(`${slug}:open`, { slug, year });
+      window.Analytics.track(`project-${slug}:open`, { slug });
     }
     const itemVideo = el.dataset.video || null;
     const items = [{
@@ -358,5 +421,25 @@ function openLightboxForElement(el) {
       e.preventDefault();
       openLightboxForElement(img);
     });
+  }
+
+  /* ---------- Work page: project card visibility ---------- */
+  if ("IntersectionObserver" in window) {
+    const cardObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const card = entry.target;
+        const projectId = card.dataset.details || card.dataset.slug || "unknown";
+        const slug = card.dataset.slug || "unknown";
+        const company = card.dataset.company || "";
+        const year = card.dataset.year || "";
+        if (window.Analytics) {
+          window.Analytics.track("project-card:visible", { projectId, slug, company, year });
+        }
+        cardObserver.unobserve(card);
+      });
+    }, { threshold: 0.5 });
+
+    document.querySelectorAll(".project-card").forEach((card) => cardObserver.observe(card));
   }
 })();

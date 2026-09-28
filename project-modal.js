@@ -7,6 +7,7 @@
   var lastFocused = null;
   var pushedState = false;
   var closingViaHistory = false;
+  var closeMethod = null;
   var modalScrollFired = new Set();
 
   var FOCUSABLE_SELECTOR =
@@ -414,9 +415,40 @@
     var content = modal.querySelector("#project-modal__content");
     content.innerHTML = renderContent(config, renderNav(projectId));
 
+    attachVideoListeners();
+
     modal.classList.add("project-modal--open");
     document.body.classList.add("modal-open");
     return true;
+  }
+
+  function attachVideoListeners() {
+    var videoElements = modal.querySelectorAll(".project-modal__video video");
+    videoElements.forEach(function (video) {
+      var videoId = video.id || video.src || "unknown";
+      var projectId = currentProjectId;
+      var projectName = getProjectTitle(configs[currentProjectId], currentProjectId);
+      function getVideoProps() {
+        return {
+          projectId: projectId,
+          projectName: projectName,
+          videoId: videoId,
+          videoSrc: video.src || ""
+        };
+      }
+      video.addEventListener("play", function () {
+        if (window.Analytics) window.Analytics.track("video:started", getVideoProps());
+      });
+      video.addEventListener("pause", function () {
+        if (window.Analytics) window.Analytics.track("video:pause", getVideoProps());
+      });
+      video.addEventListener("ended", function () {
+        if (window.Analytics) window.Analytics.track("video:ended", getVideoProps());
+      });
+      video.addEventListener("error", function () {
+        if (window.Analytics) window.Analytics.track("video:error", getVideoProps());
+      });
+    });
   }
 
   function navigate(direction) {
@@ -462,7 +494,7 @@
 
     if (window.Analytics && typeof window.Analytics.track === "function") {
       window.Analytics.track(
-        fromId + ":" + (direction === 1 ? "next" : "previous"),
+        "modal-" + fromId + ":" + (direction === 1 ? "next" : "previous"),
         { slug: target.id, direction: direction }
       );
     }
@@ -485,21 +517,24 @@
     }
 
     if (window.Analytics && typeof window.Analytics.track === "function") {
-      window.Analytics.track(projectId + ":open", {
+      window.Analytics.track("modal-" + projectId + ":open", {
         slug: projectId,
         trigger: trigger
       });
     }
   }
 
-  function teardown() {
+  function teardown(method) {
     if (!modal) return;
+    var actualMethod = method || closeMethod || "unknown";
+    closeMethod = null;
     if (
       currentProjectId &&
       window.Analytics &&
       typeof window.Analytics.track === "function"
     ) {
-      window.Analytics.track(currentProjectId + ":close", { slug: currentProjectId });
+      window.Analytics.track("modal-" + currentProjectId + ":close", { slug: currentProjectId });
+      window.Analytics.track("modal:" + currentProjectId + "-close-method", { slug: currentProjectId, method: actualMethod });
     }
     modal.classList.remove("project-modal--open");
     document.body.classList.remove("modal-open");
@@ -509,15 +544,17 @@
     currentProjectId = null;
   }
 
-  function close() {
+  function close(method) {
     if (!currentProjectId) return;
+    closeMethod = method || null;
 
     if (pushedState) {
       closingViaHistory = true;
       history.back();
     } else {
       history.replaceState(null, "", location.pathname + location.search);
-      teardown();
+      teardown(closeMethod);
+      closeMethod = null;
     }
   }
 
@@ -538,11 +575,11 @@
 
     var closeBtn = modal.querySelector(".project-modal__close");
 
-    closeBtn.addEventListener("click", function () { close(); });
+    closeBtn.addEventListener("click", function () { close("button"); });
 
     modal.addEventListener("click", function (e) {
       if (e.target === modal) {
-        close();
+        close("overlay");
       }
     });
 
@@ -554,7 +591,7 @@
         !(window.Lightbox && window.Lightbox.isOpen())
       ) {
         e.preventDefault();
-        close();
+        close("escape");
       }
     });
 
@@ -686,8 +723,21 @@
       if (!btn) return;
       var videoId = btn.dataset.videoId;
       var title = btn.getAttribute("aria-label") || "";
+      var videoSrc = "https://player.vimeo.com/video/" + videoId + "?dnt=1&badge=0&autopause=0&app_id=122963";
+      if (
+        window.Analytics &&
+        typeof window.Analytics.track === "function" &&
+        currentProjectId
+      ) {
+        window.Analytics.track("video:play-click", {
+          projectId: currentProjectId,
+          projectName: getProjectTitle(configs[currentProjectId], currentProjectId),
+          videoId: videoId,
+          videoSrc: videoSrc
+        });
+      }
       var iframe = document.createElement("iframe");
-      iframe.src = "https://player.vimeo.com/video/" + videoId + "?dnt=1&badge=0&autopause=0&app_id=122963";
+      iframe.src = videoSrc;
       iframe.title = title;
       iframe.allow = "autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share";
       btn.replaceWith(iframe);

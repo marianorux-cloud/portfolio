@@ -3,10 +3,10 @@
 
 <head>
   <!-- umami analytics -->
-  <script defer src="https://cloud.umami.is/script.js" data-website-id="20473bbb-aaa3-4d65-a1da-4b8870e56e31"></script>
+  <!-- umami analytics is loaded by umami-helpers.js, gated on consent -->
   <meta charset="UTF-8" />
   <meta http-equiv="Content-Security-Policy"
-    content="default-src 'self'; script-src 'self' https://cloud.umami.is https://gateway.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' https://marianodesigns.com data:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://gateway.umami.is; frame-src https://player.vimeo.com;">
+    content="default-src 'self'; script-src 'self' https://cloud.umami.is https://gateway.umami.is; style-src 'self' 'unsafe-inline'; img-src 'self' https://marianodesigns.com data:; font-src 'self'; connect-src 'self' https://gateway.umami.is; frame-src https://player.vimeo.com; object-src 'none'; base-uri 'self'; form-action 'self';">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="view-transition" content="same-origin" />
   <meta name="description" content="Portfolio of Mariano Rodriguez, Principal UX Designer." />
@@ -31,9 +31,6 @@
   <link rel="preload" href="../assets/fonts/OverusedGrotesk-Roman.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="../assets/fonts/OverusedGrotesk-Medium.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="../assets/fonts/OverusedGrotesk-Bold.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap">
   <script src="../theme-init.js"></script>
   <link rel="stylesheet" href="../styles.css" />
 </head>
@@ -128,9 +125,58 @@
   <footer class="footer">
     <div class="footer__inner">
       <div class="footer__line" aria-hidden="true"></div>
+      <button class="footer__privacy-btn btn--icon btn--ghost" aria-label="Privacy settings" type="button">
+        <span class="footer__privacy-icon" aria-hidden="true"></span>
+      </button>
       <a href="../" class="footer__logo" aria-label="Mariano Rodriguez home"></a>
     </div>
   </footer>
+
+  <!-- Privacy Consent Modal -->
+  <div id="privacy-modal" class="privacy-modal" role="dialog" aria-modal="true" aria-labelledby="privacy-modal-title" hidden>
+    <div class="privacy-modal__overlay"></div>
+    <div class="privacy-modal__content">
+      <div class="privacy-modal__header">
+        <div class="privacy-modal__title-wrapper">
+          <h2 id="privacy-modal-title">Umami Analytics</h2>
+          <p class="privacy-modal__subline">Open source privacy-first analytics platform</p>
+        </div>
+        <button class="privacy-modal__close btn--icon" type="button" aria-label="Close privacy settings">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M10.5859 12L2.79297 4.20706L4.20718 2.79285L12.0001 10.5857L19.793 2.79285L21.2072 4.20706L13.4143 12L21.2072 19.7928L19.793 21.2071L12.0001 13.4142L4.20718 21.2071L2.79297 19.7928L10.5859 12Z" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="privacy-modal__section">
+        <label class="privacy-switch">
+          <span class="privacy-switch__text">
+            <span class="privacy-switch__label">Engagement tracking</span>
+            <span class="privacy-switch__subline">This helps me decide what kind of work to showcase.</span>
+          </span>
+          <span class="privacy-switch__control">
+            <input class="privacy-switch__input" type="checkbox" id="toggle-engagement-tracking" checked>
+            <span class="privacy-switch__track"></span>
+          </span>
+        </label>
+      </div>
+
+      <div class="privacy-modal__section">
+        <label class="privacy-switch">
+          <span class="privacy-switch__text">
+            <span class="privacy-switch__label">Invasive tracking</span>
+            <span class="privacy-switch__subline">Never collected, your privacy is important.</span>
+          </span>
+          <span class="privacy-switch__control">
+            <input class="privacy-switch__input" type="checkbox" id="toggle-invasive-tracking" aria-disabled="true" tabindex="-1">
+            <span class="privacy-switch__track"></span>
+          </span>
+        </label>
+      </div>
+
+    </div>
+  </div>
+
 
   <div class="cursor" aria-hidden="true"></div>
   <script src="../lightbox.js"></script>

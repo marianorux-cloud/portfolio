@@ -105,7 +105,7 @@
     
   }
 
-  function close() {
+  function close(method) {
     const ctx = analyticsContext;
     analyticsContext = null;
 
@@ -119,17 +119,12 @@
       videoEl.style.display = "none";
     }
     if (window.Analytics && typeof window.Analytics.track === "function") {
-      if (ctx) {
-        const { prefix, identity, suffixIdentity } = ctx;
-        const safeIdentity = identity || "unknown";
-        if (suffixIdentity !== false) {
-          window.Analytics.track(`${safeIdentity}:close`, { slug: safeIdentity });
-        } else {
-          window.Analytics.track("lightbox:close", { slug: safeIdentity });
-        }
-      } else {
-        window.Analytics.track("lightbox:close");
-      }
+      const safeIdentity = (ctx && ctx.identity) || "unknown";
+      window.Analytics.track("lightbox:close", {
+        index: currentIndex,
+        slug: safeIdentity,
+        method: method || "unknown",
+      });
     }
   }
 
@@ -138,10 +133,14 @@
     currentIndex = (currentIndex + direction + items.length) % items.length;
     renderCurrentItem();
     if (window.Analytics && typeof window.Analytics.track === "function" && analyticsContext) {
-      const slug = deriveSlug(items[currentIndex].src || items[currentIndex].lightboxSrc || "");
+      const identity = analyticsContext.identity || "unknown";
       const directionLabel = direction === 1 ? 'next' : 'previous';
-      const suffix = analyticsContext.prefix === "film-grid" ? '-photo' : '-project';
-      window.Analytics.track(`${directionLabel}${suffix}`, { direction, slug });
+      if (analyticsContext.prefix === "film-grid") {
+        const slug = deriveSlug(items[currentIndex].src || items[currentIndex].lightboxSrc || "");
+        window.Analytics.track(`film-${slug}:${directionLabel}`, { direction, slug });
+      } else {
+        window.Analytics.track(`lightbox-${identity}:${directionLabel}`, { direction, slug: identity });
+      }
     }
   }
 
@@ -152,10 +151,10 @@
   window.Lightbox = { open, close, navigate, isOpen };
 
   /* ── Event listeners ── */
-  closeEl.addEventListener("click", close);
+  closeEl.addEventListener("click", function () { close("button"); });
 
   lightbox.addEventListener("click", function (e) {
-    if (e.target === lightbox) close();
+    if (e.target === lightbox) close("backdrop");
   });
 
   prevEl.addEventListener("click", function () { navigate(-1); });
@@ -182,7 +181,7 @@
     if (!lightbox.classList.contains("lightbox--open")) return;
     if (e.key === "Escape") {
       e.lightboxHandled = true;
-      close();
+      close("escape");
       return;
     }
     if (!showNav) return;

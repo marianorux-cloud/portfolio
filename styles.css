@@ -2030,3 +2030,220 @@ body.modal-open {
 .cursor--expand::after {
   opacity: 1;
 }
+
+/* ============================================
+    Privacy Modal
+    ============================================ */
+
+.privacy-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-fast);
+}
+
+.privacy-modal[hidden] {
+  display: none;
+}
+
+.privacy-modal--open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.privacy-modal__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.privacy-modal__content {
+  position: relative;
+  background: var(--color-bg);
+  color: var(--color-text);
+  border: 1px solid var(--color-text);
+  padding: var(--space-2xl);
+  max-width: 90vw;
+  width: 100%;
+  max-width: 600px;
+  margin: var(--space-md);
+  z-index: 1;
+}
+
+.privacy-modal__header {
+  margin-bottom: var(--modal-block-gap);
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+}
+
+.privacy-modal__close {
+  flex: 0 0 auto;
+  align-self: flex-start;
+  margin-left: auto;
+  color: var(--color-text);
+  background: transparent;
+}
+
+.privacy-modal__title-wrapper {
+  flex: 1;
+}
+
+.privacy-modal__header h2 {
+  font-size: var(--text-lg);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--leading-tight);
+  margin: 0;
+}
+
+.privacy-modal__subline {
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--leading-normal);
+  opacity: 0.7;
+  margin-top: var(--space-xs);
+}
+
+.privacy-modal__section {
+  margin-top: var(--modal-block-gap);
+}
+
+/* From Uiverse.io by gharsh11032000, adapted.
+   State colours live in custom properties so new states are a one-rule change. */
+.privacy-switch {
+  /* geometry */
+  --switch-width: 3.5em;
+  --switch-height: 2em;
+  --switch-knob: 1.4em;
+  --switch-inset: 0.2em;
+  /* resting */
+  --switch-track-bg: transparent;
+  --switch-track-border: var(--color-text);
+  --switch-knob-bg: var(--color-icon);
+  /* engaged (engagement tracking) */
+  --switch-checked-track-bg: transparent;
+  --switch-checked-border: #0974f1;
+  --switch-checked-knob-bg: #0974f1;
+  --switch-checked-glow: rgba(9, 117, 241, 0.8);
+  /* refused (invasive tracking) */
+  --switch-danger-border: #d63b3b;
+  --switch-danger-knob: #d63b3b;
+  --switch-danger-glow: rgba(214, 59, 59, 0.55);
+  --switch-focus-ring: var(--color-text);
+
+  font-size: 17px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  cursor: pointer;
+  user-select: none;
+}
+
+.privacy-switch__label {
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--leading-tight);
+  color: var(--color-text);
+  padding-right: var(--space-md);
+}
+
+.privacy-switch__subline {
+  display: block;
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--leading-normal);
+  color: var(--color-text);
+  opacity: 0.7;
+  margin-top: var(--space-xs);
+}
+
+.privacy-switch__control {
+  position: relative;
+  flex: 0 0 auto;
+  display: inline-block;
+  width: var(--switch-width);
+  height: var(--switch-height);
+}
+
+.privacy-switch__input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.privacy-switch__track {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background-color: var(--switch-track-bg);
+  border: 2px solid var(--switch-track-border);
+  border-radius: 50px;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.privacy-switch__track:before {
+  position: absolute;
+  content: "";
+  height: var(--switch-knob);
+  width: var(--switch-knob);
+  left: var(--switch-inset);
+  bottom: var(--switch-inset);
+  background-color: var(--switch-knob-bg);
+  border-radius: inherit;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+}
+
+/* State: checked */
+.privacy-switch__input:checked + .privacy-switch__track {
+  background-color: var(--switch-checked-track-bg);
+  border-color: var(--switch-checked-border);
+  box-shadow: 0 0 20px var(--switch-checked-glow);
+}
+
+.privacy-switch__input:checked + .privacy-switch__track:before {
+  transform: translateX(1.5em);
+  background-color: var(--switch-checked-knob-bg);
+}
+
+/* State: refused. Toggled by script for a moment, never persists. */
+.privacy-switch--refused .privacy-switch__track {
+  border-color: var(--switch-danger-border);
+  box-shadow: 0 0 20px var(--switch-danger-glow);
+  transition-duration: 80ms;
+}
+
+.privacy-switch--refused .privacy-switch__track:before {
+  background-color: var(--switch-danger-knob);
+  transition-duration: 80ms;
+}
+
+/* State: keyboard focus */
+.privacy-switch__input:focus-visible + .privacy-switch__track {
+  outline: 2px solid var(--switch-focus-ring);
+  outline-offset: 2px;
+}
+
+/* Theme variants for footer icon */
+.footer__privacy-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  background-color: var(--color-icon);
+  -webkit-mask-image: url("assets/icons/umami.svg");
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-image: url("assets/icons/umami.svg");
+  mask-size: contain;
+  mask-repeat: no-repeat;
+}
+
+/* Hide on touch devices */
