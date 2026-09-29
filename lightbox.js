@@ -122,7 +122,7 @@
       imgEl.alt = item.alt || "";
     }
 
-    counterEl.textContent = (currentIndex + 1) + " / " + items.length + " — " + (imgEl.alt || "");
+    counterEl.textContent = (currentIndex + 1) + " / " + items.length;
 
     if (!item.video && imgEl.alt) {
       lightbox.setAttribute("aria-describedby", LIGHTBOX_IMG_ID);
