@@ -51,18 +51,9 @@
     return basename.replace(/\.\w+$/, "").toLowerCase().replace(/_/g, "-");
   }
 
-  function isRestorable(el) {
-    return (
-      el &&
-      el !== document.body &&
-      el.isConnected &&
-      typeof el.focus === "function"
-    );
-  }
-
   function focusRestoreTarget() {
-    if (isRestorable(lastFocusedElement)) return lastFocusedElement;
-    return document.querySelector(FOCUSABLE_SELECTOR) || document.body;
+    if (window.DialogUtil.isRestorable(lastFocusedElement)) return lastFocusedElement;
+    return document.querySelector(window.DialogUtil.FOCUSABLE_SELECTOR) || document.body;
   }
 
   function scheduleHide() {
@@ -83,16 +74,13 @@
   let shouldBeOpen = false;
   const HIDE_FALLBACK_MS = 300;
 
-  const FOCUSABLE_SELECTOR =
-    'button:not([tabindex="-1"]), [href]:not([tabindex="-1"]), input:not([tabindex="-1"]), select:not([tabindex="-1"]), textarea:not([tabindex="-1"]), [tabindex]:not([tabindex="-1"])';
-
   /* A [hidden] subtree is not tabbable, but FOCUSABLE_SELECTOR only screens
      out a removed tabindex, so a button hidden on open still matches. The
      attribute is the source of truth here, never the stylesheet: .btn--icon
      sets display:inline-flex and beats the UA [hidden] rule, so a computed
      style check would report these buttons as visible. */
   function getTabbableElements(root) {
-    return Array.from(root.querySelectorAll(FOCUSABLE_SELECTOR)).filter(
+    return Array.from(root.querySelectorAll(window.DialogUtil.FOCUSABLE_SELECTOR)).filter(
       function (el) { return !el.closest("[hidden]"); }
     );
   }

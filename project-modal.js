@@ -13,9 +13,6 @@
   var shouldBeOpen = false;
   var HIDE_FALLBACK_MS = 300;
 
-  var FOCUSABLE_SELECTOR =
-    'button:not([tabindex="-1"]), [href]:not([tabindex="-1"]), input:not([tabindex="-1"]), select:not([tabindex="-1"]), textarea:not([tabindex="-1"]), [tabindex]:not([tabindex="-1"])';
-
   /* Arrow paths shared with the lightbox controls (lightbox.js). */
   var ARROW_LEFT_PATH =
     "M7.82843 10.9999H20V12.9999H7.82843L13.1924 18.3638L11.7782 19.778L4 11.9999L11.7782 4.22168L13.1924 5.63589L7.82843 10.9999Z";
@@ -417,15 +414,6 @@
     }, HIDE_FALLBACK_MS);
   }
 
-  function isRestorable(el) {
-    return (
-      el &&
-      el !== document.body &&
-      el.isConnected &&
-      typeof el.focus === "function"
-    );
-  }
-
   /* A URL deep link opens the modal with focus on <body>, which .focus() cannot
      move in Chrome, so closing would strand focus on a button inside the closed
      dialog. The card control for this project is the honest return target. */
@@ -441,8 +429,8 @@
   }
 
   function focusRestoreTarget() {
-    if (isRestorable(lastFocused)) return lastFocused;
-    return getDeepLinkTarget(currentProjectId) || document.querySelector(FOCUSABLE_SELECTOR) || document.body;
+    if (window.DialogUtil.isRestorable(lastFocused)) return lastFocused;
+    return getDeepLinkTarget(currentProjectId) || document.querySelector(window.DialogUtil.FOCUSABLE_SELECTOR) || document.body;
   }
 
   function showProject(projectId) {
@@ -635,7 +623,19 @@
         !modal.classList.contains("project-modal--open")
       )
         return;
-      var focusable = modal.querySelectorAll(FOCUSABLE_SELECTOR);
+      /* Same hidden-subtree filter as the lightbox's getTabbableElements
+         (lightbox.js): FOCUSABLE_SELECTOR screens out a removed tabindex
+         only, so a button that is `hidden` while the dialog is open would
+         still land in the cycle. Test the attribute, not getComputedStyle —
+         .btn--icon sets display:inline-flex and beats the UA [hidden] rule,
+         so a computed-style check reports these buttons as visible and the
+         filter silently does nothing. If the modal itself is hidden, every
+         element filters out, length is 0, and the early return below
+         handles it exactly as before. */
+      var focusable = Array.prototype.filter.call(
+        modal.querySelectorAll(window.DialogUtil.FOCUSABLE_SELECTOR),
+        function (el) { return !el.closest("[hidden]"); }
+      );
       if (focusable.length === 0) return;
       var first = focusable[0];
       var last = focusable[focusable.length - 1];

@@ -135,10 +135,33 @@
   const mobileMenu = document.getElementById("mobile-menu");
 
   if (mobileMenuToggle && mobileMenuClose && mobileMenu) {
-    const FOCUSABLE_SELECTOR =
-      'button:not([tabindex="-1"]), [href]:not([tabindex="-1"]), input:not([tabindex="-1"]), select:not([tabindex="-1"]), textarea:not([tabindex="-1"]), [tabindex]:not([tabindex="-1"])';
+    /* The background the menu makes inert while it is open. #mobile-menu is a
+       direct child of <body>, a sibling of both of these, so inerting them
+       cannot reach the dialog. The navbar is deliberately NOT in this list:
+       .navbar__toggle lives there and closeMenu() calls .focus() on it, which
+       is a silent no-op inside an inert region and would strand focus on
+       body. The same holds for the .skip-link, the privacy modal and any
+       other body-level sibling. */
+    const MOBILE_MENU_INERT_TARGETS = ["#main-content", ".footer"];
+
+    function setBackgroundInert(isInert) {
+      MOBILE_MENU_INERT_TARGETS.forEach((selector) => {
+        const el = document.querySelector(selector);
+        if (!el) return;
+        if (isInert) {
+          el.setAttribute("inert", "");
+        } else {
+          el.removeAttribute("inert");
+        }
+      });
+    }
 
     function closeMenu() {
+      /* Every exit path — close button, backdrop, Escape — funnels through
+         here, so this is the single place the attribute has to be cleared.
+         The transitionend handler and the hideTimer callback below do not
+         call closeMenu() and must not be relied on for cleanup. */
+      setBackgroundInert(false);
       mobileMenu.classList.remove("mobile-menu--open");
       mobileMenuToggle.setAttribute("aria-expanded", "false");
       mobileMenuToggle.setAttribute("aria-label", "Open menu");
@@ -171,6 +194,7 @@
       mobileMenuToggle.setAttribute("aria-expanded", "true");
       mobileMenuToggle.setAttribute("aria-label", "Close menu");
       document.body.style.overflow = "hidden";
+      setBackgroundInert(true);
       mobileMenuClose.focus();
       if (window.Analytics) {
         window.Analytics.track("mobile-nav:open", { open: true });
@@ -215,7 +239,18 @@
         !mobileMenu.classList.contains("mobile-menu--open")
       )
         return;
-      const focusable = mobileMenu.querySelectorAll(FOCUSABLE_SELECTOR);
+      /* Same hidden-subtree filter as the lightbox and project modal
+         (lightbox.js, project-modal.js): FOCUSABLE_SELECTOR screens out a
+         removed tabindex only, so a button that is `hidden` while the menu is
+         open would still land in the cycle. Test the attribute, not
+         getComputedStyle — .btn--icon sets display:inline-flex and beats the
+         UA [hidden] rule, so a computed-style check reports these buttons as
+         visible and the filter silently does nothing. If the menu itself is
+         hidden, every element filters out, length is 0, and the early return
+         below handles it exactly as before. */
+      const focusable = Array.from(
+        mobileMenu.querySelectorAll(window.DialogUtil.FOCUSABLE_SELECTOR)
+      ).filter((el) => !el.closest("[hidden]"));
       if (focusable.length === 0) return;
       const first = focusable[0];
       const last = focusable[focusable.length - 1];

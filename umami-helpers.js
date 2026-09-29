@@ -6,12 +6,6 @@
   const REFUSED_MS = 600;
   const HIDE_FALLBACK_MS = 300;
 
-  /* The :not() has to repeat per selector: in a comma list it would otherwise
-     bind to [tabindex] alone, and a bare `input` would still match an input
-     that is explicitly out of the tab order. */
-  const FOCUSABLE_SELECTOR =
-    'button:not([tabindex="-1"]), [href]:not([tabindex="-1"]), input:not([tabindex="-1"]), select:not([tabindex="-1"]), textarea:not([tabindex="-1"]), [tabindex]:not([tabindex="-1"])';
-
   /* The gate stops every event this codebase sends, and nothing more. It does
      not stop Umami's own pageview for the current page view: a third-party
      script that has already executed cannot be reliably unloaded, and removing
@@ -110,7 +104,20 @@
     modal.addEventListener("keydown", (e) => {
       if (e.key !== "Tab") return;
       if (!modal.classList.contains("privacy-modal--open")) return;
-      const focusable = modal.querySelectorAll(FOCUSABLE_SELECTOR);
+      /* Same hidden-subtree filter as the lightbox, project modal and mobile
+         menu (lightbox.js, project-modal.js, scripts.js): FOCUSABLE_SELECTOR
+         screens out a removed tabindex only, so a control that is `hidden`
+         while the modal is open would still land in the cycle. Test the
+         attribute, not getComputedStyle — .btn--icon sets display:inline-flex
+         and beats the UA [hidden] rule, so a computed-style check reports
+         these as visible and the filter silently does nothing. The invasive
+         toggle is excluded for a different and already-sufficient reason: it
+         carries tabindex="-1", which the shared selector rejects. If the
+         modal itself is hidden, every element filters out, length is 0, and
+         the early return below handles it exactly as before. */
+      const focusable = Array.from(
+        modal.querySelectorAll(window.DialogUtil.FOCUSABLE_SELECTOR)
+      ).filter((el) => !el.closest("[hidden]"));
       if (focusable.length === 0) return;
       const first = focusable[0];
       const last = focusable[focusable.length - 1];
