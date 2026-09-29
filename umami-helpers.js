@@ -12,11 +12,22 @@
   const FOCUSABLE_SELECTOR =
     'button:not([tabindex="-1"]), [href]:not([tabindex="-1"]), input:not([tabindex="-1"]), select:not([tabindex="-1"]), textarea:not([tabindex="-1"]), [tabindex]:not([tabindex="-1"])';
 
+  /* The gate stops every event this codebase sends, and nothing more. It does
+     not stop Umami's own pageview for the current page view: a third-party
+     script that has already executed cannot be reliably unloaded, and removing
+     its <script> element halts nothing, so do not add that. Without storage the
+     choice also cannot survive a navigation — there is no way to carry it
+     across a page-load boundary. */
   function track(name, props) {
+    if (!hasConsent()) return;
     if (window.umami && typeof window.umami.track === "function") {
       window.umami.track(name, props);
     }
   }
+
+  /* The user's own choice, which outranks storage in both directions so it
+     still holds when the write below throws. null means no choice yet. */
+  let consentOverride = null;
 
   /* A throwing read must answer "opted in", same as an absent key. load() calls
      this at module top level, before window.Analytics is assigned, so a throw
@@ -24,6 +35,7 @@
      the repo goes false. The failure itself surfaces as an uncaught page error;
      it is the resulting loss of analytics that nothing reports. */
   function hasConsent() {
+    if (consentOverride !== null) return consentOverride;
     try {
       return localStorage.getItem(ENGAGEMENT_KEY) !== "false";
     } catch {
@@ -112,10 +124,11 @@
     });
 
     toggle.addEventListener("change", () => {
+      consentOverride = toggle.checked;
       try {
         localStorage.setItem(ENGAGEMENT_KEY, toggle.checked ? "true" : "false");
       } catch {
-        // Not persisted, but the switch keeps the new state for this session.
+        // Not persisted. track() still honours the choice for this page view.
       }
       if (toggle.checked) load();
       track(toggle.checked ? "privacy-toggle:engagement:on" : "privacy-toggle:engagement:off", { enabled: toggle.checked });
