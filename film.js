@@ -32,9 +32,6 @@
   { src: "../assets/images/film/webp/IMG_0016.webp", alt: "all day coffee shop 2", lightboxSrc: "../assets/images/film/IMG_0016.jpg" },
   ];
 
-  let hasScrolled = false;
-  document.addEventListener("scroll", () => { hasScrolled = true; }, { passive: true });
-
   function init() {
     const grid = document.getElementById("film-grid");
     if (!grid) return;
@@ -62,6 +59,11 @@
               targetImg.classList.add("film-grid__image--portrait");
             }
          };
+        /* Leave the placeholder: the cell stays focusable and still opens the
+           lightbox, and a broken path fails at deploy, not at runtime. */
+        fullImg.onerror = () => {
+          console.warn("Failed to preload film image:", fullSrc);
+        };
         fullImg.src = fullSrc;
         observer.unobserve(cell);
       });

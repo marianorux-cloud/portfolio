@@ -18,8 +18,17 @@
     }
   }
 
+  /* A throwing read must answer "opted in", same as an absent key. load() calls
+     this at module top level, before window.Analytics is assigned, so a throw
+     here aborts the rest of the file and every `if (window.Analytics)` guard in
+     the repo goes false. The failure itself surfaces as an uncaught page error;
+     it is the resulting loss of analytics that nothing reports. */
   function hasConsent() {
-    return localStorage.getItem(ENGAGEMENT_KEY) !== "false";
+    try {
+      return localStorage.getItem(ENGAGEMENT_KEY) !== "false";
+    } catch {
+      return true;
+    }
   }
 
   function initPrivacyModal() {
@@ -103,7 +112,11 @@
     });
 
     toggle.addEventListener("change", () => {
-      localStorage.setItem(ENGAGEMENT_KEY, toggle.checked ? "true" : "false");
+      try {
+        localStorage.setItem(ENGAGEMENT_KEY, toggle.checked ? "true" : "false");
+      } catch {
+        // Not persisted, but the switch keeps the new state for this session.
+      }
       if (toggle.checked) load();
       track(toggle.checked ? "privacy-toggle:engagement:on" : "privacy-toggle:engagement:off", { enabled: toggle.checked });
     });

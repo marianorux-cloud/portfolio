@@ -15,7 +15,7 @@
     try {
       localStorage.setItem(STORAGE_KEY, theme);
     } catch {
-      // Ignore storage errors (e.g. private mode)
+      // Ignore storage failures: quota exhaustion on write, or blocked/partitioned storage.
     }
   }
 
@@ -353,12 +353,14 @@
   }
 
   /* ---------- Scroll depth tracking ---------- */
+  const SCROLL_THRESHOLDS = [25, 50, 75, 100];
   const firedThresholds = new Set();
   function checkScrollDepth() {
+    if (firedThresholds.size === SCROLL_THRESHOLDS.length) return;
     const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
     if (scrollableHeight <= 0) return;
     const percent = Math.round((window.scrollY / scrollableHeight) * 100);
-    [25, 50, 75, 100].forEach((threshold) => {
+    SCROLL_THRESHOLDS.forEach((threshold) => {
       if (percent >= threshold && !firedThresholds.has(threshold)) {
         firedThresholds.add(threshold);
         if (window.Analytics) {
