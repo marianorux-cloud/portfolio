@@ -136,28 +136,44 @@
 
   if (mobileMenuToggle && mobileMenuClose && mobileMenu) {
     const FOCUSABLE_SELECTOR =
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+      'button:not([tabindex="-1"]), [href]:not([tabindex="-1"]), input:not([tabindex="-1"]), select:not([tabindex="-1"]), textarea:not([tabindex="-1"]), [tabindex]:not([tabindex="-1"])';
+
+    function closeMenu() {
+      mobileMenu.classList.remove("mobile-menu--open");
+      mobileMenuToggle.setAttribute("aria-expanded", "false");
+      mobileMenuToggle.setAttribute("aria-label", "Open menu");
+      document.body.style.overflow = "";
+      mobileMenuToggle.focus();
+      if (hideTimer) clearTimeout(hideTimer);
+      hideTimer = setTimeout(() => {
+        hideTimer = null;
+        if (!mobileMenu.classList.contains("mobile-menu--open")) {
+          mobileMenu.hidden = true;
+        }
+      }, HIDE_FALLBACK_MS);
+      if (window.Analytics) {
+        window.Analytics.track("mobile-nav:close", { open: false });
+      }
+    }
+
+    const HIDE_FALLBACK_MS = 300;
+    let hideTimer = null;
 
     function openMenu() {
+      if (hideTimer) {
+        clearTimeout(hideTimer);
+        hideTimer = null;
+      }
       mobileMenu.hidden = false;
       requestAnimationFrame(() => {
         mobileMenu.classList.add("mobile-menu--open");
       });
       mobileMenuToggle.setAttribute("aria-expanded", "true");
+      mobileMenuToggle.setAttribute("aria-label", "Close menu");
       document.body.style.overflow = "hidden";
       mobileMenuClose.focus();
       if (window.Analytics) {
         window.Analytics.track("mobile-nav:open", { open: true });
-      }
-    }
-
-    function closeMenu() {
-      mobileMenu.classList.remove("mobile-menu--open");
-      mobileMenuToggle.setAttribute("aria-expanded", "false");
-      document.body.style.overflow = "";
-      mobileMenuToggle.focus();
-      if (window.Analytics) {
-        window.Analytics.track("mobile-nav:close", { open: false });
       }
     }
 
@@ -166,6 +182,10 @@
         e.target === mobileMenu &&
         !mobileMenu.classList.contains("mobile-menu--open")
       ) {
+        if (hideTimer) {
+          clearTimeout(hideTimer);
+          hideTimer = null;
+        }
         mobileMenu.hidden = true;
       }
     });
@@ -354,8 +374,12 @@
 
   filterPills.forEach((pill) => {
     pill.addEventListener("click", () => {
-      filterPills.forEach((p) => p.classList.remove("filter-pill--active"));
+      filterPills.forEach((p) => {
+        p.classList.remove("filter-pill--active");
+        p.setAttribute("aria-pressed", "false");
+      });
       pill.classList.add("filter-pill--active");
+      pill.setAttribute("aria-pressed", "true");
       const filterValue = pill.dataset.keyword;
       document.querySelectorAll(".project-card").forEach((card) => {
         const keywordsStr = card.dataset.keywords || "";
@@ -417,8 +441,18 @@ function openLightboxForElement(el) {
       const img = e.target.closest(".project-card__image");
       if (!img) return;
       const card = img.closest(".project-card");
-      if (card && card.dataset.details) return;
       e.preventDefault();
+      if (card && card.dataset.details) {
+        /* project-modal.js wires the detail control through a delegated
+           document click handler, and `open` is not exposed globally, so
+           activating the real button reuses that exact path and its
+           "button" analytics trigger instead of duplicating it. */
+        const detailsBtn = card.querySelector(
+          ".project-card__details[data-project-id]",
+        );
+        if (detailsBtn) detailsBtn.click();
+        return;
+      }
       openLightboxForElement(img);
     });
   }

@@ -33,6 +33,7 @@
    --color-text: #282828;
    --color-icon: #282828;
    --color-secondary: rgba(128, 128, 128, 0.25);
+   --text-secondary-mix: 65%;
     --color-cursor-border: rgba(0, 0, 0, 0.35);
     --color-cursor-fill: rgba(40, 40, 40, 0.11);
     --color-cursor-fill-hover: rgba(40, 40, 40, 0.17);
@@ -101,6 +102,7 @@
   --color-text: #3a3632;
   --color-icon: #3a3632;
   --color-secondary: rgba(128, 128, 128, 0.25);
+  --text-secondary-mix: 71%;
   --color-cursor-border: rgba(0, 0, 0, 0.35);
   --color-cursor-fill: rgba(58, 54, 50, 0.11);
   --color-cursor-fill-hover: rgba(58, 54, 50, 0.17);
@@ -734,8 +736,7 @@ a {
   font-size: var(--text-base);
   font-weight: var(--font-weight-regular);
   line-height: var(--leading-normal);
-  color: var(--color-text);
-  opacity: 0.6;
+  color: color-mix(in srgb, var(--color-text) var(--text-secondary-mix), transparent);
   flex-shrink: 0;
   text-align: right;
 }
@@ -1212,11 +1213,7 @@ body.custom-cursor-active label {
   font-weight: var(--font-weight-medium);
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  opacity: 0.5;
-}
-
-[data-theme="dark"] .project-card__overline {
-  opacity: 0.75;
+  color: color-mix(in srgb, var(--color-text) var(--text-secondary-mix), transparent);
 }
 
 .project-card__title {
@@ -1319,6 +1316,10 @@ body.custom-cursor-active label {
   transition: opacity var(--transition-fast);
 }
 
+.lightbox[hidden] {
+  display: none;
+}
+
 .lightbox--open {
   opacity: 1;
   pointer-events: auto;
@@ -1370,6 +1371,11 @@ body.custom-cursor-active label {
 .lightbox__prev:hover,
 .lightbox__next:hover {
   background: rgba(255, 255, 255, 0.30);
+}
+
+.lightbox__prev[hidden],
+.lightbox__next[hidden] {
+  display: none;
 }
 
 .lightbox__prev {
@@ -1429,6 +1435,10 @@ body.custom-cursor-active label {
   transition: opacity var(--transition-fast);
 }
 
+.project-modal[hidden] {
+  display: none;
+}
+
 .project-modal--open {
   opacity: 1;
   pointer-events: auto;
@@ -1464,14 +1474,10 @@ body.custom-cursor-active label {
   font-weight: var(--font-weight-medium);
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  opacity: 0.5;
+  color: color-mix(in srgb, var(--color-text) var(--text-secondary-mix), transparent);
   margin-bottom: var(--space-2xs);
   margin-top: 0;
   line-height: var(--leading-normal);
-}
-
-[data-theme="dark"] .project-modal__overline {
-  opacity: 0.75;
 }
 
 .project-modal__text {
@@ -1499,7 +1505,7 @@ body.custom-cursor-active label {
   font-size: var(--text-sm);
   font-weight: var(--font-weight-regular);
   line-height: var(--leading-relaxed);
-  opacity: 0.6;
+  color: color-mix(in srgb, var(--color-text) var(--text-secondary-mix), transparent);
   margin-top: var(--space-sm);
 }
 
@@ -1833,6 +1839,26 @@ body.modal-open {
   a {
     text-decoration: underline;
     color: black;
+  }
+
+  /* These set an explicit color, so the inherited black from the body rule
+     above never reaches them and they keep printing the theme foreground on
+     white paper. The modal paints its own surface, so it needs that
+     neutralized too or dark text would land on a dark box. */
+  .project-card__overline,
+  .project-card__title,
+  .project-card__description,
+  .experience__years,
+  .project-modal__overline,
+  .project-modal__caption,
+  .project-modal__title,
+  .project-modal__text {
+    color: #1a1a1a !important;
+  }
+
+  .project-modal {
+    background: white !important;
+    color: #1a1a1a !important;
   }
 
   .project-card {

@@ -9,9 +9,12 @@
   var closingViaHistory = false;
   var closeMethod = null;
   var modalScrollFired = new Set();
+  var hideTimer = null;
+  var shouldBeOpen = false;
+  var HIDE_FALLBACK_MS = 300;
 
   var FOCUSABLE_SELECTOR =
-    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+    'button:not([tabindex="-1"]), [href]:not([tabindex="-1"]), input:not([tabindex="-1"]), select:not([tabindex="-1"]), textarea:not([tabindex="-1"]), [tabindex]:not([tabindex="-1"])';
 
   /* Arrow paths shared with the lightbox controls (lightbox.js). */
   var ARROW_LEFT_PATH =
@@ -406,6 +409,42 @@
     );
   }
 
+  function scheduleHide() {
+    if (hideTimer) clearTimeout(hideTimer);
+    hideTimer = setTimeout(function () {
+      hideTimer = null;
+      if (!modal.classList.contains("project-modal--open")) modal.hidden = true;
+    }, HIDE_FALLBACK_MS);
+  }
+
+  function isRestorable(el) {
+    return (
+      el &&
+      el !== document.body &&
+      el.isConnected &&
+      typeof el.focus === "function"
+    );
+  }
+
+  /* A URL deep link opens the modal with focus on <body>, which .focus() cannot
+     move in Chrome, so closing would strand focus on a button inside the closed
+     dialog. The card control for this project is the honest return target. */
+  function getDeepLinkTarget(projectId) {
+    var grid = document.getElementById("projects-grid");
+    if (grid) {
+      var btn = grid.querySelector(
+        '.project-card__details[data-project-id="' + projectId + '"]'
+      );
+      if (btn && !btn.closest(".filter-hidden")) return btn;
+    }
+    return null;
+  }
+
+  function focusRestoreTarget() {
+    if (isRestorable(lastFocused)) return lastFocused;
+    return getDeepLinkTarget(currentProjectId) || document.querySelector(FOCUSABLE_SELECTOR) || document.body;
+  }
+
   function showProject(projectId) {
     var config = configs[projectId];
     if (!config) return false;
@@ -415,7 +454,20 @@
     var content = modal.querySelector("#project-modal__content");
     content.innerHTML = renderContent(config, renderNav(projectId));
 
-    modal.classList.add("project-modal--open");
+    var live = modal.querySelector("#project-modal__live");
+    if (live) {
+      live.textContent = getProjectTitle(config, projectId);
+    }
+
+    if (hideTimer) {
+      clearTimeout(hideTimer);
+      hideTimer = null;
+    }
+    modal.hidden = false;
+    shouldBeOpen = true;
+    requestAnimationFrame(function () {
+      if (shouldBeOpen) modal.classList.add("project-modal--open");
+    });
     document.body.classList.add("modal-open");
     return true;
   }
@@ -505,11 +557,14 @@
       window.Analytics.track("modal-" + currentProjectId + ":close", { slug: currentProjectId });
       window.Analytics.track("modal:" + currentProjectId + "-close-method", { slug: currentProjectId, method: actualMethod });
     }
+    shouldBeOpen = false;
     modal.classList.remove("project-modal--open");
     document.body.classList.remove("modal-open");
-    if (lastFocused && lastFocused.focus) {
-      lastFocused.focus();
+    var restoreTo = focusRestoreTarget();
+    if (restoreTo && restoreTo.focus) {
+      restoreTo.focus();
     }
+    scheduleHide();
     currentProjectId = null;
   }
 
@@ -545,6 +600,16 @@
     var closeBtn = modal.querySelector(".project-modal__close");
 
     closeBtn.addEventListener("click", function () { close("button"); });
+
+    modal.addEventListener("transitionend", function (e) {
+      if (e.target !== modal) return;
+      if (modal.classList.contains("project-modal--open")) return;
+      if (hideTimer) {
+        clearTimeout(hideTimer);
+        hideTimer = null;
+      }
+      modal.hidden = true;
+    });
 
     modal.addEventListener("click", function (e) {
       if (e.target === modal) {
@@ -726,6 +791,7 @@
     el.setAttribute("aria-label", "Project details");
     el.setAttribute("aria-labelledby", "project-modal__title");
     el.setAttribute("tabindex", "-1");
+    el.hidden = true;
 
     el.innerHTML =
       '<button class="project-modal__close btn--icon" aria-label="Close">' +

@@ -4,6 +4,13 @@
   const ENGAGEMENT_KEY = "umami-consent-engagement";
   const WEBSITE_ID = "20473bbb-aaa3-4d65-a1da-4b8870e56e31";
   const REFUSED_MS = 600;
+  const HIDE_FALLBACK_MS = 300;
+
+  /* The :not() has to repeat per selector: in a comma list it would otherwise
+     bind to [tabindex] alone, and a bare `input` would still match an input
+     that is explicitly out of the tab order. */
+  const FOCUSABLE_SELECTOR =
+    'button:not([tabindex="-1"]), [href]:not([tabindex="-1"]), input:not([tabindex="-1"]), select:not([tabindex="-1"]), textarea:not([tabindex="-1"]), [tabindex]:not([tabindex="-1"])';
 
   function track(name, props) {
     if (window.umami && typeof window.umami.track === "function") {
@@ -23,12 +30,20 @@
     const invasive = document.getElementById("toggle-invasive-tracking");
     if (!modal || !trigger || !closeBtn || !toggle) return;
 
+    let hideTimer = null;
+    let shouldBeOpen = false;
+
     toggle.checked = hasConsent();
 
     function open() {
+      if (hideTimer) {
+        clearTimeout(hideTimer);
+        hideTimer = null;
+      }
       modal.hidden = false;
+      shouldBeOpen = true;
       requestAnimationFrame(() => {
-        modal.classList.add("privacy-modal--open");
+        if (shouldBeOpen) modal.classList.add("privacy-modal--open");
       });
       document.body.style.overflow = "hidden";
       closeBtn.focus();
@@ -36,20 +51,31 @@
     }
 
     function close() {
+      shouldBeOpen = false;
       modal.classList.remove("privacy-modal--open");
       document.body.style.overflow = "";
       trigger.focus();
       track("privacy-modal:close");
-      modal.addEventListener(
-        "transitionend",
-        function onEnd(e) {
-          if (e.target !== modal) return;
-          modal.removeEventListener("transitionend", onEnd);
-          if (!modal.classList.contains("privacy-modal--open")) modal.hidden = true;
-        },
-        { once: true },
-      );
+      if (hideTimer) clearTimeout(hideTimer);
+      hideTimer = setTimeout(function () {
+        hideTimer = null;
+        if (!modal.classList.contains("privacy-modal--open")) modal.hidden = true;
+      }, HIDE_FALLBACK_MS);
     }
+
+    /* Registered once, not per close: a once-listener is consumed by the first
+       transitionend that bubbles up from a child (the switch track transitions
+       too), which would leave the closed modal displayed and its controls in
+       the tab order. */
+    modal.addEventListener("transitionend", (e) => {
+      if (e.target !== modal) return;
+      if (modal.classList.contains("privacy-modal--open")) return;
+      if (hideTimer) {
+        clearTimeout(hideTimer);
+        hideTimer = null;
+      }
+      modal.hidden = true;
+    });
 
     trigger.addEventListener("click", open);
     closeBtn.addEventListener("click", close);
@@ -58,6 +84,22 @@
     document.addEventListener("keydown", (e) => {
       if (e.key !== "Escape") return;
       if (modal.classList.contains("privacy-modal--open")) close();
+    });
+
+    modal.addEventListener("keydown", (e) => {
+      if (e.key !== "Tab") return;
+      if (!modal.classList.contains("privacy-modal--open")) return;
+      const focusable = modal.querySelectorAll(FOCUSABLE_SELECTOR);
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
     });
 
     toggle.addEventListener("change", () => {

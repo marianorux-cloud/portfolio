@@ -1,12 +1,16 @@
 (function () {
   "use strict";
 
+  const LIGHTBOX_IMG_ID = "lightbox__img";
+
   /* ── DOM creation ── */
   const lightbox = document.createElement("div");
   lightbox.className = "lightbox";
   lightbox.setAttribute("role", "dialog");
   lightbox.setAttribute("aria-modal", "true");
   lightbox.setAttribute("aria-label", "Image preview");
+  lightbox.setAttribute("aria-describedby", LIGHTBOX_IMG_ID);
+  lightbox.hidden = true;
 
   const backdrop = document.createElement("div");
   backdrop.className = "lightbox__backdrop";
@@ -18,7 +22,7 @@
         <path d="M10.5859 12L2.79297 4.20706L4.20718 2.79285L12.0001 10.5857L19.793 2.79285L21.2072 4.20706L13.4143 12L21.2072 19.7928L19.793 21.2071L12.0001 13.4142L4.20718 21.2071L2.79297 19.7928L10.5859 12Z"/>
       </svg>
     </button>
-    <img class="lightbox__img" alt="">
+    <img class="lightbox__img" id="lightbox__img" alt="">
     <button class="lightbox__prev btn--icon" aria-label="Previous image">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
         <path d="M7.82843 10.9999H20V12.9999H7.82843L13.1924 18.3638L11.7782 19.778L4 11.9999L11.7782 4.22168L13.1924 5.63589L7.82843 10.9999Z"/>
@@ -47,15 +51,51 @@
     return basename.replace(/\.\w+$/, "").toLowerCase().replace(/_/g, "-");
   }
 
+  function isRestorable(el) {
+    return (
+      el &&
+      el !== document.body &&
+      el.isConnected &&
+      typeof el.focus === "function"
+    );
+  }
+
+  function focusRestoreTarget() {
+    if (isRestorable(lastFocusedElement)) return lastFocusedElement;
+    return document.querySelector(FOCUSABLE_SELECTOR) || document.body;
+  }
+
+  function scheduleHide() {
+    if (hideTimer) clearTimeout(hideTimer);
+    hideTimer = setTimeout(function () {
+      hideTimer = null;
+      if (!lightbox.classList.contains("lightbox--open")) lightbox.hidden = true;
+    }, HIDE_FALLBACK_MS);
+  }
+
   /* ── Internal state ── */
   let items = [];
   let currentIndex = 0;
   let showNav = true;
   let lastFocusedElement = null;
   let analyticsContext = null;
+  let hideTimer = null;
+  let shouldBeOpen = false;
+  const HIDE_FALLBACK_MS = 300;
 
   const FOCUSABLE_SELECTOR =
-    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+    'button:not([tabindex="-1"]), [href]:not([tabindex="-1"]), input:not([tabindex="-1"]), select:not([tabindex="-1"]), textarea:not([tabindex="-1"]), [tabindex]:not([tabindex="-1"])';
+
+  /* A [hidden] subtree is not tabbable, but FOCUSABLE_SELECTOR only screens
+     out a removed tabindex, so a button hidden on open still matches. The
+     attribute is the source of truth here, never the stylesheet: .btn--icon
+     sets display:inline-flex and beats the UA [hidden] rule, so a computed
+     style check would report these buttons as visible. */
+  function getTabbableElements(root) {
+    return Array.from(root.querySelectorAll(FOCUSABLE_SELECTOR)).filter(
+      function (el) { return !el.closest("[hidden]"); }
+    );
+  }
 
   /* ── Render ── */
   function renderCurrentItem() {
@@ -83,6 +123,12 @@
     }
 
     counterEl.textContent = (currentIndex + 1) + " / " + items.length + " — " + (imgEl.alt || "");
+
+    if (!item.video && imgEl.alt) {
+      lightbox.setAttribute("aria-describedby", LIGHTBOX_IMG_ID);
+    } else {
+      lightbox.removeAttribute("aria-describedby");
+    }
   }
 
   /* ── API ── */
@@ -100,20 +146,31 @@
     nextEl.hidden = !showNav;
     counterEl.hidden = !showNav;
 
-    lightbox.classList.add("lightbox--open");
+    if (hideTimer) {
+      clearTimeout(hideTimer);
+      hideTimer = null;
+    }
+    lightbox.hidden = false;
+    shouldBeOpen = true;
+    requestAnimationFrame(function () {
+      if (shouldBeOpen) lightbox.classList.add("lightbox--open");
+    });
     document.body.style.overflow = "hidden";
-    
+    closeEl.focus({ preventScroll: true });
   }
 
   function close(method) {
     const ctx = analyticsContext;
     analyticsContext = null;
 
+    shouldBeOpen = false;
     lightbox.classList.remove("lightbox--open");
     document.body.style.overflow = "";
-    if (lastFocusedElement && lastFocusedElement.focus) {
-      lastFocusedElement.focus();
+    const restoreTo = focusRestoreTarget();
+    if (restoreTo && restoreTo.focus) {
+      restoreTo.focus();
     }
+    scheduleHide();
     if (videoEl) {
       videoEl.src = "";
       videoEl.style.display = "none";
@@ -157,6 +214,16 @@
     if (e.target === lightbox) close("backdrop");
   });
 
+  lightbox.addEventListener("transitionend", function (e) {
+    if (e.target !== lightbox) return;
+    if (lightbox.classList.contains("lightbox--open")) return;
+    if (hideTimer) {
+      clearTimeout(hideTimer);
+      hideTimer = null;
+    }
+    lightbox.hidden = true;
+  });
+
   prevEl.addEventListener("click", function () { navigate(-1); });
 
   nextEl.addEventListener("click", function () { navigate(1); });
@@ -164,7 +231,7 @@
   lightbox.addEventListener("keydown", function (e) {
     if (e.key !== "Tab" || !lightbox.classList.contains("lightbox--open"))
       return;
-    const focusable = lightbox.querySelectorAll(FOCUSABLE_SELECTOR);
+    const focusable = getTabbableElements(lightbox);
     if (focusable.length === 0) return;
     const first = focusable[0];
     const last = focusable[focusable.length - 1];

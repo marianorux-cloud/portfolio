@@ -116,13 +116,13 @@
     <div class="work-header">
       <h1 class="work-title">my work</h1>
       <div class="work-filters" role="group" aria-label="Filter projects">
-        <button class="filter-pill filter-pill--active" data-keyword="all">all</button>
-        <button class="filter-pill" data-keyword="life-sciences">life sciences</button>
-        <button class="filter-pill" data-keyword="b2b">b2b</button>
-        <button class="filter-pill" data-keyword="e-commerce">e-commerce</button>
-        <button class="filter-pill" data-keyword="fitness">fitness</button>
-        <button class="filter-pill" data-keyword="consumer">consumer</button>
-        <button class="filter-pill" data-keyword="research">research</button>
+        <button class="filter-pill filter-pill--active" data-keyword="all" aria-pressed="true">all</button>
+        <button class="filter-pill" data-keyword="life-sciences" aria-pressed="false">life sciences</button>
+        <button class="filter-pill" data-keyword="b2b" aria-pressed="false">b2b</button>
+        <button class="filter-pill" data-keyword="e-commerce" aria-pressed="false">e-commerce</button>
+        <button class="filter-pill" data-keyword="fitness" aria-pressed="false">fitness</button>
+        <button class="filter-pill" data-keyword="consumer" aria-pressed="false">consumer</button>
+        <button class="filter-pill" data-keyword="research" aria-pressed="false">research</button>
       </div>
       <div class="sr-only" aria-live="polite" id="filter-status"></div>
       <hr class="work-separator">
@@ -138,7 +138,7 @@
         </div>
         <div class="project-card__image-wrapper project-card__image-wrapper--fill">
           <img src="../assets/images/work/nyt.webp" data-full="../assets/images/work/nyt.png"
-            alt="New York Times eye tracking study" class="project-card__image project-card__image--bordered"
+            alt="New York Times eye tracking study" class="project-card__image project-card__image--bordered" tabindex="0"
             loading="lazy" decoding="async">
         </div>
       </article>
@@ -152,7 +152,7 @@
         </div>
         <div class="project-card__image-wrapper project-card__image-wrapper--fill">
           <img src="../assets/images/work/bose.webp" data-full="../assets/images/work/bose.png"
-            alt="Bose Product Vision prototype concept" class="project-card__image project-card__image--bordered"
+            alt="Bose Product Vision prototype concept" class="project-card__image project-card__image--bordered" tabindex="0"
             loading="lazy" decoding="async">
         </div>
       </article>
@@ -167,7 +167,7 @@
         <div class="project-card__media">
           <div class="project-card__image-wrapper project-card__image-wrapper--fill">
             <img src="../assets/images/work/trainer.webp" alt="Google Jigsaw VR Trainer simulation"
-              class="project-card__image project-card__image--bordered" loading="lazy" decoding="async">
+              class="project-card__image project-card__image--bordered" tabindex="0" loading="lazy" decoding="async">
           </div>
           <button class="project-card__details" type="button" data-project-id="jigsaw-trainer">project
             details</button>
@@ -184,7 +184,7 @@
         <div class="project-card__image-wrapper project-card__image-wrapper--fill">
           <img src="../assets/images/work/kroger.webp" data-full="../assets/images/work/kroger.png" width="1600"
             height="900" alt="Kroger grocery e-commerce formative research"
-            class="project-card__image project-card__image--bordered" loading="lazy" decoding="async">
+            class="project-card__image project-card__image--bordered" tabindex="0" loading="lazy" decoding="async">
         </div>
       </article>
       <article class="project-card" data-slug="harley-davidson-electric-motorcycle" data-company="consulting"
@@ -198,7 +198,7 @@
         <div class="project-card__image-wrapper project-card__image-wrapper--fill">
           <img src="../assets/images/work/hd.webp" data-full="../assets/images/work/hd.png"
             alt="Harley-Davidson LiveWire electric motorcycle display"
-            class="project-card__image project-card__image--bordered" loading="lazy" decoding="async">
+            class="project-card__image project-card__image--bordered" tabindex="0" loading="lazy" decoding="async">
         </div>
       </article>
       <article class="project-card" data-slug="miami-heat-mobile-app" data-company="miami-heat" data-year="2018"
@@ -211,7 +211,7 @@
         </div>
         <div class="project-card__image-wrapper project-card__image-wrapper--fill">
           <img src="../assets/images/work/miami-heat.webp" data-full="../assets/images/work/miami-heat.png"
-            alt="Miami Heat Mobile App design improvements" class="project-card__image project-card__image--bordered"
+            alt="Miami Heat Mobile App design improvements" class="project-card__image project-card__image--bordered" tabindex="0"
             loading="lazy" decoding="async">
         </div>
       </article>
@@ -225,7 +225,7 @@
         </div>
         <div class="project-card__image-wrapper project-card__image-wrapper--fill">
           <img src="../assets/images/work/intra.webp" alt="Google Jigsaw Intra DNS protection app"
-            class="project-card__image project-card__image--bordered" data-full="../assets/images/work/intra.webp">
+            class="project-card__image project-card__image--bordered" tabindex="0" data-full="../assets/images/work/intra.webp">
         </div>
       </article>
       <article class="project-card" data-slug="zumba-virtual-class-platform" data-company="zumba" data-year="2020"
@@ -239,7 +239,7 @@
         <div class="project-card__media">
           <div class="project-card__image-wrapper project-card__image-wrapper--fill">
             <img src="../assets/images/work/virtual-class_desktop.webp" width="1600" height="1138"
-              alt="Zumba Virtual live streaming platform" class="project-card__image project-card__image--bordered"
+              alt="Zumba Virtual live streaming platform" class="project-card__image project-card__image--bordered" tabindex="0"
               loading="lazy" decoding="async">
           </div>
           <button class="project-card__details" type="button" data-project-id="zumba-virtual-class-platform">project
@@ -257,7 +257,7 @@
         <div class="project-card__media">
           <div class="project-card__image-wrapper project-card__image-wrapper--cropped" data-b1="true">
             <img src="../assets/images/work/b1-desktop.webp" width="800" height="1138" alt="Zumba B1 training page"
-              class="project-card__image project-card__image--bordered" loading="lazy" decoding="async">
+              class="project-card__image project-card__image--bordered" tabindex="0" loading="lazy" decoding="async">
           </div>
           <button class="project-card__details" type="button" data-project-id="zumba-b1-training-page">project
             details</button>
@@ -276,7 +276,7 @@
           <div class="project-card__image-wrapper project-card__image-wrapper--fill">
             <img src="../assets/images/work/sommos_dashboard.webp" width="1600" height="1138"
               alt="Sommos creator dashboard with an upcoming class banner, summary totals, and a schedule of classes"
-              class="project-card__image project-card__image--bordered" loading="lazy" decoding="async">
+              class="project-card__image project-card__image--bordered" tabindex="0" loading="lazy" decoding="async">
           </div>
           <button class="project-card__details" type="button" data-project-id="sommos">project
             details</button>
@@ -292,7 +292,7 @@
         </div>
         <div class="project-card__image-wrapper project-card__image-wrapper--fill">
           <img src="../assets/images/work/zin-studio.webp" width="400" height="400"
-            alt="Zumba ZIN Studio class management interface" class="project-card__image project-card__image--bordered"
+            alt="Zumba ZIN Studio class management interface" class="project-card__image project-card__image--bordered" tabindex="0"
             loading="lazy" decoding="async" data-full="../assets/images/work/zin-studio.png">
         </div>
       </article>
@@ -306,7 +306,7 @@
         </div>
         <div class="project-card__image-wrapper project-card__image-wrapper--fill">
           <img src="../assets/images/work/choreo-challenge.webp" width="800" height="450"
-            alt="Zumba AI Choreo Challenge motion tracking" class="project-card__image project-card__image--bordered"
+            alt="Zumba AI Choreo Challenge motion tracking" class="project-card__image project-card__image--bordered" tabindex="0"
             loading="lazy" decoding="async">
         </div>
       </article>
@@ -320,7 +320,7 @@
         </div>
         <div class="project-card__image-wrapper project-card__image-wrapper--fill">
           <img src="../assets/images/work/classbuzz.webp" data-full="../assets/images/work/classbuzz.png"
-            alt="Zumba Class Buzz instructor marketing app" class="project-card__image project-card__image--bordered"
+            alt="Zumba Class Buzz instructor marketing app" class="project-card__image project-card__image--bordered" tabindex="0"
             loading="lazy" decoding="async">
         </div>
       </article>
@@ -336,7 +336,7 @@
           <div class="project-card__image-wrapper project-card__image-wrapper--fill">
             <img src="../assets/images/work/clinical-connector.webp"
               alt="Oracle Clinical Connector data integration interface"
-              class="project-card__image project-card__image--bordered" loading="lazy" decoding="async">
+              class="project-card__image project-card__image--bordered" tabindex="0" loading="lazy" decoding="async">
           </div>
           <button class="project-card__details" type="button" data-project-id="clinical-connector">project
             details</button>
@@ -354,7 +354,7 @@
           <div class="project-card__image-wrapper project-card__image-wrapper--cropped" data-b1="true">
             <img src="../assets/images/work/patient-recruitment_patient.webp"
               alt="Oracle Patient Recruitment patient profile showing study eligibility criteria, appointment history, and candidate details"
-              class="project-card__image project-card__image--bordered" loading="lazy" decoding="async">
+              class="project-card__image project-card__image--bordered" tabindex="0" loading="lazy" decoding="async">
           </div>
           <button class="project-card__details" type="button" data-project-id="patient-recruitment">project
             details</button>
@@ -373,7 +373,7 @@
             <img src="../assets/images/work/oracle-hackathon.webp"
               data-full="../assets/images/work/oracle-hackathon.png"
               alt="Oracle Hackathon clinical trial recommendation tool"
-              class="project-card__image project-card__image--bordered" loading="lazy" decoding="async">
+              class="project-card__image project-card__image--bordered" tabindex="0" loading="lazy" decoding="async">
           </div>
           <button class="project-card__details" type="button" data-project-id="oracle-hackathon">project
             details</button>
