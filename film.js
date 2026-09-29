@@ -76,6 +76,7 @@
       cell.dataset.alt = photo.alt;
       cell.tabIndex = 0;
       cell.setAttribute("role", "button");
+      cell.setAttribute("aria-label", photo.alt);
 
       const placeholder = makePlaceholder();
       const img = document.createElement("img");
