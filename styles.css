@@ -200,6 +200,7 @@ html {
   font-size: 16px;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+  scrollbar-gutter: stable;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -880,16 +881,19 @@ a {
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: center;
+  align-items: center;
 }
 
 .mobile-menu__list {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: var(--space-md);
+  gap: var(--space-lg);
   padding: 0;
   margin: 0;
+  width: 100%;
+  text-align: center;
 }
 
 .mobile-menu__item a {
@@ -900,8 +904,9 @@ a {
 }
 
 .mobile-menu__item--active a {
-  font-weight: bold;
-  font-style: italic;
+  font-weight: var(--font-weight-medium);
+  border-bottom: 3px solid var(--color-text);
+  padding-bottom: 4px;
 }
 
 
@@ -1423,7 +1428,10 @@ body.custom-cursor-active label {
 /* ── Project modal ── */
 .project-modal {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   z-index: 1500;
   background: var(--color-bg);
   color: var(--color-text);

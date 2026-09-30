@@ -169,7 +169,7 @@
     // No `integrity` on purpose. cloud.umami.is is unversioned and served with
     // must-revalidate, so any pinned hash would break on the vendor's next
     // deploy. Because this tag is built at runtime, an integrity failure drops
-    // the tracker with no page-load error. See ai/playbooks/verify-analytics.md.
+    // the tracker with no page-load error. See ai/tools-skills/procedures/analytics-verify.md.
     document.head.appendChild(script);
   }
 
