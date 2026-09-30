@@ -1428,10 +1428,7 @@ body.custom-cursor-active label {
 /* ── Project modal ── */
 .project-modal {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  inset: 0;
   z-index: 1500;
   background: var(--color-bg);
   color: var(--color-text);
