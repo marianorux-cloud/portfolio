@@ -34,11 +34,8 @@
    --color-icon: #282828;
    --color-secondary: rgba(128, 128, 128, 0.25);
    --text-secondary-mix: 65%;
-    --color-cursor-border: rgba(0, 0, 0, 0.35);
-    --color-cursor-fill: rgba(40, 40, 40, 0.11);
-    --color-cursor-fill-hover: rgba(40, 40, 40, 0.17);
-    --color-cursor-fill-active: rgba(40, 40, 40, 0.23);
-   --cursor-scale: 1;
+     --color-cursor-border: rgba(0, 0, 0, 0.35);
+    --cursor-scale: 1;
 
     /* Fonts */
      --font-weight-regular: 400;
@@ -90,9 +87,6 @@
   --color-icon: #e5e5e5;
   --color-secondary: rgba(255, 255, 255, 0.2);
   --color-cursor-border: rgba(255, 255, 255, 0.4);
-  --color-cursor-fill: rgba(229, 229, 229, 0.12);
-  --color-cursor-fill-hover: rgba(229, 229, 229, 0.18);
-  --color-cursor-fill-active: rgba(229, 229, 229, 0.24);
   --cursor-scale: 1;
 }
 
@@ -104,9 +98,6 @@
   --color-secondary: rgba(128, 128, 128, 0.25);
   --text-secondary-mix: 71%;
   --color-cursor-border: rgba(0, 0, 0, 0.35);
-  --color-cursor-fill: rgba(58, 54, 50, 0.11);
-  --color-cursor-fill-hover: rgba(58, 54, 50, 0.17);
-  --color-cursor-fill-active: rgba(58, 54, 50, 0.23);
   --cursor-scale: 1;
 }
 
@@ -116,9 +107,6 @@
     --color-text: #e5e5e5;
     --color-icon: #e5e5e5;
     --color-cursor-border: rgba(255, 255, 255, 0.4);
-    --color-cursor-fill: rgba(229, 229, 229, 0.12);
-    --color-cursor-fill-hover: rgba(229, 229, 229, 0.18);
-    --color-cursor-fill-active: rgba(229, 229, 229, 0.24);
   }
 }
 
@@ -200,7 +188,6 @@ html {
   font-size: 16px;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
-  scrollbar-gutter: stable;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -216,6 +203,7 @@ body {
   color: var(--color-text);
   line-height: var(--leading-normal);
   min-height: 100vh;
+  scrollbar-gutter: stable;
   display: flex;
   flex-direction: column;
   transition: background-color 200ms ease, color 200ms ease;
@@ -1061,8 +1049,50 @@ a {
 .cursor--hover {
   width: 24px;
   height: 24px;
-  background: var(--color-cursor-fill-hover);
-  border-color: var(--color-cursor-border);
+  background: #fff;
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+[data-theme="dark"] .cursor--hover {
+  background: #000;
+  border-color: rgba(0, 0, 0, 0.25);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) .cursor--hover {
+    background: #000;
+    border-color: rgba(0, 0, 0, 0.25);
+  }
+}
+
+/* Lightbox override — force dark-mode cursor inside the lightbox */
+.lightbox-open .cursor {
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.lightbox-open .cursor--hover {
+  background: #000;
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.lightbox-open .cursor--expand {
+  background: #000;
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.lightbox-open .cursor--expand::after {
+  color: #fff;
+}
+
+.lightbox-open .cursor--text {
+  background: #000;
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.lightbox-open .cursor--active {
+  background: rgba(0, 0, 0, 0.23);
+  border-color: rgba(255, 255, 255, 0.25);
 }
 
 /* Active state - scale down */
@@ -2040,22 +2070,53 @@ body.modal-open {
 }
 
 .cursor::after {
-  content: "";
+  content: "expand";
   position: absolute;
   inset: 0;
   margin: auto;
-  width: 16px;
-  height: 16px;
-  background-color: var(--color-text);
-  -webkit-mask: url("assets/icons/expand.svg") center / contain no-repeat;
-  mask: url("assets/icons/expand.svg") center / contain no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: var(--font-weight-regular);
+  line-height: 1;
   opacity: 0;
   transition: opacity var(--cursor-duration) var(--cursor-ease);
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .cursor--expand {
-  width: 32px;
-  height: 32px;
+  width: auto;
+  min-width: 64px;
+  height: 28px;
+  border-radius: 14px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.25);
+  transition:
+    width calc(var(--cursor-duration) * 1.5) var(--cursor-ease) calc(var(--cursor-duration) * 0.5),
+    height var(--cursor-duration) var(--cursor-ease),
+    background var(--cursor-duration) var(--cursor-ease),
+    border-color var(--cursor-duration) var(--cursor-ease);
+}
+
+[data-theme="dark"] .cursor--expand {
+  background: #fff;
+  color: #000;
+  border-color: rgba(0, 0, 0, 0.25);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) .cursor--expand {
+    background: #fff;
+    color: #000;
+    border-color: rgba(0, 0, 0, 0.25);
+  }
 }
 
 .cursor--expand::after {

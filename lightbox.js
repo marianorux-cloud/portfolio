@@ -142,6 +142,7 @@
     shouldBeOpen = true;
     requestAnimationFrame(function () {
       if (shouldBeOpen) lightbox.classList.add("lightbox--open");
+      document.body.classList.add("lightbox-open");
     });
     document.body.style.overflow = "hidden";
     closeEl.focus({ preventScroll: true });
@@ -153,6 +154,7 @@
 
     shouldBeOpen = false;
     lightbox.classList.remove("lightbox--open");
+    document.body.classList.remove("lightbox-open");
     document.body.style.overflow = "";
     const restoreTo = focusRestoreTarget();
     if (restoreTo && restoreTo.focus) {
