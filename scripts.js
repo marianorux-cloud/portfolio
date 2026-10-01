@@ -325,7 +325,7 @@
   }
 
   /* ---------- LinkedIn click tracking ---------- */
-  const linkedinLink = document.querySelector(".hero__link");
+  const linkedinLink = document.querySelector(".hero__linkedin-btn");
   if (linkedinLink) {
     linkedinLink.addEventListener("click", () => {
       if (window.Analytics) {
