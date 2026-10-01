@@ -34,6 +34,7 @@
    --color-icon: #282828;
    --color-secondary: rgba(128, 128, 128, 0.25);
    --text-secondary-mix: 65%;
+   --color-blue: #0975f1;
      --color-cursor-border: rgba(0, 0, 0, 0.35);
     --cursor-scale: 1;
 
@@ -1031,17 +1032,10 @@ a {
 @supports (background: color-mix(in srgb, red, transparent)) {
   :root {
     --color-cursor-fill: color-mix(in srgb, var(--color-text) 11%, transparent);
-    --color-cursor-fill-hover: color-mix(in srgb, var(--color-text) 17%, transparent);
     --color-cursor-fill-active: color-mix(in srgb, var(--color-text) 23%, transparent);
   }
   .cursor {
     border: 1px solid color-mix(in srgb, var(--color-text), transparent 60%);
-  }
-  .cursor--hover {
-    border-color: color-mix(in srgb, var(--color-text), transparent 60%);
-  }
-  .cursor--active {
-    border-color: color-mix(in srgb, var(--color-text), transparent 60%);
   }
 }
 
@@ -1049,50 +1043,8 @@ a {
 .cursor--hover {
   width: 24px;
   height: 24px;
-  background: #fff;
-  border-color: rgba(255, 255, 255, 0.25);
-}
-
-[data-theme="dark"] .cursor--hover {
-  background: #000;
-  border-color: rgba(0, 0, 0, 0.25);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme]) .cursor--hover {
-    background: #000;
-    border-color: rgba(0, 0, 0, 0.25);
-  }
-}
-
-/* Lightbox override — force dark-mode cursor inside the lightbox */
-.lightbox-open .cursor {
-  border-color: rgba(255, 255, 255, 0.25);
-}
-
-.lightbox-open .cursor--hover {
-  background: #000;
-  border-color: rgba(255, 255, 255, 0.25);
-}
-
-.lightbox-open .cursor--expand {
-  background: #000;
-  color: #fff;
-  border-color: rgba(255, 255, 255, 0.25);
-}
-
-.lightbox-open .cursor--expand::after {
-  color: #fff;
-}
-
-.lightbox-open .cursor--text {
-  background: #000;
-  border-color: rgba(255, 255, 255, 0.25);
-}
-
-.lightbox-open .cursor--active {
-  background: rgba(0, 0, 0, 0.23);
-  border-color: rgba(255, 255, 255, 0.25);
+  background: var(--color-blue);
+  border: none;
 }
 
 /* Active state - scale down */
@@ -1840,6 +1792,10 @@ body.modal-open {
     cursor: auto;
   }
 
+  body.custom-cursor-active {
+    cursor: auto;
+  }
+
   .filter-pill,
   .project-card {
     border: 1px solid CanvasText;
@@ -2095,28 +2051,12 @@ body.modal-open {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: #000;
+  background: var(--color-blue);
   color: #fff;
-  border-color: rgba(255, 255, 255, 0.25);
   transition:
     width calc(var(--cursor-duration) * 1.5) var(--cursor-ease) calc(var(--cursor-duration) * 0.5),
     height var(--cursor-duration) var(--cursor-ease),
-    background var(--cursor-duration) var(--cursor-ease),
-    border-color var(--cursor-duration) var(--cursor-ease);
-}
-
-[data-theme="dark"] .cursor--expand {
-  background: #fff;
-  color: #000;
-  border-color: rgba(0, 0, 0, 0.25);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme]) .cursor--expand {
-    background: #fff;
-    color: #000;
-    border-color: rgba(0, 0, 0, 0.25);
-  }
+    background var(--cursor-duration) var(--cursor-ease);
 }
 
 .cursor--expand::after {
@@ -2221,8 +2161,8 @@ body.modal-open {
   --switch-knob-bg: var(--color-icon);
   /* engaged (engagement tracking) */
   --switch-checked-track-bg: transparent;
-  --switch-checked-border: #0974f1;
-  --switch-checked-knob-bg: #0974f1;
+  --switch-checked-border: var(--color-blue);
+  --switch-checked-knob-bg: var(--color-blue);
   --switch-checked-glow: rgba(9, 117, 241, 0.8);
   /* refused (invasive tracking) */
   --switch-danger-border: #d63b3b;
@@ -2274,7 +2214,6 @@ body.modal-open {
 
 .privacy-switch__track {
   position: absolute;
-  cursor: pointer;
   inset: 0;
   background-color: var(--switch-track-bg);
   border: 2px solid var(--switch-track-border);
