@@ -1333,8 +1333,13 @@ body.custom-cursor-active label {
   aspect-ratio: auto;
 }
 
+.project-card__image-wrapper--patient-recruitment {
+  aspect-ratio: 16 / 9;
+  border-bottom: 1px solid var(--color-text);
+}
+
 .project-card__image-wrapper--cropped[data-b1="true"] {
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 16 / 11;
 }
 
 .project-card__image-wrapper--cropped[data-b1="true"] .project-card__image {
