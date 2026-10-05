@@ -542,14 +542,7 @@ a {
   font-weight: var(--font-weight-regular);
 }
 
-.hero__cta {
-  margin-top: var(--space-xs);
-  font-size: var(--text-xl);
-  line-height: var(--leading-tight);
-  font-weight: var(--font-weight-regular);
-}
-
-.hero__linkedin-btn {
+.hero__view-work-btn {
   font-size: var(--text-xs);
   font-weight: var(--font-weight-medium);
   text-transform: uppercase;
@@ -566,19 +559,11 @@ a {
   text-decoration: none;
 }
 
-.hero__linkedin-btn:hover {
+.hero__view-work-btn:hover {
   background-color: #0975f1;
   opacity: 1;
   color: #fff;
 }
-
-[data-theme="dark"] .hero__linkedin-btn:hover,
-@media (prefers-color-scheme: dark) .hero__linkedin-btn:hover {
-  background-color: #0975f1 !important;
-  color: #fff !important;
-}
-
-/* ── Grainy gradient text utility ── */
 
 .text--grainy {
   color: var(--color-text);
@@ -1672,25 +1657,49 @@ body.custom-cursor-active label {
   --nav-btn-hover-bg: #fff;
 }
 
-.project-modal__nav-btn:hover {
+.hero__linkedin-btn {
+  --nav-btn-hover-bg: #000;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text);
+  background: transparent;
+  border: 2px solid var(--color-text);
+  padding: calc(0.75rem - 2px) calc(1.5rem - 2px);
+  margin-top: 0;
+  cursor: pointer;
+  transition: color 300ms ease, background-color 300ms ease;
+  text-align: center;
+  text-decoration: none;
+}
+
+.hero__linkedin-btn:hover {
   background-color: var(--nav-btn-hover-bg);
   color: var(--color-bg);
 }
 
-@media (max-width: 767px) {
-  .project-modal__nav-btn {
-    padding: calc(0.75rem - 2px) calc(var(--space-sm) - 2px);
-  }
+[data-theme="dark"] .hero__linkedin-btn {
+  --nav-btn-hover-bg: #fff;
 }
 
-body.modal-open {
-  overflow: hidden;
+@media (max-width: 767px) {
+  .hero__linkedin-btn {
+    padding: calc(0.75rem - 2px) calc(var(--space-sm) - 2px);
+  }
 }
 
 @media (max-width: 767px) {
   .project-modal__content {
     padding: var(--space-xl) var(--space-md);
   }
+}
+
+body.modal-open {
+  overflow: hidden;
 }
 
 .project-modal__grid {
