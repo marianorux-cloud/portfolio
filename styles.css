@@ -700,6 +700,47 @@ a {
   font-weight: var(--font-weight-regular);
 }
 
+.experience__view-work {
+  display: inline-block;
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+  transition: color 200ms ease;
+}
+
+.experience__view-work:hover {
+  color: #0975f1;
+}
+
+/* Mobile: inline with title, right-aligned */
+@media (max-width: 767px) {
+  .experience__inner {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-sm);
+  }
+  .experience__title {
+    margin-bottom: 0;
+  }
+  .experience__view-work {
+    margin-left: auto;
+  }
+}
+
+/* Tablet/Desktop: under the title */
+@media (min-width: 768px) {
+  .experience__view-work {
+    margin-top: var(--space-xs);
+    margin-bottom: var(--space-md);
+    margin-left: 0;
+  }
+}
+
 .experience__list {
   display: flex;
   flex-direction: column;
@@ -784,6 +825,31 @@ a {
     flex-basis: 100%;
     text-align: left;
     margin-top: 0.125rem;
+  }
+}
+
+/* ============================================
+   Experience view-work button
+   ============================================ */
+
+.experience__view-work {
+  display: none; /* default hidden, shown via breakpoints */
+}
+
+@media (max-width: 767px) {
+  .experience__view-work {
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin-top: var(--space-md);
+  }
+}
+
+@media (min-width: 768px) {
+  .experience__view-work {
+    display: block;
+    margin-top: var(--space-md);
+    width: max-content;
   }
 }
 

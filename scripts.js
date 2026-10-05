@@ -334,6 +334,16 @@
     });
   }
 
+  /* ---------- Experience view work tracking ---------- */
+  const viewWorkLink = document.querySelector(".experience__view-work");
+  if (viewWorkLink) {
+    viewWorkLink.addEventListener("click", () => {
+      if (window.Analytics) {
+        window.Analytics.track("experience:view-work");
+      }
+    });
+  }
+
   /* ---------- Logo click tracking ---------- */
   const navbarLogo = document.querySelector(".navbar__logo");
   if (navbarLogo) {
