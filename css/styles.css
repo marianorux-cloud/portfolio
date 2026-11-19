@@ -68,7 +68,14 @@
 
     /* Layout */
     --max-width: 1440px;
+    --container-max-width: var(--max-width);
+    --container-padding: var(--space-md);
     --modal-block-gap: var(--space-lg);
+
+    /* Modal */
+    --modal-width: 480px;
+    --modal-backdrop: rgba(0, 0, 0, 0.5);
+    --modal-z-index: 1000;
 
     /* Transitions */
     --transition-fast: 150ms ease;
@@ -675,12 +682,33 @@ a {
   padding: var(--space-xl) var(--space-md);
 }
 
-.page__header {
+.page__header,
+.section-header__title {
   font-size: 2rem;
   line-height: 1.2;
   font-weight: var(--font-weight-medium);
   color: var(--color-text);
   margin-bottom: var(--space-sm);
+}
+
+.section-header {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: var(--space-xs) var(--space-md) 0;
+}
+
+.section-header__rule {
+  border: none;
+  border-top: 1px solid var(--divider);
+  margin: var(--space-sm) 0;
+}
+
+.section-header__subhead {
+  font-size: 1.125rem;
+  line-height: 1.5;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+  opacity: 0.7;
 }
 
 .page__subhead {
@@ -944,14 +972,44 @@ a {
   width: 100%;
 }
 
-.experience__row {
+.experience__row,
+.experience-row {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: baseline;
   padding: var(--space-xs) 0;
-  border-bottom: 1px solid rgba(128, 128, 128, 0.25);
+  border-bottom: 1px solid var(--divider);
   gap: var(--space-md);
+}
+
+.experience-row__primary {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.experience-row__title {
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--leading-normal);
+  color: var(--text);
+}
+
+.experience-row__sub {
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--leading-normal);
+  color: var(--text);
+}
+
+.experience-row__meta {
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--leading-normal);
+  color: var(--text-secondary);
+  flex-shrink: 0;
+  text-align: right;
 }
 
 .experience__role {
@@ -1048,6 +1106,24 @@ a {
     margin-top: var(--space-md);
     width: max-content;
   }
+}
+
+/* ============================================
+   Container (layout primitive)
+   ============================================ */
+
+.container {
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  padding: var(--container-padding);
+}
+
+.container--flush {
+  padding: 0;
+}
+
+.container--narrow {
+  max-width: 720px;
 }
 
 /* ============================================
@@ -1575,6 +1651,68 @@ body.custom-cursor-active label {
 }
 
 /* ---------- Lightbox ---------- */
+/* ============================================
+   Modal (dialog shell)
+   ============================================ */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: var(--modal-z-index);
+  background: var(--modal-backdrop);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-fast);
+}
+
+.modal[hidden] {
+  display: none;
+}
+
+.modal--open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal__overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--modal-backdrop);
+}
+
+.modal__content {
+  position: relative;
+  background: var(--bg);
+  border-radius: var(--radius-md);
+  max-width: var(--modal-width);
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: var(--space-lg);
+}
+
+.modal__close {
+  position: absolute;
+  top: var(--space-sm);
+  right: var(--space-sm);
+  background: transparent;
+  border: none;
+  color: var(--icon);
+  cursor: pointer;
+  padding: var(--space-2xs);
+}
+
+.modal__close:hover {
+  background: var(--hover-bg);
+}
+
+/* ============================================
+   Lightbox (extends modal)
+   ============================================ */
+
 .lightbox {
   position: fixed;
   inset: 0;
@@ -2460,7 +2598,8 @@ body.modal-open {
 
 /* From Uiverse.io by gharsh11032000, adapted.
    State colours live in custom properties so new states are a one-rule change. */
-.privacy-switch {
+.privacy-switch,
+.switch {
   /* geometry */
   --switch-width: 3.5em;
   --switch-height: 2em;
@@ -2491,7 +2630,8 @@ body.modal-open {
   user-select: none;
 }
 
-.privacy-switch__label {
+.privacy-switch__label,
+.switch__label {
   font-size: var(--text-base);
   font-weight: var(--font-weight-medium);
   line-height: var(--leading-tight);
@@ -2499,7 +2639,8 @@ body.modal-open {
   padding-right: var(--space-md);
 }
 
-.privacy-switch__subline {
+.privacy-switch__subline,
+.switch__subline {
   display: block;
   font-size: var(--text-sm);
   font-weight: var(--font-weight-regular);
@@ -2509,7 +2650,8 @@ body.modal-open {
   margin-top: var(--space-xs);
 }
 
-.privacy-switch__control {
+.privacy-switch__control,
+.switch__control {
   position: relative;
   flex: 0 0 auto;
   display: inline-block;
@@ -2517,13 +2659,15 @@ body.modal-open {
   height: var(--switch-height);
 }
 
-.privacy-switch__input {
+.privacy-switch__input,
+.switch__input {
   opacity: 0;
   width: 0;
   height: 0;
 }
 
-.privacy-switch__track {
+.privacy-switch__track,
+.switch__track {
   position: absolute;
   inset: 0;
   background-color: var(--switch-track-bg);
@@ -2532,7 +2676,8 @@ body.modal-open {
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.privacy-switch__track:before {
+.privacy-switch__track:before,
+.switch__track:before {
   position: absolute;
   content: "";
   height: var(--switch-knob);
@@ -2545,31 +2690,36 @@ body.modal-open {
 }
 
 /* State: checked */
-.privacy-switch__input:checked + .privacy-switch__track {
+.privacy-switch__input:checked + .privacy-switch__track,
+.switch__input:checked + .switch__track {
   background-color: var(--switch-checked-track-bg);
   border-color: var(--switch-checked-border);
   box-shadow: 0 0 20px var(--switch-checked-glow);
 }
 
-.privacy-switch__input:checked + .privacy-switch__track:before {
+.privacy-switch__input:checked + .privacy-switch__track:before,
+.switch__input:checked + .switch__track:before {
   transform: translateX(1.5em);
   background-color: var(--switch-checked-knob-bg);
 }
 
 /* State: refused. Toggled by script for a moment, never persists. */
-.privacy-switch--refused .privacy-switch__track {
+.privacy-switch--refused .privacy-switch__track,
+.switch--refused .switch__track {
   border-color: var(--switch-danger-border);
   box-shadow: 0 0 20px var(--switch-danger-glow);
   transition-duration: 80ms;
 }
 
-.privacy-switch--refused .privacy-switch__track:before {
+.privacy-switch--refused .privacy-switch__track:before,
+.switch--refused .switch__track:before {
   background-color: var(--switch-danger-knob);
   transition-duration: 80ms;
 }
 
 /* State: keyboard focus */
-.privacy-switch__input:focus-visible + .privacy-switch__track {
+.privacy-switch__input:focus-visible + .privacy-switch__track,
+.switch__input:focus-visible + .switch__track {
   outline: 2px solid var(--switch-focus-ring);
   outline-offset: 2px;
 }
