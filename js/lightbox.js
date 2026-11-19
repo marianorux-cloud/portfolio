@@ -34,7 +34,7 @@
       </svg>
     </button>
     <div class="lightbox__counter sr-only" aria-live="polite"></div>
-  `;
+  `);
 
   const imgEl = lightbox.querySelector(".lightbox__img");
   const closeEl = lightbox.querySelector(".lightbox__close");
