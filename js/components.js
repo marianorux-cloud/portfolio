@@ -31,8 +31,8 @@
   }
 
   function init() {
-    // Inject navbar before each <header>
-    document.querySelectorAll('header[data-component="navbar"]').forEach(el => {
+    // Inject navbar/mobile menu into placeholder containers
+    document.querySelectorAll('[data-component="navbar-mobile"]').forEach(el => {
       injectComponent('navbar', el);
     });
 
