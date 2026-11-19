@@ -117,7 +117,7 @@
 
 @font-face {
   font-family: "Overused Grotesk";
-  src: url("assets/fonts/OverusedGrotesk-Roman.woff2") format("woff2");
+  src: url("../assets/fonts/OverusedGrotesk-Roman.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -125,7 +125,7 @@
 
 @font-face {
   font-family: "Overused Grotesk";
-  src: url("assets/fonts/OverusedGrotesk-Medium.woff2") format("woff2");
+  src: url("../assets/fonts/OverusedGrotesk-Medium.woff2") format("woff2");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -133,7 +133,7 @@
 
 @font-face {
   font-family: "Overused Grotesk";
-  src: url("assets/fonts/OverusedGrotesk-Bold.woff2") format("woff2");
+  src: url("../assets/fonts/OverusedGrotesk-Bold.woff2") format("woff2");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -397,10 +397,10 @@ a {
   width: 44px;
   height: 33px;
   background-color: var(--color-icon);
-  -webkit-mask-image: url("assets/icons/logo.svg");
+  -webkit-mask-image: url("../assets/icons/logo.svg");
   -webkit-mask-size: contain;
   -webkit-mask-repeat: no-repeat;
-  mask-image: url("assets/icons/logo.svg");
+  mask-image: url("../assets/icons/logo.svg");
   mask-size: contain;
   mask-repeat: no-repeat;
 }
@@ -861,10 +861,10 @@ a {
   height: 33px;
   flex-shrink: 0;
   background-color: var(--color-icon);
-  -webkit-mask-image: url("assets/icons/logo.svg");
+  -webkit-mask-image: url("../assets/icons/logo.svg");
   -webkit-mask-size: contain;
   -webkit-mask-repeat: no-repeat;
-  mask-image: url("assets/icons/logo.svg");
+  mask-image: url("../assets/icons/logo.svg");
   mask-size: contain;
   mask-repeat: no-repeat;
 }
@@ -875,10 +875,10 @@ a {
   width: 100%;
   height: 10px;
   background-color: var(--color-icon);
-  -webkit-mask-image: url("assets/icons/zig.svg");
+  -webkit-mask-image: url("../assets/icons/zig.svg");
   -webkit-mask-repeat: repeat-x;
   -webkit-mask-size: 16px 10px;
-  mask-image: url("assets/icons/zig.svg");
+  mask-image: url("../assets/icons/zig.svg");
   mask-repeat: repeat-x;
    mask-size: 16px 10px;
 }
@@ -2363,10 +2363,10 @@ body.modal-open {
   height: 16px;
   flex-shrink: 0;
   background-color: var(--color-icon);
-  -webkit-mask-image: url("assets/icons/umami.svg");
+  -webkit-mask-image: url("../assets/icons/umami.svg");
   -webkit-mask-size: contain;
   -webkit-mask-repeat: no-repeat;
-  mask-image: url("assets/icons/umami.svg");
+  mask-image: url("../assets/icons/umami.svg");
   mask-size: contain;
   mask-repeat: no-repeat;
 }
