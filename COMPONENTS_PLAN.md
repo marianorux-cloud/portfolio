@@ -29,6 +29,8 @@ Based on the explorer subagent audit, here are the remaining components to imple
 - `--modal-backdrop: rgba(0, 0, 0, 0.5)`
 - `--modal-z-index: 1000`
 
+**Note:** change name to modal-dialog
+
 ### 2. `container` (layout primitive) — CSS-only
 **Priority:** High (8 occurrences, zero risk)
 
@@ -47,6 +49,8 @@ Based on the explorer subagent audit, here are the remaining components to imple
 **Design tokens needed:**
 - `--container-max-width: var(--max-width)` (alias)
 - `--container-padding: var(--space-md)`
+
+**Note:** 
 
 ### 3. `nav-list` (primary nav) — template component
 **Priority:** High (2× full-file duplication, drift risk)
