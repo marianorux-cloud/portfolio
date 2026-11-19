@@ -84,7 +84,7 @@
       const img = document.createElement("img");
       img.className = "film-grid__image film-grid__image--placeholder";
       img.src = placeholder;
-      img.alt = photo.alt;
+      img.alt = "";
       img.decoding = "async";
 
       cell.appendChild(img);

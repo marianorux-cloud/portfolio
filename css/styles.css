@@ -79,6 +79,50 @@
 
     /* Interaction */
     --color-hover-bg: color-mix(in srgb, var(--color-text) 15%, transparent);
+
+    /* ===== New Design Tokens (Redwood-inspired, simplified names) ===== */
+
+    /* Text colors */
+    --text: var(--color-text);
+    --text-secondary: color-mix(in srgb, var(--color-text) 65%, transparent);
+    --text-disabled: color-mix(in srgb, var(--color-text) 35%, transparent);
+
+    /* Icon colors */
+    --icon: var(--color-icon);
+    --icon-secondary: color-mix(in srgb, var(--color-icon) 50%, transparent);
+
+    /* Divider colors */
+    --divider: var(--color-secondary);
+    --divider-strong: var(--color-text);
+
+    /* Background colors */
+    --bg: var(--color-bg);
+    --bg-secondary: color-mix(in srgb, var(--color-bg) 90%, var(--color-text));
+    --bg-tertiary: color-mix(in srgb, var(--color-bg) 80%, var(--color-text));
+
+    /* Border colors */
+    --border: var(--color-text);
+    --border-focus: var(--color-blue);
+
+    /* Inversion (for dark-mode hover) */
+    --surface-inverted: #fff;
+    --text-inverted: #000;
+
+    /* Radius */
+    --radius-xs: 1px;
+    --radius-sm: 4px;
+    --radius-md: 14px;
+    --radius-full: 50%;
+
+    /* Shadow */
+    --shadow-glow: 0 0 20px var(--color-blue);
+
+    /* Overlay */
+    --overlay-lightbox: rgba(0, 0, 0, 0.75);
+    --overlay-privacy: rgba(0, 0, 0, 0.5);
+
+    /* Accent */
+    --accent: var(--color-blue);
 }
 
 /* Dark mode */
@@ -89,6 +133,16 @@
   --color-secondary: rgba(255, 255, 255, 0.2);
   --color-cursor-border: rgba(255, 255, 255, 0.4);
   --cursor-scale: 1;
+
+  /* New tokens */
+  --bg: var(--color-bg);
+  --text: var(--color-text);
+  --icon: var(--color-icon);
+  --divider: var(--color-secondary);
+  --surface-inverted: #000;
+  --text-inverted: #fff;
+  --overlay-lightbox: rgba(0, 0, 0, 0.75);
+  --overlay-privacy: rgba(0, 0, 0, 0.5);
 }
 
 /* Neutral / warm off-white */
@@ -100,6 +154,14 @@
   --text-secondary-mix: 71%;
   --color-cursor-border: rgba(0, 0, 0, 0.35);
   --cursor-scale: 1;
+
+  /* New tokens */
+  --bg: var(--color-bg);
+  --text: var(--color-text);
+  --icon: var(--color-icon);
+  --divider: var(--color-secondary);
+  --surface-inverted: #fff;
+  --text-inverted: #000;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -108,6 +170,14 @@
     --color-text: #e5e5e5;
     --color-icon: #e5e5e5;
     --color-cursor-border: rgba(255, 255, 255, 0.4);
+
+    /* New tokens */
+    --bg: var(--color-bg);
+    --text: var(--color-text);
+    --icon: var(--color-icon);
+    --divider: var(--color-secondary);
+    --surface-inverted: #000;
+    --text-inverted: #fff;
   }
 }
 
@@ -1312,6 +1382,11 @@ body.custom-cursor-active label {
 .project-card__image--bordered {
   outline: 1px solid var(--color-text);
   outline-offset: -1px;
+}
+
+.project-card__image:focus-visible {
+  outline: 2px solid var(--color-text);
+  outline-offset: -3px;
 }
 
 .project-card__image-wrapper--three-quarters {

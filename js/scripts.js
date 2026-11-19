@@ -11,6 +11,11 @@
 
   function setTheme(theme) {
     html.setAttribute("data-theme", theme);
+    const toggle = document.querySelector(".theme-toggle");
+    if (toggle) {
+      const nextTheme = THEME_ORDER[(THEME_ORDER.indexOf(theme) + 1) % THEME_ORDER.length];
+      toggle.setAttribute("aria-label", `Theme: ${theme} — activate for ${nextTheme}`);
+    }
     try {
       localStorage.setItem(STORAGE_KEY, theme);
     } catch {
@@ -33,6 +38,12 @@
     }
     // Initialize mobile menu and navbar tracking after components loaded
     initInjectedComponents();
+    // Add accessibility attributes to project card images
+    document.querySelectorAll('.project-card__image[tabindex="0"]').forEach(img => {
+      img.setAttribute('role', 'button');
+      const alt = img.getAttribute('alt') || 'project image';
+      img.setAttribute('aria-label', 'Open image: ' + alt);
+    });
   }
 
   if (document.readyState === "loading") {
