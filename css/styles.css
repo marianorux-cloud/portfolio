@@ -2316,7 +2316,8 @@ body.modal-open {
    Film page
    ============================================ */
 
-.film-header__top {
+.film-header__top,
+.section-header__top {
   display: flex;
   align-items: center;
 }
