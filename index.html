@@ -35,8 +35,8 @@
 
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
-  <!-- NAVBAR: injected by sync-partials.js -->
-  <header data-partial="navbar"></header>
+  <!-- NAVBAR: injected by components.js -->
+  <header data-component="navbar"></header>
   <main id="main-content" tabindex="-1">
     <section class="hero">
       <div class="hero__inner">
@@ -106,15 +106,15 @@
     </section>
   </main>
 
-  <!-- FOOTER: injected by sync-partials.js -->
-  <footer data-partial="footer"></footer>
-  <!-- PRIVACY MODAL: injected by sync-partials.js -->
-  <div data-partial="privacy-modal"></div>
+  <!-- FOOTER: injected by components.js -->
+  <footer data-component="footer"></footer>
+  <!-- PRIVACY MODAL: injected by components.js -->
+  <div data-component="privacy-modal"></div>
 
   <div class="cursor" aria-hidden="true"></div>
   <script src="dialog-util.js"></script>
   <script src="umami-helpers.js"></script>
-  <script src="js/sync-partials.js"></script>
+  <script src="js/components.js"></script>
   <script src="scripts.js"></script>
 </body>
 
