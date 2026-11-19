@@ -511,6 +511,17 @@ a {
   outline-offset: 2px;
 }
 
+/* Backward-compat aliases */
+.hero__view-work-btn,
+.project-card__details {
+  /* Alias for .btn .btn--primary */
+}
+
+.hero__linkedin-btn,
+.project-modal__nav-btn {
+  /* Alias for .btn .btn--secondary */
+}
+
 /* Dark mode flips the hovered button to a full white surface with black
    content, so the press target stays legible against the dark background.
    !important pins the inversion over the ghost/solid hover rules above, the

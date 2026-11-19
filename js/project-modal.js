@@ -347,7 +347,7 @@
       grid.querySelectorAll(".project-card"),
       function (card) {
         if (card.classList.contains("filter-hidden")) return;
-        var btn = card.querySelector(".project-card__details[data-project-id]");
+        var btn = card.querySelector(".btn.btn--primary[data-project-id]");
         var id = btn ? btn.dataset.projectId : card.dataset.details;
         if (!id || !configs[id]) return;
         items.push({ id: id, config: configs[id] });
@@ -378,7 +378,7 @@
         ? svg + "<span>" + visibleText + "</span>"
         : "<span>" + visibleText + "</span>" + svg;
     return (
-      '<button class="project-modal__nav-btn" type="button" data-nav-direction="' +
+      '<button class="btn btn--secondary" type="button" data-nav-direction="' +
       direction +
       '" aria-label="' +
       esc(ariaText + ": " + getProjectTitle(target.config, target.id)) +
@@ -421,7 +421,7 @@
     var grid = document.getElementById("projects-grid");
     if (grid) {
       var btn = grid.querySelector(
-        '.project-card__details[data-project-id="' + projectId + '"]'
+        '.btn.btn--primary[data-project-id="' + projectId + '"]'
       );
       if (btn && !btn.closest(".filter-hidden")) return btn;
     }
@@ -489,7 +489,7 @@
        lastFocused is untouched: closing must still restore focus to the card
        that opened the modal. */
     var btn = modal.querySelector(
-      '.project-modal__nav-btn[data-nav-direction="' + direction + '"]'
+      '.btn.btn--secondary[data-nav-direction="' + direction + '"]'
     );
     /* preventScroll, and the reset after it: .project-modal is the scroll
        container, and focusing the footer would otherwise scroll it back into
@@ -683,7 +683,7 @@
     });
 
     document.addEventListener("click", function (e) {
-      var btn = e.target.closest(".project-card__details");
+      var btn = e.target.closest(".btn.btn--primary");
       if (btn) {
         e.preventDefault();
         open(btn.dataset.projectId, "button");
@@ -691,7 +691,7 @@
     });
 
     modal.addEventListener("click", function (e) {
-      var navBtn = e.target.closest(".project-modal__nav-btn");
+      var navBtn = e.target.closest(".btn.btn--secondary");
       if (!navBtn) return;
       var direction = parseInt(navBtn.dataset.navDirection, 10);
       if (direction === 1 || direction === -1) {
@@ -710,7 +710,7 @@
 
     grid.addEventListener("keydown", function (e) {
       if (e.key !== "Enter" && e.key !== " ") return;
-      var btn = e.target.closest(".project-card__details");
+      var btn = e.target.closest(".btn.btn--primary");
       if (!btn) return;
       e.preventDefault();
       open(btn.dataset.projectId, "button");

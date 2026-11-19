@@ -346,7 +346,7 @@
   }
 
   /* ---------- LinkedIn click tracking ---------- */
-  const linkedinLink = document.querySelector(".hero__linkedin-btn");
+  const linkedinLink = document.querySelector(".btn.btn--secondary");
   if (linkedinLink) {
     linkedinLink.addEventListener("click", () => {
       if (window.Analytics) {
@@ -516,7 +516,7 @@ function openLightboxForElement(el) {
            activating the real button reuses that exact path and its
            "button" analytics trigger instead of duplicating it. */
         const detailsBtn = card.querySelector(
-          ".project-card__details[data-project-id]",
+          ".btn.btn--primary[data-project-id]",
         );
         if (detailsBtn) detailsBtn.click();
         return;
