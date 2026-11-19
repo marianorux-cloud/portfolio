@@ -7,6 +7,7 @@
 
   const COMPONENTS = {
     'navbar': '_includes/components/navbar.html',
+    'navbar-secondary': '_includes/components/navbar-secondary.html',
     'footer': '_includes/components/footer.html',
     'privacy-modal': '_includes/components/privacy-modal.html'
   };
@@ -31,9 +32,14 @@
   }
 
   function init() {
-    // Inject navbar/mobile menu into placeholder containers
+    // Inject navbar before each <header>
     document.querySelectorAll('[data-component="navbar-mobile"]').forEach(el => {
       injectComponent('navbar', el);
+    });
+
+    // Inject secondary navbar (work/film pages with back button)
+    document.querySelectorAll('header[data-component="navbar-secondary"]').forEach(el => {
+      injectComponent('navbar-secondary', el);
     });
 
     // Inject footer after each main content
