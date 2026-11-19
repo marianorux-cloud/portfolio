@@ -21,6 +21,5 @@ node_modules/
 # Logs
 *.log
 
-# Dev / test files
-dev-test-*
-logo-test.html
+# Planning / dev docs
+V2_PLAN.md
