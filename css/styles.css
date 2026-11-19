@@ -1612,6 +1612,11 @@ body.custom-cursor-active label {
   aspect-ratio: auto;
 }
 
+/* Ratio token for project card images */
+.project-card__image-wrapper {
+  --ratio: auto;
+}
+
 .project-card__image-wrapper--half {
   width: 50%;
 }
