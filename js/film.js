@@ -15,21 +15,21 @@
   }
 
   const photos = [
-  { src: "../assets/images/film/webp/IMG_0001.webp", alt: "hand holding coffee", lightboxSrc: "../assets/images/film/IMG_0001.jpg" },
-  { src: "../assets/images/film/webp/IMG_0002.webp", alt: "music express carnival ride", lightboxSrc: "../assets/images/film/IMG_0002.jpg" },
-  { src: "../assets/images/film/webp/IMG_0003.webp", alt: "lemonade stand at carnival", lightboxSrc: "../assets/images/film/IMG_0003.jpg" },
-  { src: "../assets/images/film/webp/IMG_0004.webp", alt: "ferris wheel", lightboxSrc: "../assets/images/film/IMG_0004.jpg" },
-  { src: "../assets/images/film/webp/IMG_0005.webp", alt: "beach shore", lightboxSrc: "../assets/images/film/IMG_0005.jpg" },
-  { src: "../assets/images/film/webp/IMG_0006.webp", alt: "two coffees on counter", lightboxSrc: "../assets/images/film/IMG_0006.jpg" },
-  { src: "../assets/images/film/webp/IMG_0007.webp", alt: "all day coffee shop", lightboxSrc: "../assets/images/film/IMG_0007.jpg" },
-  { src: "../assets/images/film/webp/IMG_0008.webp", alt: "power to the people protest sign", lightboxSrc: "../assets/images/film/IMG_0008.jpg" },
-  { src: "../assets/images/film/webp/IMG_0009.webp", alt: "carnival ride", lightboxSrc: "../assets/images/film/IMG_0009.jpg" },
-  { src: "../assets/images/film/webp/IMG_0010.webp", alt: "carnival games", lightboxSrc: "../assets/images/film/IMG_0010.jpg" },
-  { src: "../assets/images/film/webp/IMG_0011.webp", alt: "no kings protest", lightboxSrc: "../assets/images/film/IMG_0011.jpg" },
-  { src: "../assets/images/film/webp/IMG_0012.webp", alt: "all day coffee shop ventanita", lightboxSrc: "../assets/images/film/IMG_0012.jpg" },
-  { src: "../assets/images/film/webp/IMG_0014.webp", alt: "no witchcraft sign on a tree", lightboxSrc: "../assets/images/film/IMG_0014.jpg" },
-  { src: "../assets/images/film/webp/IMG_0015.webp", alt: "witchcraft behind tree", lightboxSrc: "../assets/images/film/IMG_0015.jpg" },
-  { src: "../assets/images/film/webp/IMG_0016.webp", alt: "all day coffee shop 2", lightboxSrc: "../assets/images/film/IMG_0016.jpg" },
+  { src: "../assets/images/film/webp/IMG_0001.webp", alt: "hand holding coffee", lightboxSrc: "../assets/images/film/webp/IMG_0001.webp" },
+  { src: "../assets/images/film/webp/IMG_0002.webp", alt: "music express carnival ride", lightboxSrc: "../assets/images/film/webp/IMG_0002.webp" },
+  { src: "../assets/images/film/webp/IMG_0003.webp", alt: "lemonade stand at carnival", lightboxSrc: "../assets/images/film/webp/IMG_0003.webp" },
+  { src: "../assets/images/film/webp/IMG_0004.webp", alt: "ferris wheel", lightboxSrc: "../assets/images/film/webp/IMG_0004.webp" },
+  { src: "../assets/images/film/webp/IMG_0005.webp", alt: "beach shore", lightboxSrc: "../assets/images/film/webp/IMG_0005.webp" },
+  { src: "../assets/images/film/webp/IMG_0006.webp", alt: "two coffees on counter", lightboxSrc: "../assets/images/film/webp/IMG_0006.webp" },
+  { src: "../assets/images/film/webp/IMG_0007.webp", alt: "all day coffee shop", lightboxSrc: "../assets/images/film/webp/IMG_0007.webp" },
+  { src: "../assets/images/film/webp/IMG_0008.webp", alt: "power to the people protest sign", lightboxSrc: "../assets/images/film/webp/IMG_0008.webp" },
+  { src: "../assets/images/film/webp/IMG_0009.webp", alt: "carnival ride", lightboxSrc: "../assets/images/film/webp/IMG_0009.webp" },
+  { src: "../assets/images/film/webp/IMG_0010.webp", alt: "carnival games", lightboxSrc: "../assets/images/film/webp/IMG_0010.webp" },
+  { src: "../assets/images/film/webp/IMG_0011.webp", alt: "no kings protest", lightboxSrc: "../assets/images/film/webp/IMG_0011.webp" },
+  { src: "../assets/images/film/webp/IMG_0012.webp", alt: "all day coffee shop ventanita", lightboxSrc: "../assets/images/film/webp/IMG_0012.webp" },
+  { src: "../assets/images/film/webp/IMG_0014.webp", alt: "no witchcraft sign on a tree", lightboxSrc: "../assets/images/film/webp/IMG_0014.webp" },
+  { src: "../assets/images/film/webp/IMG_0015.webp", alt: "witchcraft behind tree", lightboxSrc: "../assets/images/film/webp/IMG_0015.webp" },
+  { src: "../assets/images/film/webp/IMG_0016.webp", alt: "all day coffee shop 2", lightboxSrc: "../assets/images/film/webp/IMG_0016.webp" },
   ];
 
   function init() {

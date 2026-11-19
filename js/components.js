@@ -6,10 +6,10 @@
   "use strict";
 
   const COMPONENTS = {
-    'navbar': 'assets/components/navbar.html',
-    'navbar-secondary': 'assets/components/navbar-secondary.html',
-    'footer': 'assets/components/footer.html',
-    'privacy-modal': 'assets/components/privacy-modal.html'
+    'navbar': '/assets/components/navbar.html',
+    'navbar-secondary': '/assets/components/navbar-secondary.html',
+    'footer': '/assets/components/footer.html',
+    'privacy-modal': '/assets/components/privacy-modal.html'
   };
 
   // Fetch and inject a component
