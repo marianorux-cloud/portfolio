@@ -7,7 +7,6 @@
 
   const STORAGE_KEY = "theme";
   const html = document.documentElement;
-  const toggle = document.querySelector(".theme-toggle");
   const THEME_ORDER = ["light", "neutral", "dark"];
 
   function setTheme(theme) {
@@ -20,6 +19,7 @@
   }
 
   function init() {
+    const toggle = document.querySelector(".theme-toggle");
     if (toggle) {
       toggle.addEventListener("click", function () {
         const current = html.getAttribute("data-theme") || "light";
@@ -31,12 +31,19 @@
         }
       });
     }
+    // Initialize mobile menu and navbar tracking after components loaded
+    initInjectedComponents();
   }
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", init);
+    document.addEventListener("components:loaded", init);
   } else {
-    init();
+    // Components may already be loaded if script runs late
+    if (document.querySelector(".theme-toggle")) {
+      init();
+    } else {
+      document.addEventListener("components:loaded", init);
+    }
   }
 
   /* ---------- Custom cursor ---------- */
@@ -129,190 +136,193 @@
     });
   }
 
-  /* ---------- Mobile menu ---------- */
-  const mobileMenuToggle = document.querySelector(".navbar__toggle");
-  const mobileMenuClose = document.querySelector(".mobile-menu__close");
-  const mobileMenu = document.getElementById("mobile-menu");
+   function initInjectedComponents() {
+     /* ---------- Mobile menu ---------- */
+     const mobileMenuToggle = document.querySelector(".navbar__toggle");
+     const mobileMenuClose = document.querySelector(".mobile-menu__close");
+     const mobileMenu = document.getElementById("mobile-menu");
 
-  if (mobileMenuToggle && mobileMenuClose && mobileMenu) {
-    /* The background the menu makes inert while it is open. #mobile-menu is a
-       direct child of <body>, a sibling of both of these, so inerting them
-       cannot reach the dialog. The navbar is deliberately NOT in this list:
-       .navbar__toggle lives there and closeMenu() calls .focus() on it, which
-       is a silent no-op inside an inert region and would strand focus on
-       body. The same holds for the .skip-link, the privacy modal and any
-       other body-level sibling. */
-    const MOBILE_MENU_INERT_TARGETS = ["#main-content", ".footer"];
+     if (mobileMenuToggle && mobileMenuClose && mobileMenu) {
+       /* The background the menu makes inert while it is open. #mobile-menu is a
+          direct child of <body>, a sibling of both of these, so inerting them
+          cannot reach the dialog. The navbar is deliberately NOT in this list:
+          .navbar__toggle lives there and closeMenu() calls .focus() on it, which
+          is a silent no-op inside an inert region and would strand focus on
+          body. The same holds for the .skip-link, the privacy modal and any
+          other body-level sibling. */
+       const MOBILE_MENU_INERT_TARGETS = ["#main-content", ".footer"];
 
-    function setBackgroundInert(isInert) {
-      MOBILE_MENU_INERT_TARGETS.forEach((selector) => {
-        const el = document.querySelector(selector);
-        if (!el) return;
-        if (isInert) {
-          el.setAttribute("inert", "");
-        } else {
-          el.removeAttribute("inert");
-        }
-      });
-    }
+       function setBackgroundInert(isInert) {
+         MOBILE_MENU_INERT_TARGETS.forEach((selector) => {
+           const el = document.querySelector(selector);
+           if (!el) return;
+           if (isInert) {
+             el.setAttribute("inert", "");
+           } else {
+             el.removeAttribute("inert");
+           }
+         });
+       }
 
-    function closeMenu() {
-      /* Every exit path — close button, backdrop, Escape — funnels through
-         here, so this is the single place the attribute has to be cleared.
-         The transitionend handler and the hideTimer callback below do not
-         call closeMenu() and must not be relied on for cleanup. */
-      setBackgroundInert(false);
-      mobileMenu.classList.remove("mobile-menu--open");
-      mobileMenuToggle.setAttribute("aria-expanded", "false");
-      mobileMenuToggle.setAttribute("aria-label", "Open menu");
-      document.body.style.overflow = "";
-      mobileMenuToggle.focus();
-      if (hideTimer) clearTimeout(hideTimer);
-      hideTimer = setTimeout(() => {
-        hideTimer = null;
-        if (!mobileMenu.classList.contains("mobile-menu--open")) {
-          mobileMenu.hidden = true;
-        }
-      }, HIDE_FALLBACK_MS);
-      if (window.Analytics) {
-        window.Analytics.track("mobile-nav:close", { open: false });
-      }
-    }
+       function closeMenu() {
+         /* Every exit path — close button, backdrop, Escape — funnels through
+            here, so this is the single place the attribute has to be cleared.
+            The transitionend handler and the hideTimer callback below do not
+            call closeMenu() and must not be relied on for cleanup. */
+         setBackgroundInert(false);
+         mobileMenu.classList.remove("mobile-menu--open");
+         mobileMenuToggle.setAttribute("aria-expanded", "false");
+         mobileMenuToggle.setAttribute("aria-label", "Open menu");
+         document.body.style.overflow = "";
+         mobileMenuToggle.focus();
+         if (hideTimer) clearTimeout(hideTimer);
+         hideTimer = setTimeout(() => {
+           hideTimer = null;
+           if (!mobileMenu.classList.contains("mobile-menu--open")) {
+             mobileMenu.hidden = true;
+           }
+         }, HIDE_FALLBACK_MS);
+         if (window.Analytics) {
+           window.Analytics.track("mobile-nav:close", { open: false });
+         }
+       }
 
-    const HIDE_FALLBACK_MS = 300;
-    let hideTimer = null;
+       const HIDE_FALLBACK_MS = 300;
+       let hideTimer = null;
 
-    function openMenu() {
-      if (hideTimer) {
-        clearTimeout(hideTimer);
-        hideTimer = null;
-      }
-      mobileMenu.hidden = false;
-      requestAnimationFrame(() => {
-        mobileMenu.classList.add("mobile-menu--open");
-      });
-      mobileMenuToggle.setAttribute("aria-expanded", "true");
-      mobileMenuToggle.setAttribute("aria-label", "Close menu");
-      document.body.style.overflow = "hidden";
-      setBackgroundInert(true);
-      mobileMenuClose.focus();
-      if (window.Analytics) {
-        window.Analytics.track("mobile-nav:open", { open: true });
-      }
-    }
+       function openMenu() {
+         if (hideTimer) {
+           clearTimeout(hideTimer);
+           hideTimer = null;
+         }
+         mobileMenu.hidden = false;
+         requestAnimationFrame(() => {
+           mobileMenu.classList.add("mobile-menu--open");
+         });
+         mobileMenuToggle.setAttribute("aria-expanded", "true");
+         mobileMenuToggle.setAttribute("aria-label", "Close menu");
+         document.body.style.overflow = "hidden";
+         setBackgroundInert(true);
+         mobileMenuClose.focus();
+         if (window.Analytics) {
+           window.Analytics.track("mobile-nav:open", { open: true });
+         }
+       }
 
-    mobileMenu.addEventListener("transitionend", (e) => {
-      if (
-        e.target === mobileMenu &&
-        !mobileMenu.classList.contains("mobile-menu--open")
-      ) {
-        if (hideTimer) {
-          clearTimeout(hideTimer);
-          hideTimer = null;
-        }
-        mobileMenu.hidden = true;
-      }
-    });
+       mobileMenu.addEventListener("transitionend", (e) => {
+         if (
+           e.target === mobileMenu &&
+           !mobileMenu.classList.contains("mobile-menu--open")
+         ) {
+           if (hideTimer) {
+             clearTimeout(hideTimer);
+             hideTimer = null;
+           }
+           mobileMenu.hidden = true;
+         }
+       });
 
-    mobileMenuToggle.addEventListener("click", openMenu);
-    mobileMenuClose.addEventListener("click", closeMenu);
+       mobileMenuToggle.addEventListener("click", openMenu);
+       mobileMenuClose.addEventListener("click", closeMenu);
 
-    mobileMenu.addEventListener("click", (e) => {
-      if (e.target === mobileMenu) {
-        closeMenu();
-      }
-    });
+       mobileMenu.addEventListener("click", (e) => {
+         if (e.target === mobileMenu) {
+           closeMenu();
+         }
+       });
 
-    document.addEventListener("keydown", (e) => {
-      if (
-        e.key !== "Escape" ||
-        !mobileMenu.classList.contains("mobile-menu--open")
-      )
-        return;
-      e.preventDefault();
-      closeMenu();
-    });
+       document.addEventListener("keydown", (e) => {
+         if (
+           e.key !== "Escape" ||
+           !mobileMenu.classList.contains("mobile-menu--open")
+         )
+           return;
+         e.preventDefault();
+         closeMenu();
+       });
 
-    mobileMenu.addEventListener("keydown", (e) => {
-      if (
-        e.key !== "Tab" ||
-        !mobileMenu.classList.contains("mobile-menu--open")
-      )
-        return;
-      /* Same hidden-subtree filter as the lightbox and project modal
-         (lightbox.js, project-modal.js): FOCUSABLE_SELECTOR screens out a
-         removed tabindex only, so a button that is `hidden` while the menu is
-         open would still land in the cycle. Test the attribute, not
-         getComputedStyle — .btn--icon sets display:inline-flex and beats the
-         UA [hidden] rule, so a computed-style check reports these buttons as
-         visible and the filter silently does nothing. If the menu itself is
-         hidden, every element filters out, length is 0, and the early return
-         below handles it exactly as before. */
-      const focusable = Array.from(
-        mobileMenu.querySelectorAll(window.DialogUtil.FOCUSABLE_SELECTOR)
-      ).filter((el) => !el.closest("[hidden]"));
-      if (focusable.length === 0) return;
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-      if (e.shiftKey && document.activeElement === first) {
-        e.preventDefault();
-        last.focus();
-      } else if (!e.shiftKey && document.activeElement === last) {
-        e.preventDefault();
-        first.focus();
-      }
-    });
+       mobileMenu.addEventListener("keydown", (e) => {
+         if (
+           e.key !== "Tab" ||
+           !mobileMenu.classList.contains("mobile-menu--open")
+         )
+           return;
+         /* Same hidden-subtree filter as the lightbox and project modal
+            (lightbox.js, project-modal.js): FOCUSABLE_SELECTOR screens out a
+            removed tabindex only, so a button that is `hidden` while the menu is
+            open would still land in the cycle. Test the attribute, not
+            getComputedStyle — .btn--icon sets display:inline-flex and beats the
+            UA [hidden] rule, so a computed-style check reports these buttons as
+            visible and the filter silently does nothing. If the menu itself is
+            hidden, every element filters out, length is 0, and the early return
+            below handles it exactly as before. */
+         const focusable = Array.from(
+           mobileMenu.querySelectorAll(window.DialogUtil.FOCUSABLE_SELECTOR)
+         ).filter((el) => !el.closest("[hidden]"));
+         if (focusable.length === 0) return;
+         const first = focusable[0];
+         const last = focusable[focusable.length - 1];
+         if (e.shiftKey && document.activeElement === first) {
+           e.preventDefault();
+           last.focus();
+         } else if (!e.shiftKey && document.activeElement === last) {
+           e.preventDefault();
+           first.focus();
+         }
+       });
 
-    const mobileNavLinks = mobileMenu.querySelectorAll(".mobile-menu__list a");
-    mobileNavLinks.forEach((link) => {
-      link.addEventListener("click", () => {
-        const href = link.getAttribute("href");
-        const to = href.startsWith("./") ? href.slice(2).replace(/\/$/, "") || "home" : "home";
-        const from = getPageFromPath();
-        if (window.Analytics) {
-          window.Analytics.track(`mobile-nav:${from}-${to}`, { from, to });
-        }
-      });
-    });
-  }
+       const mobileNavLinks = mobileMenu.querySelectorAll(".mobile-menu__list a");
+       mobileNavLinks.forEach((link) => {
+         link.addEventListener("click", () => {
+           const href = link.getAttribute("href");
+           const to = href.startsWith("./") ? href.slice(2).replace(/\/$/, "") || "home" : "home";
+           const from = getPageFromPath();
+           if (window.Analytics) {
+             window.Analytics.track(`mobile-nav:${from}-${to}`, { from, to });
+           }
+         });
+       });
+     }
 
-   /* ---------- Navigation tracking ---------- */
-  const navbarList = document.querySelector(".navbar__list");
-  let currentPage = "home";
+      /* ---------- Navigation tracking ---------- */
+     const navbarList = document.querySelector(".navbar__list");
+     let currentPage = "home";
 
-  function getPageFromPath() {
-    const path = window.location.pathname;
-    if (path === "/" || path === "") return "home";
-    const match = path.match(/\/(\w+)\/?$/);
-    if (!match) return "unknown";
-    const page = match[1];
-    if (["home", "work", "film"].includes(page)) return page;
-    return "unknown";
-  }
+     function getPageFromPath() {
+       const path = window.location.pathname;
+       if (path === "/" || path === "") return "home";
+       const match = path.match(/\/(\w+)\/?$/);
+       if (!match) return "unknown";
+       const page = match[1];
+       if (["home", "work", "film"].includes(page)) return page;
+       return "unknown";
+     }
 
-  if (navbarList) {
-    currentPage = getPageFromPath();
-    navbarList.addEventListener("click", (e) => {
-      const link = e.target.closest("a");
-      if (!link) return;
-      const href = link.getAttribute("href");
-      const dest = href.startsWith("./") ? href.slice(2).replace(/\/$/, "") || "home" : "home";
-      if (dest === currentPage && dest !== "home") return;
-      if (currentPage === "unknown") return;
-      if (window.Analytics && typeof window.Analytics.track === "function") {
-        if (dest === currentPage && dest === "home") {
-          window.Analytics.track("nav:home-click", {});
-        } else {
-          window.Analytics.track(`nav:${currentPage}-${dest}`, { from: currentPage });
-        }
-      }
-      if (dest !== currentPage) {
-        currentPage = dest;
-      }
-    });
-  }
+     if (navbarList) {
+       currentPage = getPageFromPath();
+       navbarList.addEventListener("click", (e) => {
+         const link = e.target.closest("a");
+         if (!link) return;
+         const href = link.getAttribute("href");
+         const dest = href.startsWith("./") ? href.slice(2).replace(/\/$/, "") || "home" : "home";
+         if (dest === currentPage && dest !== "home") return;
+         if (currentPage === "unknown") return;
+         if (window.Analytics && typeof window.Analytics.track === "function") {
+           if (dest === currentPage && dest === "home") {
+             window.Analytics.track("nav:home-click", {});
+           } else {
+             window.Analytics.track(`nav:${currentPage}-${dest}`, { from: currentPage });
+           }
+         }
+         if (dest !== currentPage) {
+           currentPage = dest;
+         }
+       });
+     }
 
 
+
+   }
 
   /* ---------- Skip link tracking ---------- */
   const skipLink = document.querySelector(".skip-link");

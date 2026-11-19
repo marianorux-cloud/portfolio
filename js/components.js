@@ -33,23 +33,34 @@
 
   function init() {
     // Inject navbar before each <header>
+    const injections = [];
+    
+    // Inject navbar/mobile menu into placeholder containers
     document.querySelectorAll('[data-component="navbar-mobile"]').forEach(el => {
-      injectComponent('navbar', el);
+      injections.push(injectComponent('navbar', el));
     });
 
     // Inject secondary navbar (work/film pages with back button)
     document.querySelectorAll('header[data-component="navbar-secondary"]').forEach(el => {
-      injectComponent('navbar-secondary', el);
+      injections.push(injectComponent('navbar-secondary', el));
     });
 
     // Inject footer after each main content
     document.querySelectorAll('footer[data-component="footer"]').forEach(el => {
-      injectComponent('footer', el);
+      injections.push(injectComponent('footer', el));
     });
 
     // Inject privacy modal before </body>
     document.querySelectorAll('div[data-component="privacy-modal"]').forEach(el => {
-      injectComponent('privacy-modal', el);
+      injections.push(injectComponent('privacy-modal', el));
+    });
+
+    // Dispatch event after all injections complete
+    Promise.all(injections).then(() => {
+      document.dispatchEvent(new CustomEvent('components:loaded'));
+    }).catch(() => {
+      console.warn('Some components failed to load');
+      document.dispatchEvent(new CustomEvent('components:loaded'));
     });
   }
 })();

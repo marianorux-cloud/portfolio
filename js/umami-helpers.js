@@ -182,9 +182,14 @@
   load();
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initPrivacyModal);
+    document.addEventListener("components:loaded", initPrivacyModal);
   } else {
-    initPrivacyModal();
+    // Components may already be loaded
+    if (document.querySelector("#privacy-modal")) {
+      initPrivacyModal();
+    } else {
+      document.addEventListener("components:loaded", initPrivacyModal);
+    }
   }
 
   window.Analytics = { track: track };
