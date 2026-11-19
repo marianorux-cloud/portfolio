@@ -103,6 +103,7 @@
     /* Border colors */
     --border: var(--color-text);
     --border-focus: var(--color-blue);
+    --accent: var(--color-blue);
 
     /* Inversion (for dark-mode hover) */
     --surface-inverted: #fff;
@@ -143,6 +144,16 @@
   --text-inverted: #fff;
   --overlay-lightbox: rgba(0, 0, 0, 0.75);
   --overlay-privacy: rgba(0, 0, 0, 0.5);
+
+  /* Missing tokens */
+  --bg-secondary: color-mix(in srgb, var(--bg) 90%, var(--text));
+  --bg-tertiary: color-mix(in srgb, var(--bg) 80%, var(--text));
+  --text-secondary: color-mix(in srgb, var(--text) 71%, transparent);
+  --text-disabled: color-mix(in srgb, var(--text) 35%, transparent);
+  --icon-secondary: color-mix(in srgb, var(--icon) 50%, transparent);
+  --divider-strong: var(--text);
+  --border: var(--text);
+  --border-focus: var(--accent);
 }
 
 /* Neutral / warm off-white */
@@ -162,6 +173,16 @@
   --divider: var(--color-secondary);
   --surface-inverted: #fff;
   --text-inverted: #000;
+
+  /* Missing tokens */
+  --bg-secondary: color-mix(in srgb, var(--bg) 90%, var(--text));
+  --bg-tertiary: color-mix(in srgb, var(--bg) 80%, var(--text));
+  --text-secondary: color-mix(in srgb, var(--text) 71%, transparent);
+  --text-disabled: color-mix(in srgb, var(--text) 35%, transparent);
+  --icon-secondary: color-mix(in srgb, var(--icon) 50%, transparent);
+  --divider-strong: var(--text);
+  --border: var(--text);
+  --border-focus: var(--accent);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -178,6 +199,17 @@
     --divider: var(--color-secondary);
     --surface-inverted: #000;
     --text-inverted: #fff;
+
+  /* Missing tokens */
+  --bg-secondary: color-mix(in srgb, var(--bg) 90%, var(--text));
+  --bg-tertiary: color-mix(in srgb, var(--bg) 80%, var(--text));
+  --text-secondary: color-mix(in srgb, var(--text) 71%, transparent);
+  --text-disabled: color-mix(in srgb, var(--text) 35%, transparent);
+  --icon-secondary: color-mix(in srgb, var(--icon) 50%, transparent);
+  --divider: rgba(255, 255, 255, 0.2);
+  --divider-strong: var(--text);
+  --border: var(--text);
+  --border-focus: var(--accent);
   }
 }
 
@@ -378,6 +410,105 @@ a {
 
 .btn--solid:hover {
   background: color-mix(in srgb, var(--color-text) 30%, transparent);
+}
+
+/* ============================================
+   Button component system (design token pattern)
+   ============================================ */
+
+/* Base button */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2xs);
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--leading-normal);
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+/* Variants */
+.btn--primary {
+  background: var(--text);
+  color: var(--bg);
+  border-color: var(--text);
+}
+
+.btn--primary:hover {
+  background: var(--surface-inverted);
+  color: var(--text-inverted);
+  border-color: var(--surface-inverted);
+}
+
+.btn--secondary {
+  background: transparent;
+  color: var(--text);
+  border-color: var(--border);
+}
+
+.btn--secondary:hover {
+  background: var(--hover-bg);
+  border-color: var(--text);
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--text);
+  border-color: transparent;
+}
+
+.btn--ghost:hover {
+  background: var(--hover-bg);
+}
+
+.btn--icon {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--icon);
+  border: none;
+}
+
+.btn--icon:hover {
+  background: var(--hover-bg);
+}
+
+.btn--icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Sizes */
+.btn--sm {
+  padding: var(--space-2xs) var(--space-xs);
+  font-size: var(--text-xs);
+}
+
+.btn--lg {
+  padding: var(--space-md) var(--space-lg);
+  font-size: var(--text-base);
+}
+
+/* States */
+.btn:disabled,
+.btn--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
 }
 
 /* Dark mode flips the hovered button to a full white surface with black
